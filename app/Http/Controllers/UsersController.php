@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
+use App\Http\Requests\StoreUserRequest;
+use App\User;
 use Illuminate\Http\Request;
+
 
 class UsersController extends Controller
 {
@@ -13,7 +17,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -23,7 +27,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -32,9 +36,16 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+       if($request->role != 'admin'){
+           $client = Client::create($request->except('name', 'password', 'role','price_coefficient', '_token'));
+           User::create($request->only('name', 'password', 'role','price_coefficient') + ['client_id' => $client->id]);
+       } else {
+           User::create($request->only('name', 'password', 'role'));
+       }
+
+        return redirect()->back();
     }
 
     /**
