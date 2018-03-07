@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -32,8 +34,27 @@ class LoginController extends Controller
      *
      * @return void
      */
+
+    protected function attemptLogin(Request $request)
+    {
+        if(User::where('name', $request->name)->get()->first()->disabled == 1)
+        {
+            return $this->guard()->attempt($this->credentials($request), $request->filled('remember'));
+        }else{
+            session()->flash('status', 'Your account disabled');
+            
+            return redirect()->back();
+
+        };
+    }
+
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function username()
+    {
+        return 'name';
     }
 }
