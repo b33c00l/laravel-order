@@ -38,4 +38,25 @@ class Product extends Model
     {
         return $this->hasMany(Price::class);
     }
+
+    public function getYoutubeEmbedAttribute()
+    {
+        if(!empty($this->video)) {
+            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+                $this->video, $match)) {
+                $video_id = $match[1];
+                $result = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $video_id . '"
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>';
+            } else {
+                $result = "Link is corrupted";
+            }
+        }
+        else {
+            $result = "-";
+        }
+        return $result;
+
+//        return ucfirst($value);
+    }
 }
