@@ -6,13 +6,22 @@ use App\Http\Requests\StoreProductsRequest;
 use App\Platform;
 use App\Product;
 use App\Publisher;
+use App\Services\ImageService;
 use App\Stock;
+use App\Image;
 use App\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     public function index()
     {
         $products = Product::all();
@@ -30,7 +39,9 @@ class ProductsController extends Controller
     {
         $product = Product::create($request->except('_token'));
         $product->stock()->create( ['amount' => $request->get('stock_amount')] );
-        $product->price()->create( ['amount' => $request->get('price_amount')] );
+        $product->prices()->create( ['amount' => $request->get('price_amount')] );
+        $this->imageService->storeProductImages($product, $request->file('image'));
+
         return redirect()->route('products.index');
     }
 
@@ -63,12 +74,14 @@ class ProductsController extends Controller
                 'publisher_id' => $request->get('publisher_id'),
         ]);
 
-        if($product->stock->last()->amount !=  $request->get('stock_amount')) {
+        if($product->stock_amount !=  $request->get('stock_amount')) {
             $product->stock()->create( ['amount' => $request->get('stock_amount')] );
         }
-        if($product->price->last()->amount !=  $request->get('price_amount')) {
-            $product->price()->create(['amount' => $request->get('price_amount')]);
+        if($product->price_amount !=  $request->get('price_amount')) {
+            $product->prices()->create( ['amount' => $request->get('price_amount')] );
         }
+
+        $this->imageService->updateProductImages($product, $request->only(['image_id', 'image', 'featured']));
 
         return redirect()->route('products.show', $id);
 
@@ -78,12 +91,15 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $prices_to_delete = $product->price->pluck('id')->toArray();
-        Price::destroy($prices_to_delete);
-
+        $prices_to_delete = $product->prices->pluck('id')->toArray();
         $stock_to_delete = $product->stock->pluck('id')->toArray();
+
+        $this->imageService->deleteProductImages($product);
+        Price::destroy($prices_to_delete);
         Stock::destroy($stock_to_delete);
+
         Product::destroy($id);
+
         return redirect()->route('products.index');
     }
 }

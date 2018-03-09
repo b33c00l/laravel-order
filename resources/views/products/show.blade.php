@@ -1,3 +1,5 @@
+<img src="{{URL::asset('storage/image/' . $productSingle->featured_image_filename)}}" alt="">
+<br>
 <label for="">Name:</label>
 {{ $productSingle->name }}
 <br>
@@ -33,6 +35,7 @@
 <label for="">Description:</label>
 {{ $productSingle->description }}
 <br>
+
 <a href="{{ route('products.edit',$productSingle->id) }}"><button>Edit</button></a>
 <form action="{{ route('products.destroy', ['id' => $productSingle->id])}}" method="post">
     @csrf
@@ -41,3 +44,9 @@
         <button type="submit" class="btn btn-secondary">Delete</button>
     </div>
 </form>
+<br>
+@foreach($productSingle->images as $image)
+    @if($image->featured != 1)
+        <img src="{{URL::asset('storage/image/' . $image->filename)}}" alt="">
+    @endif
+@endforeach

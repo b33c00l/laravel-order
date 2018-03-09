@@ -30,7 +30,8 @@ class StoreProductsRequest extends FormRequest
             'platform_id' => 'required',
             'stock_amount' => 'required|integer|min:0',
             'price_amount' => ["required", 'numeric', new PositivePrice()],
-            'pegi' => 'numeric|nullable'
+            'pegi' => 'numeric|nullable',
+            'image' => 'mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }
 }

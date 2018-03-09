@@ -38,7 +38,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Price::class);
     }
-    
+
     public function client(){
         return $this->belongsTo(Client::class);
 

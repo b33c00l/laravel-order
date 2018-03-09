@@ -26,6 +26,7 @@ Route::resource('platforms', 'PlatformController');
 Route::resource('products', 'ProductsController');
 Route::resource('users', 'UsersController');
 Route::resource('categories', 'CategoriesController');
+Route::resource('images', 'ImagesController');
 
 Route::post('products/import', 'ProductsImportController@import')->name('products.import');
 Route::get('products/import', 'ProductsImportController@importForm')->name('products.import.form');
