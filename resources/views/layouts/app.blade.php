@@ -67,5 +67,34 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script>
+
+        function addIntoCart(id)
+        {
+            var token = $('meta[name="csrf-token"]').attr('content');
+            var quantity = document.getElementById('value' + id).value;
+            $.ajax({
+                type: "post",
+                url: '{!! URL::to('order') !!}/' + id,
+                data: {quantity: quantity,_token: token},
+                dataType: "json",
+                success:function (data)
+                {
+                    document.getElementById('messenge' + id).innerHTML = 'Added to cart';
+                    document.getElementById('messenge' + id).style.display = 'block';
+                },
+                error:function (error)
+                {
+                    document.getElementById('messenge' + id).innerHTML = error['responseJSON']['errors']['quantity'][0];
+                    document.getElementById('messenge' + id).style.color = 'red';
+                    document.getElementById('messenge' + id).style.display = 'block';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
