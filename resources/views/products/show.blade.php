@@ -1,3 +1,6 @@
+<img src="{{ $productSingle->featured_image_url }}">
+
+<br>
 <label for="">Name:</label>
 {{ $productSingle->name }}
 <br>
@@ -28,16 +31,23 @@
 <br>
 <label for="">Video:</label>
 <br>
-{!! $productSingle->youtube_embed  !!}
+{!! $productSingle->youtube_embed !!}
 <br>
 <label for="">Description:</label>
 {{ $productSingle->description }}
 <br>
-<a href="{{ route('products.edit',$productSingle->id) }}"><button>Edit</button></a>
-<form action="{{ route('products.destroy', ['id' => $productSingle->id])}}" method="post">
+
+<a href="{{ route('products.edit', $productSingle->id) }}"><button>Edit</button></a>
+<form action="{{ route('products.destroy', ['id' => $productSingle->id ])}}" method="post">
     @csrf
     <div class="form-group">
         <input type="hidden" name="_method" value="delete">
         <button type="submit" class="btn btn-secondary">Delete</button>
     </div>
 </form>
+<br>
+@foreach($productSingle->images as $image)
+    @if($image->featured != 1)
+        <img src="{{ $image->image_url }}" alt="">
+    @endif
+@endforeach

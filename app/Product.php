@@ -68,5 +68,25 @@ class Product extends Model
         return $this->prices->last()->amount;
     }
 
+    public function getFeaturedImageAttribute()
+    {
+        if ($this->images()->where('featured', 1)->exists()) {
+            return $this->images()->where('featured', 1)->first();
+        } else {
+            return null;
+        }
+    }
+
+    public function getFeaturedImageUrlAttribute()
+    {
+        if($this->getFeaturedImageAttribute() != null ) {
+            $path = 'storage/image/';
+            $path .= $this->getFeaturedImageAttribute()->filename;
+        } else {
+            $path = 'image/default_featured.png';
+        }
+        return asset($path);
+    }
+
 
 }

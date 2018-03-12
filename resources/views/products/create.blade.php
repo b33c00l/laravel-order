@@ -1,11 +1,11 @@
-<form action="{{ route('products.store') }}" method="post">
+<form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         @if ($errors->any())
             <div class="alert alert-danger" role="alert">
                 <ul>
                     @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -17,7 +17,7 @@
         <label for="ean">EAN:</label>
         <br>
         <input type="number" name="ean" class="form-control" placeholder="EAN" value="{{ old('ean') }}">
-            <br>
+        <br>
         <label for="stock_amount">Stock:</label>
         <br>
         <input type="number" name="stock_amount" class="form-control" placeholder="Available stock" value="{{ old('stock_amount') }}">
@@ -32,10 +32,10 @@
             @foreach($platforms as $platform)
                 @if ($platform->id == old('platform_id'))
                     <input type="radio" class="form-radio-input" name="platform_id" value="{{ $platform->id }}"
-                       id="{{ $platform->id }}" checked>
+                           id="{{ $platform->id }}" checked>
                 @else
                     <input type="radio" class="form-radio-input" name="platform_id" value="{{ $platform->id }}"
-                       id="{{ $platform->id }}" >
+                           id="{{ $platform->id }}" >
                 @endif
                 <label for="{{ $platform->name }}" class="form-radio-label">{{ $platform->name }}</label>
             @endforeach
@@ -46,13 +46,13 @@
         <div class="form-radio">
             @foreach($publishers as $publisher)
                 @if ($publisher->id == old('publisher_id'))
-                <input type="radio" class="form-radio-input" name="publisher_id" value="{{$publisher->id}}"
-                       id="{{ $publisher->id }}" checked>
+                    <input type="radio" class="form-radio-input" name="publisher_id" value="{{ $publisher->id }}"
+                           id="{{ $publisher->id }}" checked>
                 @else
-                    <input type="radio" class="form-radio-input" name="publisher_id" value="{{$publisher->id}}"
-                       id="{{ $publisher->id }}">
+                    <input type="radio" class="form-radio-input" name="publisher_id" value="{{ $publisher->id }}"
+                           id="{{ $publisher->id }}">
                 @endif
-                <label for="{{$publisher->name}}" class="form-radio-label">{{$publisher->name}}</label>
+                <label for="{{ $publisher->name }}" class="form-radio-label">{{ $publisher->name }}</label>
             @endforeach
         </div>
 
@@ -73,6 +73,8 @@
         <label for="pegi">Pegi</label>
         <br>
         <input type="number" name="pegi" class="form-control" value="{{ old('pegi') }}">
+        <br>
+        <input type="file" name="image" id="image" >
         <br>
         <button type="submit" class="btn btn-secondary">Submit</button>
     </div>
