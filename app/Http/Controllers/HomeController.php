@@ -2,16 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Platform;
-use App\Price;
 use App\Product;
-use App\Publisher;
-use App\Stock;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Messerli90\IGDB\Facades\IGDB;
 
 class HomeController extends Controller
 {
