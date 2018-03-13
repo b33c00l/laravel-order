@@ -7,6 +7,7 @@
     <link rel="stylesheet" href= "{{ asset('css/style.css') }}">
 </head>
 <body>
+@inject('CartService', "App\Services\CartService")
 <div class="container">
 
     <!-- Order table -->
@@ -35,8 +36,8 @@
                             <td data-label="Name:" class="align-middle">{{ $product->product->name }}</td>
                             <td data-label="Release date:" class="align-middle">{{ $product->product->release_date }}</td>
                             <td data-label="Publisher:" class="align-middle">{{  $product->product->publisher->name }}</td>
-                            <td data-label="Price:" class="align-middle">{{ $product->product->PriceAmount }}</td>
-                            <td data-label="Price:" class="align-middle">{{ $product->product->PriceAmount * $product->quantity }}</td>
+                            <td data-label="Price:" class="align-middle">{{ $product->product->PriceAmount }} €</td>
+                            <td id="singlePrice{{ $product->id }}" data-label="Price:" class="align-middle">{{ $CartService->getSingleProductPrice($product) }} €</td>
                             <td data-label="Amount:" class="align-middle">
                                 <input onkeyup="setquantity({{ $product->id }},this.value)" class="input" type="number" name="amount" value="{{ $product->quantity }}">
                                 <br>
@@ -52,21 +53,22 @@
                         </tr>
                         @endforeach
                     @else
-                    <tr>
-                        <td colspan="8" style="font-size: 50px;"><b>Cart is empty</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="8"><a class="btn btn-success" href="{{ route('home') }}">Back to Shop</a></td>
-                    </tr>
+                        <tr>
+                            <td colspan="9" style="font-size: 50px;"><b>Cart is empty</b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="9"><a class="btn btn-success" href="{{ route('home') }}">Back to Shop</a></td>
+                        </tr>
                     @endif
                 <tr>
                     <td class="total"></td>
                     <td class="total"></td>
                     <td class="total"></td>
                     <td class="total"></td>
+                    <td class="total"></td>
                     <td class="total" scope="Total"><b>Total</b></td>
-                    <td data-label="Total"></td>
-                    <td data-label="Total quantity">1235</td>
+                    <td id="totalPrice" data-label="Total">{{ !empty($products) ? $CartService->getTotalCartPrice($products->first()->order) : ''}} €</td>
+                    <td id="totalQuantity" data-label="Total quantity">{{ !empty($products) ? $CartService->getTotalCartQuantity($products->first()->order) : '' }}</td>
                     <td class="total"></td>
                 </tr>
                 </tbody>
@@ -99,7 +101,7 @@
             var timer = null;
             function setquantity(id,quantity) {
                 clearTimeout(timer);
-                timer = setTimeout(function() { update_quantity(id,quantity) }, 1500)
+                timer = setTimeout(function() { update_quantity(id,quantity) }, 1000)
             }
             function update_quantity(id,quantity)
             {
@@ -111,8 +113,11 @@
                     dataType: "json",
                     success:function (data)
                     {
-                        document.getElementById('update' + data).innerHTML = 'updated';
-                        document.getElementById('update' + data).style.display = 'block';
+                        document.getElementById('totalQuantity').innerHTML = data['totalQuantity'];
+                        document.getElementById('singlePrice' + id).innerHTML = data['singleProductPrice'] + ' €';
+                        document.getElementById('totalPrice').innerHTML = data['totalPrice'] + ' €';
+                        document.getElementById('update' + data['id']).innerHTML = 'updated';
+                        document.getElementById('update' + data['id']).style.display = 'block';
                     },
                     error:function (error)
                     {
