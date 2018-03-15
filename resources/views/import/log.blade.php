@@ -30,7 +30,11 @@
                         <tr>
                             <td>{{($all->currentpage()-1) * $all->perpage() + $line + 1}}</td>
                             <td>{{$one_line->product_id}}</td>
-                            <td>{{$one_line->product_name}}</td>
+                                <td>
+                                    @if($one_line->product_id !== null)
+                                        <a href="{{ route('products.show', $one_line->product_id) }}">{{$one_line->product_name}}</a>
+                                    @endif
+                                </td>
                             <td>
                                 @if ($one_line->status == \App\ImportItem::FAIL)
                                     <span class="text-danger">{{$one_line->import_status}}</span>

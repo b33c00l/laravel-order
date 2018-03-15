@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Chat;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class StoreChatRequest extends FormRequest
+class ReadChatRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,6 +15,11 @@ class StoreChatRequest extends FormRequest
      */
     public function authorize()
     {
+        $chat_id = $this->route('chat');
+        $chat = Chat::findOrFail($chat_id)->first();
+        if (Auth::user()->role !== 'admin' && $chat->user_id !== Auth::id()) {
+            return false;
+        }
         return true;
     }
 
@@ -24,9 +31,7 @@ class StoreChatRequest extends FormRequest
     public function rules()
     {
         return [
-            'topic' => 'required',
-            'message' => 'required',
-            'order_id' => 'exists:orders,id'
+            //
         ];
     }
 }
