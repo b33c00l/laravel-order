@@ -4,6 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8 mx-auto">
+                <h2>{{ $chat->topic }}</h2>
+                <h4>This topic is related to <a href="#">order nr. {{ $chat->order->id }}</a></h4>
                 <ul class="list-group">
                     @foreach($messages as $message)
                         <li class="list-group-item">
@@ -14,7 +16,7 @@
                 </ul>
             </div>
         </div>
-        @if ($chat->admin_id === Auth::id() || $chat->admin_id === null || $chat->user_id === Auth::id())
+        @if ($chat->status == 1 && ($chat->admin_id === Auth::id() || $chat->admin_id === null || $chat->user_id === Auth::id()))
             <div class="row">
                 <div class="col-sm-8 mx-auto">
                     <form method="post" action="{{ route('chat.store.message') }}">
@@ -27,22 +29,31 @@
                             <textarea class="form-control" rows="6" type="text" name="message" placeholder="Enter message"></textarea>
                             @include('chat.partials.error', ['name' => 'message'])
                         </div>
-                        <button type="submit" class="btn btn-primary">Create topic</button>
+                        <button type="submit" class="btn btn-primary">Send message</button>
                     </form>
                 </div>
             </div>
         @endif
-        @if (Auth::user()->role == "admin")
-            <div class="row">
-                <div class="col-sm-8 mx-auto">
+
+        <div class="row">
+            <div class="col-sm-8 mx-auto">
+                @if (Auth::user()->role == "admin" && $chat->status === 1)
                     <form method="post" action="{{ route('chat.disable') }}">
                         @csrf
                         {{method_field('PATCH')}}
                         <input type="hidden" name="chat_id" value="{{ $chat->id }}">
                         <button class="btn btn-danger mt-3" type="submit">Deactivate chat</button>
                     </form>
-                </div>
+                @elseif ($chat->status === 0)
+                    <h3 class="text-danger">Chat is deactivated!</h3>
+                    <form method="post" action="{{ route('chat.enable') }}">
+                        @csrf
+                        {{method_field('PATCH')}}
+                        <input type="hidden" name="chat_id" value="{{ $chat->id }}">
+                        <button class="btn btn-success mt-3" type="submit">Activate chat</button>
+                    </form>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
 @endsection

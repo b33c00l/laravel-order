@@ -30,6 +30,7 @@ Route::get('chat/user', 'ChatsController@getUserChats')->name('chat.user');
 Route::get('chat/{chat}', 'ChatsController@show')->name('chat.show');
 Route::post('chat/store_message', 'ChatsController@storeMessage')->name('chat.store.message');
 Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
+Route::patch('chat/enable', 'ChatsController@enable')->name('chat.enable');
 
 
 Route::resource('publishers', 'PublishersController');
