@@ -8,7 +8,15 @@
                     @foreach($chats as $chat)
                         <li class="list-group-item">
                             Created by : {{$chat->user->name}} on {{$chat->created_at}} <br>
-                            <a href="{{route('chat.show', $chat->id)}}">{{$chat->topic}}</a>
+                            <a href="{{route('chat.show', $chat->id)}}">
+                                <h3>
+                                    @if($chat->admin_id === null)
+                                        <b class="text-success">{{$chat->topic}}</b>
+                                    @else
+                                        {{$chat->topic}}
+                                    @endif
+                                </h3>
+                            </a>
                         </li>
                     @endforeach
                 </ul>

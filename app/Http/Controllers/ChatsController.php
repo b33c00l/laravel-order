@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Chat;
 use App\Http\Requests\DisableChatRequest;
+use App\Http\Requests\EnableChatRequest;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\StoreMessageRequest;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,18 +16,22 @@ class ChatsController extends Controller
 
     public function index()
     {
-        $chats = Chat::where('status', 1)->orderBy('id', 'DESC')->get();
+        if (Auth::user()->role == "user") {
+            return redirect()->route('chat.user');
+        }
+        $chats = Chat::where('status', Chat::ACTIVE)->orderBy('id', 'DESC')->get();
         return view('chat.index', compact('chats'));
     }
 
     public function create()
     {
-        return view('chat.create');
+        $orders = Order::all();
+        return view('chat.create', compact('orders'));
     }
 
     public function store(StoreChatRequest $request)
     {
-        $chat = Chat::create($request->only('topic') + ['user_id' => Auth::id()]);
+        $chat = Chat::create($request->only('topic', 'order_id') + ['user_id' => Auth::id()]);
         $chat->messages()->create($request->only('message') + ['user_id' => Auth::id()]);
 
         return redirect()->route('chat.show', $chat->id);
@@ -35,7 +41,7 @@ class ChatsController extends Controller
     {
         $chat = Chat::findOrFail($id);
         if (Auth::user()->role !== 'admin' && $chat->user_id !== Auth::id()) {
-            return redirect()->route('home');
+            return redirect()->route('chat.user');
         }
         $messages = $chat->messages()->get();
         return view('chat/show', compact('chat', 'messages'));
@@ -56,12 +62,19 @@ class ChatsController extends Controller
     public function disable(DisableChatRequest $request)
     {
         $chat = Chat::findOrFail($request->chat_id);
-        $chat->update(['status' => 0]);
-        return redirect()->route('chat.index');
+        $chat->update(['status' => Chat::INACTIVE]);
+        return redirect()->back();
+    }
+
+    public function enable(EnableChatRequest $request)
+    {
+        $chat = Chat::findOrFail($request->chat_id);
+        $chat->update(['status' => Chat::ACTIVE]);
+        return redirect()->back();
     }
 
     public function getUserChats()
     {
-        $chats = Chat::where('user_id', Auth::id())->get();
+        Chat::where('user_id', Auth::id())->get();
     }
 }
