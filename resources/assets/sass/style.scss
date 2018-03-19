@@ -349,7 +349,6 @@
 
     div#popular {
         margin-top: 30px;
-
     }
 
     .img-thumbnail, .gallery {
@@ -360,6 +359,8 @@
     img#popular {
         width: 80%;
         margin-top: 10px;
+        max-height:180px;
+        object-fit:cover;
     }
 
     div#categories {

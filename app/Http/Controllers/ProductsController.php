@@ -70,7 +70,8 @@ class ProductsController extends Controller
     }
 
     public function show($id)
-    {
+    {   
+        $categories = Category::all();
         $product = Product::findOrFail($id);
         $product_cats = $product->categories->pluck('id');
 
@@ -78,7 +79,7 @@ class ProductsController extends Controller
             $query->whereIn('id', $product_cats);
         })->take(4)->get();
         
-        return view('products.show', ['productSingle' => $product, 'products' => $products]);
+        return view('products.show', ['productSingle' => $product, 'products' => $products, 'categories' => $categories]);
     }
 
     public function edit($id)
@@ -131,5 +132,14 @@ class ProductsController extends Controller
         Product::destroy($id);
 
         return redirect()->route('products.index');
+    }
+
+    public function cat($id) 
+    {   
+
+        $cat = Category::findOrFail($id);
+        $products = $cat->products()->paginate(25);
+
+        return view('home', ['products' => $products]);
     }
 }
