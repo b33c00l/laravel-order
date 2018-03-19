@@ -47,7 +47,10 @@ Route::resource('categories', 'CategoriesController');
 
 Route::post('order/{id}', 'CartController@store')->name('order.store');
 Route::get('basket', 'CartController@index')->name('order.index');
-Route::post('cart/{id}', 'CartController@confirm')->name('order.confirm');
+Route::post('cart/{id}', 'CartController@confirm')->name('cart.confirm');
+Route::get('orders', 'OrdersController@index')->name('order.orders');
+Route::get('order/{id}', 'OrdersController@show')->name('order.products');
+Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 
 Route::post('update/{id}', 'CartController@update')->name('order.update');
 Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');

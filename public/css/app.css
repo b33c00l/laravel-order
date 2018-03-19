@@ -15528,6 +15528,44 @@ input.input {
   width: 50px;
 }
 
+.loader {
+  display: block;
+  border: 3px solid #f3f3f3;
+  /* Light grey */
+  border-top: 3px solid #3498db !important;
+  /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+  margin: 0 auto;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 .create-product-error {
   color: red;
 }

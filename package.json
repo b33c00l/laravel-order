@@ -12,7 +12,7 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "cross-env": "^5.1",
+        "cross-env": "^5.1.4",
         "jquery": "^3.3.1",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
@@ -22,6 +22,7 @@
     "dependencies": {
         "font-awesome-scss": "^1.0.0",
         "jquery-migrate": "^3.0.1",
+        "node-sass": "^4.7.2",
         "jquery-ui": "^1.12.1",
         "slick-carousel": "^1.8.1",
         "slick-lightbox": "^0.2.10"

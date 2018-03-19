@@ -23,16 +23,30 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'quantity' => 'required|integer|min:1|max:10000'
-        ];
+        if ($this->has('quantity'))
+        {
+            return [
+                'quantity' => 'required|integer|min:1|max:10000',
+            ];
+        }else{
+            return [
+                'price' => 'required|integer|min:1|max:10000',
+            ];
+        }
     }
     public function messages()
     {
-        return [
-            'quantity.integer' => 'Must be number',
-            'quantity.max' => 'Max quantity 10000',
-            'quantity.min' => 'Min quantity 1'
-        ];
+        if ($this->has('quantity'))
+        {
+            return [
+                'quantity.integer' => 'Must be number',
+                'quantity.max' => 'Max quantity 10000',
+                'quantity.min' => 'Min quantity 1'
+            ];
+        }else {
+            return [
+                'price.integer' => 'Must be number',
+            ];
+        }
     }
 }
