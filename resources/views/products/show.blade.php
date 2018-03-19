@@ -5,7 +5,7 @@
     <div class="col-10 mt-5 single-product">
         <div class="row">
             <div class="col-lg-12 col-md-12 text-center">
-                <h1>{{ $productSingle->name }}</h1> 
+                <h1>{{ $productSingle->name }}</h1>
             </div>
             <div class="col-lg-12 col-md-12 text-center">
                 <h4 class="single-pre-order">Pre-Order Now</h4>
@@ -35,7 +35,7 @@
                             @if($image->featured != 1)
                             <div class="single-product-image d-flex justify-content-center"><a href="{{ $image->url }}"><img class="zoom" src="{{ $image->url }}"></a></div>
                             @endif
-                            @endforeach        
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                             @if($image->featured != 1)
                             <div class="d-flex justify-content-center"><img class="zoom" src="{{ $image->url }}"></div>
                             @endif
-                            @endforeach  
+                            @endforeach
                         </div>
                     </div>
                 </div>

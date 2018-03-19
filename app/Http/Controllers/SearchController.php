@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     public function search(Request $request)
-    {	
+    {
     	$categories = Category::all();
         if ($request->get('query') == null) {
             $products = Product::paginate(25);

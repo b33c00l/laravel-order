@@ -18,6 +18,7 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('sort/', 'HomeController@sort')->name('home.sort');
 
 Route::post('products/import', 'ProductsImportController@import')->name('products.import');
 Route::get('products/import', 'ProductsImportController@importForm')->name('products.import.form');

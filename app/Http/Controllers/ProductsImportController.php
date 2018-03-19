@@ -48,7 +48,7 @@ class ProductsImportController extends Controller
     public function showLog()
     {
         $import = Import::orderBy('id', "desc")->first();
-        $all = $import->items()->paginate(25);
+        $all = $import->items()->paginate(env('PAGINATE', 25));
         return view('import.log', compact('all'));
     }
 
@@ -56,10 +56,10 @@ class ProductsImportController extends Controller
     {
         $import = Import::orderBy('id', "desc")->first();
         if ($request->status == 'all') {
-            $all = $import->items()->paginate(25);
+            $all = $import->items()->paginate(env('PAGINATE', 25));
             return view('import.log', compact('all'));
         }
-        $all = $import->items()->where('status', $request->status)->paginate(25);
+        $all = $import->items()->where('status', $request->status)->paginate(env('PAGINATE',25));
         return view('import.log', compact('all'));
     }
 
