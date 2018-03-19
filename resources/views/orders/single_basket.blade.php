@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
 @inject('cartService', "App\Services\CartService")
-<div class="container">
+<div class="col-10 mt-5">
 
     <!-- Order table -->
     <div class="row">

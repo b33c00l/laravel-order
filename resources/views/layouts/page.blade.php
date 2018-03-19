@@ -36,7 +36,7 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item active">
-								<a class="nav-link btn btn-outline-danger" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
+								<a class="nav-link btn btn-danger" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link btn btn-danger" href="#">Order</a>
@@ -45,7 +45,7 @@
 								<a class="nav-link btn btn-danger" href="#">Profile</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link btn btn-danger" href="{{ route('pages.contacts') }}">Contact</a>
+								<a class="nav-link btn btn-outline-danger" href="{{ route('pages.contacts') }}">Contact</a>
 							</li>
 						</ul>
 					</div>
@@ -124,30 +124,6 @@
 							<li><a href="{{ route('products.cat', array('id'=>$category->id)) }}">{{$category->name}}</a></li>
 							@endforeach
 						</ul>
-					</div>
-				</div>
-				<!-- Most popular -->
-				<hr>
-				<div id="popular" class="row">
-					<div class="col-12 text-center">
-						<h4>Most Popular</h4>
-					</div>
-					<div class="col-12">
-						@for ($x = 0; $x < 3; $x++)
-						<div class="most-popular-prod-sidebar text-center">
-							<img id="popular" src="{{ $products_latest[$x]->featured_image_url }}"class="img-thumbnail">
-							<h6 class="mt-2">{{ $products_latest[$x]->name }}</h6>
-							<p>{{ str_limit($products_latest[$x]->description, 100) }}</p>
-							<div class="row">
-								<div class="input-group mb-3 d-flex justify-content-center">
-									<input class="counter-inputas" type="number" name="amount">
-									<div class="input-group-append">
-										<a class="btn btn-dark add-into-cart" data-url="{{ route('order.store', $products_latest[$x]->id) }}">Add to Cart</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						@endfor
 					</div>
 				</div>
 			</div>

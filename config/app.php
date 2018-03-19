@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Messerli90\IGDB\IGDBServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 
     ],
 

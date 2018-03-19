@@ -1,65 +1,5 @@
-@extends('layouts.main')
+@extends('layouts.main', ['categories' => $categories])
 @section('content')
-
-<div class="row">
-    <div id="sidebar" class="col-2">
-        <div id="categories" class="row">
-            <div class="col-12 text-center">
-                <h4>Categories</h4>
-            </div>
-            <div class="sidebar-categories">
-                <ul class="list-group">
-                    <li>Cras justo odio</li>
-                    <li>Dapibus ac facilisis in</li>
-                    <li>Morbi leo risus</li>
-                    <li>Porta ac consectetur ac</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                    <li>Vestibulum at eros</li>
-                </ul>
-            </div>
-        </div>
-        <!-- Most popular -->
-        <hr>
-        <div id="popular" class="row">
-            <div class="col-12 text-center">
-                <h4>Most Popular</h4>
-            </div>
-            <div class="col-12">
-                <div class="most-popular-prod-sidebar text-center">
-                    <img id="popular" src="images/fc4.jpg"class="img-thumbnail">
-                    <h6 class="mt-2">Half Life</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="row">
-                        <div class="input-group mb-3 d-flex justify-content-center">
-                            <input class="counter-inputas" type="number" name="amount">
-                            <div class="input-group-append">
-                                <a class="btn btn-dark" href="#">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="most-popular-prod-sidebar text-center">
-                    <img id="popular" src="images/fc4.jpg"class="img-thumbnail">
-                    <h6 class="mt-2">Half Life</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="row">
-                        <div class="input-group mb-3 d-flex justify-content-center">
-                            <input class="counter-inputas" type="number" name="amount">
-                            <div class="input-group-append">
-                                <a class="btn btn-dark" href="#">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Single page -->
 
     <div class="col-10 mt-5 single-product">
@@ -180,60 +120,6 @@
         </div>
     </div>
 </div>
-
-<hr>
-<div class="row">
-    <div class="col-12 text-center">
-        <h4>New arrivals</h4>
-    </div>
-</div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-2 karuseles-arrow-containeris d-flex justify-content-center">
-            <div class="karuseles-arrow prev"><i class="fas fa-caret-left"></i>
-            </div>
-        </div>
-        <div class="col-sm-8">
-            <div class="karusele">
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-                <div class="karuseles-img">
-                    <img class="gallery" src="images/fc4.jpg">
-                    <h5>Half Life</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 karuseles-arrow-containeris d-flex justify-content-center">
-            <div class="karuseles-arrow next"><i class="fas fa-caret-right"></i></div>
-        </div>
-    </div>
-</div>
-
-
-
 
 @endsection
 

@@ -70,7 +70,8 @@ class ProductsController extends Controller
     }
 
     public function show($id)
-    {
+    {   
+        $categories = Category::all();
         $product = Product::findOrFail($id);
         $product_cats = $product->categories->pluck('id');
 
@@ -78,7 +79,7 @@ class ProductsController extends Controller
             $query->whereIn('id', $product_cats);
         })->take(4)->get();
         
-        return view('products.show', ['productSingle' => $product, 'products' => $products]);
+        return view('products.show', ['productSingle' => $product, 'products' => $products, 'categories' => $categories]);
     }
 
     public function edit($id)

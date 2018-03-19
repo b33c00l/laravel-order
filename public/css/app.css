@@ -14859,7 +14859,7 @@ ul ul {
 }
 
 .navbar-light .navbar-nav .nav-link {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -14879,6 +14879,10 @@ ul ul {
   font-size: 30px;
   text-align: center;
   width: 20%;
+}
+
+.btn-dark {
+  color: white !important;
 }
 
 .cart-menu-inside {
@@ -15114,6 +15118,9 @@ div#popular {
 img#popular {
   width: 80%;
   margin-top: 10px;
+  max-height: 180px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 div#categories {
