@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Index</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
-	</head>
-	<body>
-		<div class="container">
-			<!-- Top Bar -->
-			<div class="row">
-				<div class="top-bar">
-					<ul>
-						<li><i class="fa fa-phone-volume"></i>  <a href="#">+370 644 54348</a></li>
-						<li><i class="fa fa-envelope"></i>  <a href="#">info@gamestar.eu</a></li>
-					</ul>
-				</div>
+<head>
+	<title>Index</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
+</head>
+<body>
+	<div class="container">
+		<!-- Top Bar -->
+		<div class="row">
+			<div class="top-bar">
+				<ul>
+					<li><i class="fa fa-phone-volume"></i>  <a href="#">+370 644 54348</a></li>
+					<li><i class="fa fa-envelope"></i>  <a href="#">info@gamestar.eu</a></li>
+				</ul>
 			</div>
+		</div>
 			<!-- Header -->
 			<div class="row">
 				<div class="logo">
@@ -103,9 +103,9 @@
 								<li>Pre-Orders</li>
 								<li>Back-Orders</li>
 							</ul>
-							<li>Users</li>
+							<li><a href="{{ route('users.index') }}">Users</a></li>
 							<ul>
-								<li>Add user</li>
+								<li><a href="{{ route('users.create') }}">Add user</a></li>
 							</ul>
 							<li><a href="{{ route('publishers.index') }}">Publishers</a></li>
 							<ul>
@@ -139,17 +139,12 @@
 						<div class="col-12">
 							@for ($x = 0; $x < 3; $x++)
 							<div class="most-popular-prod-sidebar text-center">
+								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><img id="popular" src="{{ $products_latest[$x]->featured_image_url }}" class="img-thumbnail"></a>
+								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><h6 class="mt-2">{{ $products_latest[$x]->name }}</h6></a>
+								<p>{{ str_limit($products_latest[$x]->description, 100) }}</p>
 								<img id="popular" src="{{ $products_latest[$x]->featured_image_url }}"class="img-thumbnail">
 								<h6 class="mt-2">{{ $products_latest[$x]->name }}</h6>
 								<p>{{ str_limit($products_latest[$x]->description, 100) }}</p>
-								<div class="row">
-									<div class="input-group mb-3 d-flex justify-content-center">
-										<input class="counter-inputas" type="number" name="amount">
-										<div class="input-group-append">
-											<a class="btn btn-dark add-into-cart" data-url="{{ route('order.store', $products_latest[$x]->id) }}">Add to Cart</a>
-										</div>
-									</div>
-								</div>
 							</div>
 							@endfor
 						</div>
@@ -178,8 +173,8 @@
 
 							@foreach ($products_latest as $product_latest)
 							<div class="karuseles-img">
-								<img class="gallery" src="{{ $product_latest->featured_image_url }}">
-								<h5>{{ $product_latest->name }}</h5>
+								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><img class="gallery" src="{{ $product_latest->featured_image_url }}"></a>
+								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><h5>{{ $product_latest->name }}</h5></a>
 							</div>
 							@endforeach
 						</div>

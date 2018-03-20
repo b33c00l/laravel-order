@@ -1,8 +1,11 @@
-@extends('layouts.main')
+@extends('layouts.page')
 @section('content')
-<div class="col-12 text-center mt-3">
+<div class="col-10">
+    <div class="row">
+<div class="col-12 text-center mt-5 mb-5">
     <h2>Create product</h2>
 </div>
+<div class="col-12">
 <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
@@ -186,4 +189,7 @@
     </div>
 </form>
 </div>
+</div>
+</div>
+</div
 @endsection
