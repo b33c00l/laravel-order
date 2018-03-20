@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    const UNCONFIRMED = 0;
-    const CONFIRMED = 1;
+    const PENDING = 0;
+    const UNCONFIRMED = 1;
+    const CONFIRMED = 2;
+    const REJECTED = 3;
+
+    const ORDER = 0;
+    const PREORDER = 1;
+    const BACKORDER = 2;
+
     public $timestamps = false;
     protected $fillable = ['status'];
 
@@ -22,7 +29,31 @@ class Order extends Model
     }
     public function scopeAsCart($query)
     {
-        return $query->where('status', Order::UNCONFIRMED);
+        return $query->where('status', Order::PENDING   );
+    }
+
+    public function getOrderTypeAttribute()
+    {
+        if ($this->type === Order::ORDER) {
+            return "Order";
+        }  elseif ($this->type === Order::PREORDER) {
+            return "Pre-order";
+        }  else {
+            return "Back-order";
+        }
+    }
+
+    public function getOrderStatusAttribute()
+    {
+        if ($this->status === Order::PENDING) {
+            return "Pending";
+        }  elseif ($this->status === Order::UNCONFIRMED) {
+            return "Unconfirmed";
+        }  elseif($this->status == Order::CONFIRMED) {
+            return "Confirmed";
+        } else {
+            return "Rejected";
+        }
     }
 
     public function chat()

@@ -7,7 +7,7 @@ use Auth;
 class CartService
 {
     public function getSingleProductPrice($product){
-        $total = $product->product->PriceAmount * $product->quantity;
+        $total = $product->price * $product->quantity;
         return $total;
     }
     public function getTotalCartPrice($order)
@@ -15,7 +15,7 @@ class CartService
          $totalCartPrice = 0;
          foreach ($order->orderProducts as $product)
          {
-             $totalCartPrice += $product->quantity * $product->product->PriceAmount;
+             $totalCartPrice += $product->quantity * $product->price;
          }
          return $totalCartPrice;
     }

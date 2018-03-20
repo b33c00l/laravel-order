@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Order;
 use App\OrderProduct;
+use App\Price;
 use App\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -40,8 +41,9 @@ class CartController extends Controller
         if (empty($user_order))
         {
             $order = $user->orders()->create([
-                'status' => Order::UNCONFIRMED,
+                'status' => Order::PENDING,
                 'date' => Carbon::now(),
+                'type' => 0,
             ]);
         }else{
             $order = $user_order;
@@ -49,8 +51,10 @@ class CartController extends Controller
         $product = $order->orderProducts->where('product_id', $product_id)->first();
         if ($product == null)
         {
+            $product = Product::findOrFail($product_id);
             $order->orderProducts()->create($request->except('_token')+[
                     'product_id' => $product_id,
+                    'price' => $product->PriceAmount,
                 ]);
         }else{
             $amount = $product->quantity + $request->quantity;
@@ -62,14 +66,28 @@ class CartController extends Controller
 
     public function update($id, StoreOrderRequest $request)
     {
+        $user = Auth::user();
         $product = OrderProduct::where('id', $id);
-        $product->update($request->except('_token'));
-        $singleProduct = $product->first();
-        $data = ['id' => $id,
-            'totalQuantity' => $this->getTotal->getTotalCartQuantity($singleProduct->order),
-            'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
-            'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
-            ];
+            if ($user->role === 'admin' && !empty($request->price))
+            {
+                $product->update([
+                    'price' => $request->price,
+                    ]);
+                $product = OrderProduct::where('id', $id);
+                $singleProduct = $product->first();
+                $data = ['id' => $id,
+                    'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
+                    'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
+                ];
+            }else{
+                $product->update($request->except('_token'));
+                $singleProduct = $product->first();
+                $data = ['id' => $id,
+                    'totalQuantity' => $this->getTotal->getTotalCartQuantity($singleProduct->order),
+                    'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
+                    'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
+                ];
+            }
 
         return $data;
     }
@@ -86,7 +104,7 @@ class CartController extends Controller
     }
     public function confirm($id)
     {
-        Order::findOrFail($id)->update(['status' => Order::CONFIRMED]);
+        Order::findOrFail($id)->update(['status' => Order::UNCONFIRMED]);
         return redirect()->back();
     }
 }

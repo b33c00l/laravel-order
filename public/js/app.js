@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10442,7 +10442,7 @@ return jQuery;
 
 
 var bind = __webpack_require__(6);
-var isBuffer = __webpack_require__(23);
+var isBuffer = __webpack_require__(24);
 
 /*global toString:true*/
 
@@ -13298,7 +13298,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(26);
+var normalizeHeaderName = __webpack_require__(27);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -13392,7 +13392,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ }),
 /* 5 */
@@ -13447,12 +13447,12 @@ module.exports = function bind(fn, thisArg) {
 
 
 var utils = __webpack_require__(1);
-var settle = __webpack_require__(27);
-var buildURL = __webpack_require__(29);
-var parseHeaders = __webpack_require__(30);
-var isURLSameOrigin = __webpack_require__(31);
+var settle = __webpack_require__(28);
+var buildURL = __webpack_require__(30);
+var parseHeaders = __webpack_require__(31);
+var isURLSameOrigin = __webpack_require__(32);
 var createError = __webpack_require__(8);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(32);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(33);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -13549,7 +13549,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(33);
+      var cookies = __webpack_require__(34);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -13633,7 +13633,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(28);
+var enhanceError = __webpack_require__(29);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13693,6 +13693,234 @@ module.exports = Cancel;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var $ = __webpack_require__(0);
+__webpack_require__(42);
+__webpack_require__(43);
+var autocomplete = __webpack_require__(44);
+
+$('.slider').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: false,
+    arrows: false,
+    cssEase: 'linear'
+});
+
+$('.left').click(function () {
+    $('.slider').slick('slickPrev');
+});
+
+$('.right').click(function () {
+    $('.slider').slick('slickNext');
+});
+
+$('.karusele').slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    dots: false,
+    arrows: false,
+    responsive: [{
+        breakpoint: 1024,
+        settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: false
+        }
+    }, {
+        breakpoint: 600,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+    }, {
+        breakpoint: 480,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+        // You can unslick at a given breakpoint now by adding:
+        // settings: "unslick"
+        // instead of a settings object
+    }],
+    autoplaySpeed: 2000
+});
+
+$('.prev').click(function () {
+    $('.karusele').slick('slickPrev');
+});
+
+$('.next').click(function () {
+    $('.karusele').slick('slickNext');
+});
+
+$('.slider-for').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    fade: true,
+    asNavFor: '.slider-nav'
+});
+$('.slider-nav').slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    asNavFor: '.slider-for',
+    dots: false,
+    arrows: true,
+    centerMode: true,
+    variableWidth: true,
+    focusOnSelect: true
+});
+
+$('#gll').slickLightbox();
+
+$(function () {
+    var inputs = $('.autocomplete');
+
+    inputs.each(function (key, input) {
+        input = $(input);
+        var autocomplete = input.attr('data-autocomplete');
+
+        autocomplete = JSON.parse(autocomplete);
+
+        activeList = [];
+
+        $.each(autocomplete, function (key, value) {
+            activeList.push(value['name']);
+        });
+
+        input.autocomplete({
+            source: activeList
+        });
+    });
+});
+
+$('.add-into-cart').click(function () {
+    var element = $('#' + $(this).parent().prev().find('span')[0]['id']);
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var quantity = $(this).parent().prev().find('input').val();
+    $.ajax({
+        type: "post",
+        url: $(this).data('url'),
+        data: { quantity: quantity, _token: token },
+        dataType: "json",
+        success: function success() {
+            element.html('Added to cart');
+            element.css({ 'color': 'green', 'display': 'block' });
+        },
+        error: function error(_error) {
+            element.html(_error['responseJSON']['errors']['quantity'][0]);
+            element.css({ 'color': 'red', 'display': 'block' });
+        }
+    });
+});
+
+$('#show_packshots').click(function () {
+    $('.packshots').toggle();
+    return;
+});
+
+$('#show_preorders').click(function () {
+    $('.preorders').toggle();
+    return;
+});
+
+var timer = null;
+$('.setquantity').keyup(function () {
+    var quantity = $(this).val();
+    var url = $(this).data('url');
+    var messageId = $(this).parent().find('span')[0]['id'];
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+
+        var token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: "post",
+            url: url,
+            data: { quantity: quantity, _token: token },
+            dataType: "json",
+            success: function success(data) {
+                var element = $('#message' + data['id']);
+                $('#totalQuantity').html(data['totalQuantity']);
+                $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
+                $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
+                element.html('updated');
+                element.css({ 'color': 'green', 'display': 'block' });
+            },
+            error: function error(_error2) {
+                var message = $('#' + messageId);
+                message.html(_error2['responseJSON']['errors']['quantity'][0]);
+                message.css({ 'color': 'red', 'display': 'block' });
+            }
+        });
+    }, 1000);
+});
+
+$(".table-tr").hover(function () {
+    $(this).css("background-color", "white").css("opacity", "0.7");
+}, function () {
+    $(this).css("background-color", "").css("opacity", "1");
+});
+
+var timer = null;
+$('.updateQ').keyup(function () {
+    var url = $(this).data('url');
+    var quantity = $(this).val();
+    var messageId = $(this).parent().find('span')[0]['id'];
+    $(this).parent().prev().html('<span class="loader"></span>');
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+
+        var token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: "post",
+            url: url,
+            data: { quantity: quantity, _token: token },
+            dataType: "json",
+            success: function success(data) {
+                $('#totalQuantity').html(data['totalQuantity']);
+                $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
+                $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
+            },
+            error: function error(_error3) {
+                $('#' + messageId).html(_error3['responseJSON']['errors']['quantity'][0]);
+                $('#' + messageId).css({ 'color': 'red', 'display': 'block' });
+            }
+        });
+    }, 1000);
+});
+
+$('.updateP').keyup(function () {
+    var url = $(this).data('url');
+    var price = $(this).val();
+    var messageId = $(this).parent().find('span')[0]['id'];
+    $(this).parent().next().html('<span class="loader"></span>');
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+
+        var token = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: "post",
+            url: url,
+            data: { price: price, _token: token },
+            dataType: "json",
+            success: function success(data) {
+                $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
+                $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
+            },
+            error: function error(_error4) {
+                $('#' + messageId).html(_error4['responseJSON']['errors']['price'][0]);
+                $('#' + messageId).css({ 'color': 'red', 'display': 'block' });
+            }
+        });
+    }, 1000);
+});
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * jQuery UI Keycode 1.12.1
  * http://jqueryui.com
@@ -13744,7 +13972,7 @@ return $.ui.keyCode = {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -14251,7 +14479,7 @@ return $.ui.position;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
@@ -14300,7 +14528,7 @@ return $.ui.safeActiveElement = function( document ) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15042,29 +15270,30 @@ return $.widget;
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(16);
-module.exports = __webpack_require__(47);
-
-
-/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
+__webpack_require__(11);
+module.exports = __webpack_require__(47);
 
-__webpack_require__(41);
-
-__webpack_require__(3);
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(18);
 
-window._ = __webpack_require__(18);
+__webpack_require__(11);
+
+__webpack_require__(3);
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+window._ = __webpack_require__(19);
 window.Popper = __webpack_require__(3).default;
 
 /**
@@ -15076,7 +15305,7 @@ window.Popper = __webpack_require__(3).default;
 try {
   window.$ = window.jQuery = __webpack_require__(0);
 
-  __webpack_require__(20);
+  __webpack_require__(21);
 } catch (e) {}
 
 /**
@@ -15085,7 +15314,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(21);
+window.axios = __webpack_require__(22);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -15121,7 +15350,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -32223,10 +32452,10 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(19)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(20)(module)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -32254,7 +32483,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -36154,13 +36383,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(22);
+module.exports = __webpack_require__(23);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36168,7 +36397,7 @@ module.exports = __webpack_require__(22);
 
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(6);
-var Axios = __webpack_require__(24);
+var Axios = __webpack_require__(25);
 var defaults = __webpack_require__(4);
 
 /**
@@ -36203,14 +36432,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(10);
-axios.CancelToken = __webpack_require__(39);
+axios.CancelToken = __webpack_require__(40);
 axios.isCancel = __webpack_require__(9);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(40);
+axios.spread = __webpack_require__(41);
 
 module.exports = axios;
 
@@ -36219,7 +36448,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /*!
@@ -36246,7 +36475,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36254,8 +36483,8 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(4);
 var utils = __webpack_require__(1);
-var InterceptorManager = __webpack_require__(34);
-var dispatchRequest = __webpack_require__(35);
+var InterceptorManager = __webpack_require__(35);
+var dispatchRequest = __webpack_require__(36);
 
 /**
  * Create a new instance of Axios
@@ -36332,7 +36561,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -36522,7 +36751,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36541,7 +36770,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36574,7 +36803,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36602,7 +36831,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36675,7 +36904,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36735,7 +36964,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36810,7 +37039,7 @@ module.exports = (
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36853,7 +37082,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36913,7 +37142,7 @@ module.exports = (
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36972,18 +37201,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var transformData = __webpack_require__(36);
+var transformData = __webpack_require__(37);
 var isCancel = __webpack_require__(9);
 var defaults = __webpack_require__(4);
-var isAbsoluteURL = __webpack_require__(37);
-var combineURLs = __webpack_require__(38);
+var isAbsoluteURL = __webpack_require__(38);
+var combineURLs = __webpack_require__(39);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -37065,7 +37294,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37092,7 +37321,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37113,7 +37342,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37134,7 +37363,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37198,7 +37427,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37230,180 +37459,6 @@ module.exports = function spread(callback) {
   };
 };
 
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $ = __webpack_require__(0);
-__webpack_require__(42);
-__webpack_require__(43);
-var autocomplete = __webpack_require__(44);
-
-$('.slider').slick({
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  dots: false,
-  arrows: false,
-  cssEase: 'linear'
-});
-
-$('.left').click(function () {
-  $('.slider').slick('slickPrev');
-});
-
-$('.right').click(function () {
-  $('.slider').slick('slickNext');
-});
-
-$('.karusele').slick({
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  autoplay: true,
-  dots: false,
-  arrows: false,
-  responsive: [{
-    breakpoint: 1024,
-    settings: {
-      slidesToShow: 2,
-      slidesToScroll: 1,
-      infinite: true,
-      dots: false
-    }
-  }, {
-    breakpoint: 600,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1
-    }
-  }, {
-    breakpoint: 480,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  }],
-  autoplaySpeed: 2000
-});
-
-$('.prev').click(function () {
-  $('.karusele').slick('slickPrev');
-});
-
-$('.next').click(function () {
-  $('.karusele').slick('slickNext');
-});
-
-$('.slider-for').slick({
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-  fade: true,
-  asNavFor: '.slider-nav'
-});
-$('.slider-nav').slick({
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  asNavFor: '.slider-for',
-  dots: false,
-  arrows: true,
-  centerMode: true,
-  variableWidth: true,
-  focusOnSelect: true
-});
-
-$('#gll').slickLightbox();
-
-$(function () {
-  var inputs = $('.autocomplete');
-
-  inputs.each(function (key, input) {
-    input = $(input);
-    var autocomplete = input.attr('data-autocomplete');
-
-    autocomplete = JSON.parse(autocomplete);
-
-    activeList = [];
-
-    $.each(autocomplete, function (key, value) {
-      activeList.push(value['name']);
-    });
-
-    input.autocomplete({
-      source: activeList
-    });
-  });
-});
-
-$('.add-into-cart').click(function () {
-  var element = $('#' + $(this).parent().prev().find('span')[0]['id']);
-  var token = $('meta[name="csrf-token"]').attr('content');
-  var quantity = $(this).parent().prev().find('input').val();
-  $.ajax({
-    type: "post",
-    url: $(this).data('url'),
-    data: { quantity: quantity, _token: token },
-    dataType: "json",
-    success: function success() {
-      element.html('Added to cart');
-      element.css({ 'color': 'green', 'display': 'block' });
-    },
-    error: function error(_error) {
-      element.html(_error['responseJSON']['errors']['quantity'][0]);
-      element.css({ 'color': 'red', 'display': 'block' });
-    }
-  });
-});
-
-$('#show_packshots').click(function () {
-  $('.packshots').toggle();
-  return;
-});
-
-$('#show_preorders').click(function () {
-  $('.preorders').toggle();
-  return;
-});
-
-var timer = null;
-$('.setquantity').keyup(function () {
-  var quantity = $(this).val();
-  var url = $(this).data('url');
-  var messageId = $(this).parent().find('span')[0]['id'];
-  clearTimeout(timer);
-  timer = setTimeout(function () {
-
-    var token = $('meta[name="csrf-token"]').attr('content');
-    $.ajax({
-      type: "post",
-      url: url,
-      data: { quantity: quantity, _token: token },
-      dataType: "json",
-      success: function success(data) {
-        var element = $('#message' + data['id']);
-        $('#totalQuantity').html(data['totalQuantity']);
-        $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
-        $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
-        element.html('updated');
-        element.css({ 'color': 'green', 'display': 'block' });
-      },
-      error: function error(_error2) {
-        var message = $('#' + messageId);
-        message.html(_error2['responseJSON']['errors']['quantity'][0]);
-        message.css({ 'color': 'red', 'display': 'block' });
-      }
-    });
-  }, 100);
-});
-
-$(".table-tr").hover(function () {
-  $(this).css("background-color", "white").css("opacity", "0.7");
-}, function () {
-  $(this).css("background-color", "").css("opacity", "1");
-});
 
 /***/ }),
 /* 42 */
@@ -40791,11 +40846,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
 			__webpack_require__(0),
 			__webpack_require__(45),
-			__webpack_require__(11),
 			__webpack_require__(12),
 			__webpack_require__(13),
+			__webpack_require__(14),
 			__webpack_require__(2),
-			__webpack_require__(14)
+			__webpack_require__(15)
 		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
@@ -41481,12 +41536,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		// AMD. Register as an anonymous module.
 		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
 			__webpack_require__(0),
-			__webpack_require__(11),
 			__webpack_require__(12),
 			__webpack_require__(13),
+			__webpack_require__(14),
 			__webpack_require__(46),
 			__webpack_require__(2),
-			__webpack_require__(14)
+			__webpack_require__(15)
 		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),

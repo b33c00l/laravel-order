@@ -62,8 +62,8 @@
     <!-- Comments and attachments -->
     @if(!empty($products))
     <div class="row">
-        <div class="col-md-12 no-gutters">
-            <form action="{{ route('order.confirm', $order_id) }}" method="post">
+        <div class="col-12">
+            <form action="{{ route('cart.confirm', $order_id) }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1"><h4>Comments</h4></label>
@@ -77,4 +77,5 @@
     </div>
     @endif
 </div>
+
 @endsection
