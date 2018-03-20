@@ -67,6 +67,7 @@ class SpecialOffersController extends Controller
         return view('special_offers.index', compact('products', 'publishers', 'platforms', 'publisher_name', 'clients'));
     }
 
+
     public function search(Request $request)
     {
         $clients = Client::all();

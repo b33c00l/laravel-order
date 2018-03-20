@@ -20,7 +20,7 @@ class User extends Authenticatable
         'role',
         'client_id',
         'price_coefficient',
-        'disabled'
+        'disabled',
     ];
 
     public $timestamps = false;

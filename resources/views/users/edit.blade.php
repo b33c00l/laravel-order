@@ -33,7 +33,8 @@
                 'email' => '',
                 'contact_person' => '',
                 'payment_terms' => '',
-                'phone' => ''
+                'phone' => '',
+                'country' => ''
                 ])
                 @endif
                 <div class="col-12 d-flex justify-content-center user-edit-label">

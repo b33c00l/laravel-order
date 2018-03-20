@@ -19,6 +19,7 @@
                 'contact_person' => "",
                 'payment_terms' => "",
                 'phone' =>"",
+                'country' => "",
                 ])
                 <div class="col-12 form-group">
                     <div class="col">
