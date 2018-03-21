@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Order;
 use Auth;
+use Carbon\Carbon;
 
 class CartService
 {
@@ -28,7 +30,106 @@ class CartService
         }
         return $totalCartQuantity;
     }
-	
+
+    public function getStoreOrder($product, $request)
+    {
+        $user = Auth::user();
+        $user_order = $user->orders()->InCart()->Order()->first();
+
+        if (empty($user_order))
+        {
+            $order = $user->orders()->create([
+                'status' => Order::PENDING,
+                'date' => Carbon::now(),
+                'type' => Order::ORDER
+            ]);
+        }else{
+            $order = $user_order;
+        }
+        $order_product = $order->orderProducts->where('product_id', $product->id)->first();
+        if ($order_product == null)
+        {
+            if ($request->quantity <= $product->stock()->first()->amount)
+            {
+                $quantity  = $request->quantity;
+            }else{
+                $quantity  = $product->stock()->first()->amount;
+                $value = $request->quantity - $product->stock()->first()->amount;
+            }
+            $order->orderProducts()->create([
+                    'product_id' => $product->id,
+                    'price' => $product->PriceAmount,
+                    'quantity' => $quantity,
+                ]);
+        }else{
+            $amount = $order_product->quantity + $request->quantity;
+            if ($amount <= $product->stock()->first()->amount)
+            {
+                $order_product->update(['quantity' => $amount]);
+            }else{
+                $order_product->update(['quantity' => $product->stock()->first()->amount]);
+                $value = $amount - $product->stock()->first()->amount;
+            }
+
+        }
+        return $value;
+    }
+    public function getStoreBackOrder($product, $quantity)
+    {
+        $user = Auth::user();
+        $user_backorder = $user->orders()->InCart()->BackOrder()->first();
+        if (empty($user_backorder))
+        {
+            $backorder = $user->orders()->create([
+                'status' => Order::PENDING,
+                'date' => Carbon::now(),
+                'type' => Order::BACKORDER
+            ]);
+        }else{
+            $backorder = $user_backorder;
+        }
+        $backorder_product = $backorder->orderProducts->where('product_id', $product->id)->first();
+        if ($backorder_product == null)
+        {
+            $backorder->orderProducts()->create([
+                    'product_id' => $product->id,
+                    'price' => $product->PriceAmount,
+                    'quantity' => $quantity
+                ]);
+        }else{
+            $amount = $backorder_product->quantity + $quantity;
+            $backorder_product->update(['quantity' => $amount]);
+        }
+    }
+
+    public function getStorePreOrder($product, $quantity)
+    {
+        $user = Auth::user();
+        $user_preorder = $user->orders()->InCart()->Preorder()->first();
+        if (empty($user_preorder))
+        {
+            $preorder = $user->orders()->create([
+                'status' => Order::PENDING,
+                'date' => Carbon::now(),
+                'type' => Order::PREORDER
+            ]);
+        }else{
+            $preorder = $user_preorder;
+        }
+        $preorder_product = $preorder->orderProducts->where('product_id', $product->id)->first();
+        if ($preorder_product == null)
+        {
+            $preorder->orderProducts()->create([
+                'product_id' => $product->id,
+                'price' => $product->PriceAmount,
+                'quantity' => $quantity
+            ]);
+        }else{
+            $amount = $preorder_product->quantity + $quantity;
+            $preorder_product->update(['quantity' => $amount]);
+        }
+    }
+
 	public function getUserOrderTotalPrice() {
 		$order = Auth::user()->orders->where('status', 0)->first();
 		if (!empty($order)){
