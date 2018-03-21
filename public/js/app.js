@@ -43210,7 +43210,6 @@ $(function () {
 });
 // End of Suggestion Autocomplete
 
-
 $('#gll').slickLightbox();
 
 $(function () {
