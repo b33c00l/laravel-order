@@ -108,8 +108,6 @@ $( function() {
 } );
 // End of Suggestion Autocomplete
 
-
-
 $('#gll').slickLightbox();
 
 $( function() {
@@ -127,10 +125,10 @@ $( function() {
             activeList.push(value['name']);
         });
 
-    input.autocomplete({
-      source: activeList
+        input.autocomplete({
+            source: activeList
+        });
     });
-  });
 });
 
 $('.add-into-cart').click(function(){
