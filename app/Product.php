@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\PricingService;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
@@ -122,11 +123,7 @@ class Product extends Model
 
     public function getPriceAmountAttribute()
     {
-        if (isset($this->prices->last()->amount)) {
-            return $this->prices->last()->amount;
-        } else {
-            return 0;
-        }
+        return app(PricingService::class)->getPrice(auth()->user(),$this);
     }
 
     public function getFeaturedImageAttribute()

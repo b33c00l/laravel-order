@@ -99,7 +99,17 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="price">Price:<i class="fa fa-sort-down"></i></th>
+                        <th scope="col" class="price">
+                            @if ($sortName == 'price' && $direction == 'asc')
+                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'desc']) }}">
+                                    Price:<i class="fa fa-sort-up"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'asc']) }}">
+                                    Price:<i class="fa fa-sort-down"></i>
+                                </a>
+                            @endif
+                        </th>
                         <th scope="col">Amount</th>
                         <th scope="col"></th>
                         <th scope="col" class="packshots"></th>
@@ -128,7 +138,7 @@
                             </td>
                             <td class="align-middle product-image-mobile-center packshots">
                                 <div class="packshot">
-                                    <img src="{{ $product->featured_image_url}}">
+                                    <img src="{{ $product->featured_image_url }}">
                                 </div>
                             </td>
                         </tr>
@@ -137,7 +147,7 @@
                 </table>
             </div>
             <div id="pagination" class="row justify-content-center">
-                {{$products->links()}}
+                {{ $products->links() }}
             </div>
         </div>
     </div>
