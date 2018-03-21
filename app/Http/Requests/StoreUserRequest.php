@@ -35,6 +35,7 @@ class StoreUserRequest extends FormRequest
             'contact_person' => 'required_if:role,user' ,
             'phone' => 'required_if:role,user' ,
             'payment_terms' => 'required_if:role,user' ,
+            'country_id' => 'required_if:role,user',
         ];
     }
 }

@@ -12,4 +12,9 @@ class Country extends Model
         'email',
         'phone',
     ];
+
+    public function users()
+    {
+        $this->hasMany(User::class);
+    }
 }
