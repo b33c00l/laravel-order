@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Country;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
@@ -29,7 +30,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $countries = Country::all();
+        return view('users.create', compact('countries'));
     }
 
     /**
@@ -42,7 +44,7 @@ class UsersController extends Controller
     {
        if($request->role != 'admin'){
            $client = Client::create($request->except('name', 'password', 'role', '_token') + ['name' => $request->get('client_name')]);
-           $client->user()->create($request->only('name', 'role','price_coefficient') + ['password' => bcrypt($request->password)]);
+           $client->user()->create($request->only('name', 'role','price_coefficient', 'country') + ['password' => bcrypt($request->password)]);
        } else {
            User::create($request->only('name', 'role') + ['password' => bcrypt($request->password)]);
        }
@@ -75,7 +77,7 @@ class UsersController extends Controller
         $client = $user->client;
 
         if($request->role != 'admin') {
-            $user->update($request->only('name', 'price_coefficient', 'role', 'disabled'));
+            $user->update($request->only('name', 'price_coefficient', 'role', 'country', 'disabled'));
             $client->update($request->except('name', 'password', 'role', '_token'));
         } else {
             $user->update($request->only('name', 'price_coefficient', 'role'));

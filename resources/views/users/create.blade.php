@@ -11,6 +11,7 @@
                 @include('users.partials.form', [
                 'name' => "",
                 'price_coefficient' => "",
+                'client_name' => "",
                 'vat_number' => "",
                 'registration_number' => "",
                 'registration_address' => "",
@@ -19,7 +20,6 @@
                 'contact_person' => "",
                 'payment_terms' => "",
                 'phone' =>"",
-                'country' => "",
                 ])
                 <div class="col-12 form-group">
                     <div class="col">

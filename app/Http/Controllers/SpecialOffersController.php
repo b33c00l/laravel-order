@@ -68,6 +68,8 @@ class SpecialOffersController extends Controller
     }
 
 
+
+
     public function search(Request $request)
     {
         $clients = Client::all();

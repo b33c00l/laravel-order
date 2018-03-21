@@ -13,6 +13,7 @@
                 @include('users.partials.form', [
                 'name' => $user->name,
                 'price_coefficient' => $user->price_coefficient,
+                'client_name' => $client->name,
                 'vat_number' => $client->vat_number,
                 'registration_number' => $client->registration_number,
                 'registration_address' => $client->registration_address,
@@ -20,12 +21,14 @@
                 'email' => $client->email,
                 'contact_person' => $client->contact_person,
                 'payment_terms' => $client->payment_terms,
-                'phone' => $client->phone
+                'phone' => $client->phone,
+                'country' => $user->country
                 ])
                 @else
                 @include('users.partials.form', [
                 'name' => $user->name,
                 'price_coefficient' => $user->price_coefficient,
+                'client_name' => '',
                 'vat_number' => '',
                 'registration_number' => '',
                 'registration_address' => '',

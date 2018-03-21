@@ -70,7 +70,12 @@
 			<label class="col control-label">Country</label>
 			<div class="col inputGroupContainer">
 				<div class="input-group">
-					<input  name="country" placeholder="Country" class="form-control"  type="text">
+					<select name="country" class="custom-select">
+						<option> -- select users country -- </option>
+						@foreach($countries as $country)
+							<option value="{{ $country->id }}">{{ $country->name }}</option>
+						@endforeach
+					</select>
 				</div>
 			</div>
 		</div>
@@ -83,6 +88,15 @@
 					<input  name="contact_person" placeholder="Contact person" class="form-control"  type="text">
 					</div>
 					@include('users.partials.error', ['name' => 'contact_person'])
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col control-label">Client name</label>
+			<div class="col inputGroupContainer">
+				<div class="input-group">
+					<input  name="client_name" placeholder="Client name" class="form-control"  type="text">
+				</div>
+				@include('users.partials.error', ['name' => 'client_name'])
 			</div>
 		</div>
 		<div class="form-group">
