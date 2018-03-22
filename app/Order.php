@@ -28,6 +28,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeAsCart($query)
+    {
+        return $query->where('status', Order::PENDING   );
+    }
+
     public function getOrderTypeAttribute()
     {
         if ($this->type === Order::ORDER) {
@@ -51,7 +56,7 @@ class Order extends Model
             return "Rejected";
         }
     }
-	
+
 	public function scopeInCart($query)
 	{
 		return $query->where('status', Order::PENDING);

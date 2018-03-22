@@ -143,4 +143,5 @@ class Product extends Model
         $path = 'image/default_featured.png';
         return asset($path);
     }
+
 }

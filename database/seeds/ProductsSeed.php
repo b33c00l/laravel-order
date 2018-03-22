@@ -109,7 +109,7 @@ class ProductsSeed extends Seeder
                     'amount' => 1,
                     'date' => Carbon::now()
                 ]);
-                
+
                 $url = $game_data->cover->url;
 
                 $filename = basename($url);
