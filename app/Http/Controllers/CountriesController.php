@@ -24,17 +24,22 @@ class CountriesController extends Controller
 
     public function store(StoreCountryRequest $request)
     {
-        Country::create($request->only('name', 'email', 'phone'));
+        if($request->default == 1) {
+            $default_country = Country::where('default', 1)->first();
+            if($default_country) {
+                $default_country->update(['default' => 0]);
+            }
+        }
+       Country::create($request->only('name', 'email', 'phone', 'default'));
+
         return redirect()->route('countries.index');
     }
-
 
     public function show($id)
     {
         $country = Country::findOrFail($id);
         return view('countries.show', ['countriesSingle' => $country]);
     }
-
 
     public function edit($id)
     {
@@ -45,14 +50,15 @@ class CountriesController extends Controller
 
     public function update(StoreCountryRequest $request, $id)
     {
-        Country::findOrFail($id)->update([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'phone' => $request->get('phone'),
-        ]);
+        $arr = $request->only('name', 'email', 'phone') + [ 'default'=> 1];
+        if($request->default == 1) {
+            Country::where('default', 1)->update(['default' => 0]);
+        }else{
+            $arr['default']=0;
+        }
+        Country::findOrFail($id)->update($arr);
         return redirect()->route('countries.show', $id);
     }
-
 
     public function destroy($id)
     {
