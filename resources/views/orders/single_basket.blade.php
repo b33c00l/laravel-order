@@ -89,7 +89,7 @@
                         <td data-label="Price:" class="align-middle text-right">{{ number_format($B_product->product->PriceAmount, 2, '.', '') }} €</td>
                         <td id="singlePrice{{ $B_product->id }}" data-label="Price:" class="align-middle text-right">{{ number_format($cartService->getSingleProductPrice($B_product), 2, '.', '') }} €</td>
                         <td data-label="Amount:" class="align-middle text-right">
-                            <input data-url="{{ route('order.update',$B_product->id) }}" class="input setquantity" type="number" name="amount" value="{{ $B_product->quantity }}">
+                            <input data-url="{{ route('order.update',$B_product->id) }}" class="input setquantity_BP" type="number" name="amount" max="50" value="{{ $B_product->quantity }}">
                             <br>
                             <span id="message{{ $B_product->id }}" ></span>
                         </td>
@@ -104,8 +104,8 @@
                 @endforeach
                 <tr>
                     <td scope="total" colspan="6" class="text-right"><b>Total</b></td>
-                    <td class="align-middle text-right" id="totalPrice" rowspan="6" data-label="Total">{{ !empty($B_products) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
-                    <td class="align-middle text-right" id="totalQuantity" data-label="Total quantity">{{ !empty($B_products) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
+                    <td class="align-middle text-right" id="totalPrice_B" rowspan="6" data-label="Total">{{ !empty($backorders) ? number_format($cartService->getTotalCartPrice($backorders->first()->order), 2, '.', '') : ''}} €</td>
+                    <td class="align-middle text-right" id="totalQuantity_B" data-label="Total quantity">{{ !empty($backorders) ? $cartService->getTotalCartQuantity($backorders->first()->order) : '' }}</td>
                     <td class="total"></td>
                 </tr>
             </tbody>
@@ -140,7 +140,7 @@
                         <td data-label="Price:" class="align-middle text-right">{{ number_format($P_product->product->PriceAmount, 2, '.', '') }} €</td>
                         <td id="singlePrice{{ $P_product->id }}" data-label="Price:" class="align-middle text-right">{{ number_format($cartService->getSingleProductPrice($P_product), 2, '.', '') }} €</td>
                         <td data-label="Amount:" class="align-middle text-right">
-                            <input data-url="{{ route('order.update',$P_product->id) }}" class="input setquantity" type="number" name="amount" value="{{ $P_product->quantity }}">
+                            <input data-url="{{ route('order.update',$P_product->id) }}" class="input setquantity_BP" type="number" name="amount" value="{{ $P_product->quantity }}">
                             <br>
                             <span id="message{{ $P_product->id }}" ></span>
                         </td>
@@ -155,8 +155,8 @@
                 @endforeach
                 <tr>
                     <td scope="total" colspan="6" class="text-right"><b>Total</b></td>
-                    <td class="align-middle text-right" id="totalPrice" rowspan="6" data-label="Total">{{ !empty($P_products) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
-                    <td class="align-middle text-right" id="totalQuantity" data-label="Total quantity">{{ !empty($P_products) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
+                    <td class="align-middle text-right" id="totalPrice_P" rowspan="6" data-label="Total">{{ !empty($preorders) ? number_format($cartService->getTotalCartPrice($preorders->first()->order), 2, '.', '') : ''}} €</td>
+                    <td class="align-middle text-right" id="totalQuantity_P" data-label="Total quantity">{{ !empty($preorders) ? $cartService->getTotalCartQuantity($preorders->first()->order) : '' }}</td>
                     <td class="total"></td>
                 </tr>
             </tbody>
@@ -172,20 +172,23 @@
 	</div>
 
     <!-- Comments and attachments -->
-    @if(!empty($products))
+    @if(!empty($products) || !empty($backorders) || !empty($preorders))
     <div class="row">
         <div class="col-12">
-            <form action="{{ route('cart.confirm', $order_id) }}" method="post">
+            <form action="{{ route('cart.confirm') }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1"><h4>Comments</h4></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
                 </div>
+                <input type="hidden" name="order_id" value="{{$order_id}}">
+                <input type="hidden" name="backorder_id" value="{{$backorder_id}}">
+                <input type="hidden" name="preorder_id" value="{{$preorder_id}}">
                 <div class="form-group">
                     <button type="submit" class="btn btn-danger btn-lg btn-block" >Confirm your order</button>
                 </div>
-            </div>
-        </form>
+             </form>
+        </div>
     </div>
     @endif
 </div>
