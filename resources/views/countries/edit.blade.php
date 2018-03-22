@@ -20,7 +20,9 @@
         <label for="phone">Phone:</label>
         <br>
         <input type="text" name="phone" class="form-control" placeholder="Phone number" value="{{ $countriesEdit->phone }}">
-        <br><br>
+        <br>
+        <input type="checkbox" name="default" class="form-control" value="1">This country will be default
+        <br>
         <button type="submit" class="btn btn-secondary">Submit</button>
     </div>
 </form>

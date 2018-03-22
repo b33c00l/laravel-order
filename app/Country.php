@@ -11,6 +11,7 @@ class Country extends Model
         'name',
         'email',
         'phone',
+        'default'
     ];
 
     public function users()

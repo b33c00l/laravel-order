@@ -26,7 +26,7 @@
 							<h4>Most Popular</h4>
 						</div>
 						<div class="col-12">
-							@for ($x = 0; $x < 3; $x++)
+							@for ($x = 0; $x < 0; $x++)
 							<div class="most-popular-prod-sidebar text-center">
 								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><img id="popular" src="{{ $products_latest[$x]->featured_image_url }}" class="img-thumbnail"></a>
 								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><h6 class="mt-2">{{ $products_latest[$x]->name }}</h6></a>
