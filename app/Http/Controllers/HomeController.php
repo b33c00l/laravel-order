@@ -31,7 +31,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $categories = Category::all();
         $products = Product::with('platform','publisher', 'images')->paginate(config('pagination.value'));
 
@@ -39,7 +38,7 @@ class HomeController extends Controller
             'products' => $products,
             'categories' => $categories,
             'direction' => '',
-            'sortName' => ''
+            'sortName' => '',
         ]);
     }
 

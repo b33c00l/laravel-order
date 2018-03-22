@@ -3,8 +3,8 @@
 		<div class="row">
 			<div class="top-bar">
 				<ul>
-					<li><i class="fa fa-phone-volume"></i>  <a href="#">+370 644 54348</a></li>
-					<li><i class="fa fa-envelope"></i>  <a href="#">info@gamestar.eu</a></li>
+					<li><i class="fa fa-phone-volume"></i>  <a href="#">{{$phone}}</a></li>
+					<li><i class="fa fa-envelope"></i>  <a href="#">{{$email}}</a></li>
 				</ul>
 			</div>
 		</div>
