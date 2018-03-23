@@ -31,7 +31,7 @@ class CartService
         return $totalCartQuantity;
     }
 
-    public function getStoreOrder($product, $request)
+    public function storeOrder($product, $request)
     {
         $user = Auth::user();
         $user_order = $user->orders()->InCart()->Order()->first();
@@ -76,7 +76,7 @@ class CartService
         }
         return $value;
     }
-    public function getStoreBackOrder($product, $quantity)
+    public function storeBackOrder($product, $quantity)
     {
         $user = Auth::user();
         $user_backorder = $user->orders()->InCart()->BackOrder()->first();
@@ -104,7 +104,7 @@ class CartService
         }
     }
 
-    public function getStorePreOrder($product, $quantity)
+    public function storePreOrder($product, $quantity)
     {
         $user = Auth::user();
         $user_preorder = $user->orders()->InCart()->Preorder()->first();

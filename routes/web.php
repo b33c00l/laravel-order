@@ -49,7 +49,7 @@ Route::resource('categories', 'CategoriesController');
 
 Route::post('order/{id}', 'CartController@store')->name('order.store');
 Route::get('basket', 'CartController@index')->name('order.index');
-Route::post('cart/{id}', 'CartController@confirm')->name('cart.confirm');
+Route::post('cart', 'CartController@confirm')->name('cart.confirm');
 Route::get('orders', 'OrdersController@index')->name('order.orders');
 Route::get('order/{id}', 'OrdersController@show')->name('order.products');
 Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
