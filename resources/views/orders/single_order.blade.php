@@ -46,7 +46,6 @@
                                 <input data-url="{{ route('order.update', $product->id) }}" class="input updateQ" type="number" value="{{$product->quantity}}" name="amount">
                                 <br>
                                 <span style="display: none; color: red" id="Qmessage{{ $product->id }}"></span>
-
                             @else
                                 <p>{{ $product->quantity}}</p>
                             @endadmin

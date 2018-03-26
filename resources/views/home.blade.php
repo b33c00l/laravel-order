@@ -135,7 +135,7 @@
                             <td Data-label="Stock:" class="align-middle text-right">{{$product->stockamount}}</td>
                             <td Data-label="Price:" class="align-middle text-right">{{ number_format($product->priceamount, 2, '.', '')}}</td>
                             <td Data-label="Amount" class="align-middle text-right">
-                                <input class="input" type="number" id="value{{ $product->id }}" name="amount">
+                                <input class="input" type="number" min="1" id="value{{ $product->id }}" name="amount">
                                 <span style="display: none; color: green" id="message{{ $product->id }}" ></span>
                             </td>
                             <td Data-label="Actions:" class="align-middle text-right">

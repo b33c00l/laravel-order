@@ -151,4 +151,15 @@ class CartService
 			return 0;
 		}
 	}
+
+	public function updateOrder($quantity, $product) {
+        $product->update(['quantity' => $quantity]);
+        $singleProduct = $product->first();
+        $data = ['id' => $product->first()->id,
+            'totalQuantity' => $this->getTotalCartQuantity($singleProduct->order),
+            'singleProductPrice' => $this->getSingleProductPrice($singleProduct),
+            'totalPrice' => $this->getTotalCartPrice($singleProduct->order),
+        ];
+        return $data;
+    }
 }
