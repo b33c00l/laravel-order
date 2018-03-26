@@ -59,15 +59,12 @@
 <!-- Slider -->
 <div id="search" class="row justify-content-center">
     <div class="slider">
-        <div>
-            <img src="{{asset('images/slides/1.jpg')}}"/>
-        </div>
-        <div>
-            <img src="{{asset('images/slides/2.jpg')}}"/>
-        </div>
-        <div>
-            <img src="{{asset('images/slides/3.jpg')}}"/>
-        </div>
+
+            @foreach($offers as $offer)
+                <div>
+                    <a href="{{ route('special.show', $offer->id) }}"><img src="{{asset('storage/image/'.$offer->filename)}}"/></a>
+                </div>
+            @endforeach
         <div>
             <img src="{{asset('images/slides/4.jpg')}}"/>
         </div>

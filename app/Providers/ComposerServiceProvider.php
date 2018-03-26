@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\BannerComposer;
 use App\Http\ViewComposers\HeaderComposer;
 use Illuminate\Support\ServiceProvider;
 use View;
@@ -19,6 +20,7 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer('layouts.main', SidebarComposer::class);
         View::composer('layouts.page', SidebarComposer::class);
         View::composer('layouts.partials.header', HeaderComposer::class);
+        View::composer('layouts.partials.header', BannerComposer::class);
     }
 
     /**

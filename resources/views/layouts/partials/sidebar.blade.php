@@ -26,6 +26,15 @@
 							<h4>Most Popular</h4>
 						</div>
 						<div class="col-12">
+
+							@for ($x = 0; $x < 3; $x++)
+							<div class="most-popular-prod-sidebar text-center">
+								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><img id="popular" src="{{ $products_latest[$x]->featured_image_url }}" class="img-thumbnail"></a>
+								<a href="{{ route('products.show', array('id'=>$products_latest[$x]->id)) }}"><h6 class="mt-2">{{ $products_latest[$x]->name }}</h6></a>
+								<p>{{ str_limit($products_latest[$x]->description, 100) }}</p>
+							</div>
+							@endfor
+
 							@foreach ($mpp as $popular_product)
 								<div class="most-popular-prod-sidebar text-center">
 									<a href="{{ route('products.show', $popular_product->id ) }}">
@@ -36,5 +45,6 @@
 									<p class="text-center">{{ $popular_product->platform->name }}</p>
 								</div>
 							@endforeach
+
 						</div>
 					</div>
