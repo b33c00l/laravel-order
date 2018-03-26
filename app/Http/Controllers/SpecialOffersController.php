@@ -6,6 +6,7 @@ use App\Client;
 use App\Platform;
 use App\Product;
 use App\Publisher;
+use App\Services\ImageService;
 use App\Services\PricingService;
 use App\SpecialOffer;
 use App\User;
@@ -14,10 +15,13 @@ use Illuminate\Http\Request;
 class SpecialOffersController extends Controller
 {
     protected $price;
+    protected $imageService;
+    private $image_dir = 'public/image/';
 
-    public function __construct(PricingService $price)
+    public function __construct(PricingService $price, ImageService $image)
     {
         $this->price = $price;
+        $this->imageService = $image;
     }
 
     public function index()
@@ -31,8 +35,12 @@ class SpecialOffersController extends Controller
 
     public function store(Request $request)
     {
-        $clients = $request->get('client_id');
-        $special_offer = SpecialOffer::create($request->only('expiration_date'));
+            $clients = $request->get('client_id');
+            $file = $request->filename;
+            $path = $file->storePublicly($this->image_dir);
+            $filename = basename($path);
+            $special_offer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
+
         foreach ($clients as $client_id) {
             $client = Client::findOrFail($client_id);
             $special_offer->users()->attach($client->user->id);
@@ -43,44 +51,36 @@ class SpecialOffersController extends Controller
         foreach ($games as $game) {
             $special_offer->prices()->create(['amount' => $request->get('price'), 'product_id' => $game]);
         }
-
-        return redirect()->back()->with('Success', 'Special offer created');
+        return redirect(route('special.index'));
     }
 
-    public function getByPlatform(Request $request)
+    public function  filter(Request $request)
     {
-        $clients = Client::all();
-        $platform_name = Platform::findOrFail($request->get('platform'));
-        $products = Product::where('platform_id', $request->get('platform'))->get();
         $publishers = Publisher::all();
         $platforms = Platform::all();
-        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'platform_name', 'clients'));
+        $clients = Client::all();
+        $products = Product::where('name', 'LIKE', '%'.$request->get('search').'%');
+
+            if($request->platform == 0 && $request->publisher == 0){
+                $products = $products->get();
+            }
+            elseif ($request->platform > 0 && $request->publisher == 0) {
+                $products = $products->where('platform_id', $request->get('platform'))->get();
+            }
+            elseif ($request->platform == 0 && $request->publisher > 0){
+                $products = $products->where('publisher_id', $request->get('publisher'))->get();
+            }
+            elseif ($request->platform > 0 && $request->publisher > 0){
+                $products = $products->where('publisher_id', $request->get('publisher'))->where('platform_id', $request->get('platform'))->get();
+            }
+
+        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'platform_name', 'publisher_name', 'clients'));
     }
 
-    public function getByPublisher(Request $request)
+    public function show($id)
     {
-        $clients = Client::all();
-        $publisher_name = Publisher::findOrFail($request->get('publisher'));
-        $products = Product::where('publisher_id', $request->get('publisher'))->get();
-        $publishers = Publisher::all();
-        $platforms = Platform::all();
-        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'publisher_name', 'clients'));
-    }
+        $special_offer = SpecialOffer::FindOrFail($id);
 
-
-
-
-    public function search(Request $request)
-    {
-        $clients = Client::all();
-        $publishers = Publisher::all();
-        $platforms = Platform::all();
-
-        if ($request->get('search') == null) {
-            $products = Product::all();
-        } else {
-            $products = Product::search('*' . $request->get('search') . '*')->get();
-        }
-        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'clients'));
+        return view('special_offers.show', compact('special_offer'));
     }
 }
