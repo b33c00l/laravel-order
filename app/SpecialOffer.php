@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class SpecialOffer extends Model
 {
     protected $fillable = [
-        'expiration_date'
+        'expiration_date',
+        'description',
+        'filename'
     ];
     public $timestamps = false;
 

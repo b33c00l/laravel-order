@@ -1,19 +1,19 @@
 @inject('cartService', "App\Services\CartService")
 <!-- Top Bar -->
-		<div class="row">
-			<div class="top-bar">
-				<ul>
-					<li><i class="fa fa-phone-volume"></i>  <a href="#">{{$phone}}</a></li>
-					<li><i class="fa fa-envelope"></i>  <a href="#">{{$email}}</a></li>
-				</ul>
-			</div>
-		</div>
-			<!-- Header -->
-			<div class="row">
-				<div class="logo">
-					<a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
-				</div>
-				<div class="cart-menu-mobile">
+<div class="row">
+    <div class="top-bar">
+        <ul>
+            <li><i class="fa fa-phone-volume"></i> <a href="#">{{$phone}}</a></li>
+            <li><i class="fa fa-envelope"></i> <a href="#">{{$email}}</a></li>
+        </ul>
+    </div>
+</div>
+<!-- Header -->
+<div class="row">
+    <div class="logo">
+        <a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
+    </div>
+    <div class="cart-menu-mobile">
 
 					<span class="cart-menu-icon-mobile">
 						<a href="{{ route('order.index') }}"><i class="fa fa-cart-arrow-down"></i></a>
@@ -59,15 +59,13 @@
 <!-- Slider -->
 <div id="search" class="row justify-content-center">
     <div class="slider">
-        <div>
-            <img src="{{asset('images/slides/1.jpg')}}"/>
-        </div>
-        <div>
-            <img src="{{asset('images/slides/2.jpg')}}"/>
-        </div>
-        <div>
-            <img src="{{asset('images/slides/3.jpg')}}"/>
-        </div>
+
+        @foreach($offers as $offer)
+            <div>
+                <a href="{{ route('special.show', $offer->id) }}"><img
+                            src="{{asset('storage/image/'.$offer->filename)}}"/></a>
+            </div>
+        @endforeach
         <div>
             <img src="{{asset('images/slides/4.jpg')}}"/>
         </div>

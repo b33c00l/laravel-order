@@ -58,9 +58,9 @@ Route::post('update/{id}', 'CartController@update')->name('order.update');
 Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
 
 Route::get('special', 'SpecialOffersController@index')->name('special.index');
+Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
-Route::post('special/platform', 'SpecialOffersController@getByPlatform')->name('special.filter.platform');
-Route::post('special/publisher', 'SpecialOffersController@getByPublisher')->name('special.filter.publisher');
+Route::post('special/filter', 'SpecialOffersController@filter')->name('special.filter');
 Route::post('special/country', 'SpecialOffersController@getByCountry')->name('special.filter.country');
 Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 

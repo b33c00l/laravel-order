@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Image;
+use App\SpecialOffer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -68,4 +69,12 @@ class ImageService {
         $filename = basename($path);
         Image::create(['filename' => $filename, 'featured' => $featured, 'product_id' => $product->id]);
     }
+
+    public function uploadImage($file)
+    {
+        $path = $file->storePublicly($this->image_dir);
+        $filename = basename($path);
+        return $filename;
+    }
+
 }
