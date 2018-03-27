@@ -51,7 +51,7 @@
                     <i class="fa fa-cart-arrow-down"></i>
                 </span>
                 <span class="cart-menu-price totalQuantityTop">Items: {{ $cartService->getUserOrderTotalQuantity()}}</span>
-                <span class="cart-menu-price totalPriceTop">  € {{ $cartService->getUserOrderTotalPrice() }}</span>
+                <span class="cart-menu-price totalPriceTop">  € {{ number_format($cartService->getUserOrderTotalPrice(), 2, '.', '') }}</span>
             </span>
         </a>
     </div>

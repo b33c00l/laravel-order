@@ -43237,6 +43237,9 @@ $('.add-into-cart').click(function () {
     var element = $('#' + $(this).closest('td').prev().find('span')[0]['id']);
     var token = $('meta[name="csrf-token"]').attr('content');
     var quantity = $(this).closest('td').prev().find('input').val();
+    var button = $(this);
+    button.css('display', 'none');
+    $(this).parent().append('<span class="loader"></span>');
     element.css({ 'display': 'none' });
     $.ajax({
         type: "post",
@@ -43244,15 +43247,17 @@ $('.add-into-cart').click(function () {
         data: { quantity: quantity, _token: token },
         dataType: "json",
         success: function success(data) {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
             $('.totalQuantityTop').html('Items: ' + data['totalQuantity']);
             $('.totalPriceTop').html('  € ' + data['totalPrice'].toFixed(2));
-            element.html('Added to cart');
-            element.css({ 'color': 'green', 'display': 'block' });
             setTimeout(function () {
                 element.css({ 'display': 'none' });
             }, 3000);
         },
         error: function error(_error) {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
             element.html(_error['responseJSON']['errors']['quantity'][0]);
             element.css({ 'color': 'red', 'display': 'block' });
             setTimeout(function () {
@@ -43278,15 +43283,15 @@ $('.setquantity').keyup(function () {
     var url = $(this).data('url');
     var messageId = $(this).parent().find('span')[0]['id'];
     var input = $(this);
+    $(this).parent().prev().html('<span class="loader"></span>');
     $('#' + messageId).css({ 'display': 'none' });
     clearTimeout(timer);
     timer = setTimeout(function () {
-
         var token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: "post",
             url: url,
-            data: { quantity: quantity, _token: token },
+            data: { quantity: quantity, from: 'order', _token: token },
             dataType: "json",
             success: function success(data) {
                 if (data['true']) {
@@ -43294,6 +43299,7 @@ $('.setquantity').keyup(function () {
                     element.html('Stock limit ' + data['singleQuantity']);
                     element.css({ 'color': 'red', 'display': 'block' });
                     input.val(data['singleQuantity']);
+                    input.parent().prev().html(data['singlePrice'].toFixed(2) + ' €');
                     setTimeout(function () {
                         element.css({ 'display': 'none' });
                     }, 3000);
@@ -43323,27 +43329,27 @@ $('.setquantity').keyup(function () {
     }, 0);
 });
 
-$('.setquantity_BP').change(function () {
+$('.setquantity_BP').keyup(function () {
+
     var quantity = $(this).val();
     var url = $(this).data('url');
     var messageId = $(this).parent().find('span')[0]['id'];
     $('#' + messageId).css({ 'display': 'none' });
-    var totalQuantity = $(this).parent().parent().next().children()[1]['id'];
-    var totalPrice = $(this).parent().parent().next().children()[2]['id'];
+    $(this).parent().prev().html('<span class="loader"></span>');
+    var index = $(this).data('index');
     clearTimeout(timer);
     timer = setTimeout(function () {
-
         var token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: "post",
             url: url,
-            data: { quantity: quantity, _token: token },
+            data: { quantity: quantity, from: 'backorder', _token: token },
             dataType: "json",
             success: function success(data) {
                 var element = $('#message' + data['id']);
-                $('#' + totalPrice).html(data['totalQuantity']);
-                $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
-                $('#' + totalQuantity).html(data['totalPrice'].toFixed(2) + ' €');
+                $('#totalPrice_' + index).html(data['totalPrice'].toFixed(2) + ' €');
+                $('#singlePrice_' + index + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
+                $('#totalQuantity_' + index).html(data['totalQuantity']);
                 element.html('updated');
                 element.css({ 'color': 'green', 'display': 'block' });
                 setTimeout(function () {
@@ -43360,6 +43366,12 @@ $('.setquantity_BP').change(function () {
             }
         });
     }, 0);
+});
+
+$(".table-tr").hover(function () {
+    $(this).css("background-color", "white").css("opacity", "0.7");
+}, function () {
+    $(this).css("background-color", "").css("opacity", "1");
 });
 
 var timer = null;
@@ -43428,6 +43440,18 @@ $(document).ready(function () {
             });
         }
     });
+});
+
+$(".selectAll").click(function () {
+    if (this.checked) {
+        $("." + $(this).val()).each(function () {
+            this.checked = true;
+        });
+    } else {
+        $("." + $(this).val()).each(function () {
+            this.checked = false;
+        });
+    }
 });
 
 /***/ }),

@@ -31,7 +31,7 @@ class StoreOrderRequest extends FormRequest
             ];
         }elseif(Auth::user()->role === 'admin'){
             return [
-                'price' => 'required|integer|min:1|max:10000',
+                'price' => 'required|numeric|min:1|max:10000',
             ];
         }
     }

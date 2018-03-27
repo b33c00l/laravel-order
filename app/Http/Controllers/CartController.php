@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Order;
 use App\OrderProduct;
 use App\Product;
+use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
@@ -29,8 +30,8 @@ class CartController extends Controller
         {
             $order_products = $order->orderProducts()->get();
         }else{
-                $order_products = [];
-                $order = null;
+            $order_products = [];
+            $order = null;
         }
         if (!empty($backorder))
         {
@@ -61,22 +62,22 @@ class CartController extends Controller
     {
         $product = Product::findOrfail($product_id);
 
-        if ($product->stock()->first()->amount !== 0 && $product->preorder !== 1)
+        if ($product->stockamount !== 0 && $product->preorder !== 1)
         {
             $amount = $this->getTotal->storeOrder($product, $request);
             if ($amount !== 0 )
             {
                 $this->getTotal->storeBackOrder($product, $amount);
             }
-        }elseif($product->stock()->first()->amount === 0 && $product->preorder === 0){
+        }elseif($product->stockamount === 0 && $product->preorder == 0){
             $this->getTotal->storeBackOrder($product, $request->quantity);
         } elseif($product->preorder === 1) {
             $this->getTotal->storePreOrder($product, $request->quantity);
         }
         $data = [
-        	'product_id'=>$product_id,
-	        'totalQuantity' => $this->getTotal->getUserOrderTotalQuantity(),
-	        'totalPrice' => $this->getTotal->getUserOrderTotalPrice(),
+            'product_id'=>$product_id,
+            'totalQuantity' => $this->getTotal->getUserOrderTotalQuantity(),
+            'totalPrice' => $this->getTotal->getUserOrderTotalPrice(),
         ];
 
         return $data;
@@ -86,36 +87,32 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $product = OrderProduct::where('id', $id);
-            if ($user->role === 'admin' && !empty($request->price))
+        if ($user->role === 'admin' && !empty($request->price))
+        {
+            $product->update([
+                'price' => $request->price,
+            ]);
+            $product = OrderProduct::where('id', $id);
+            $singleProduct = $product->first();
+            $data = ['id' => $id,
+                'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
+                'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
+            ];
+        }elseif($request->from == 'order'){
+            if ($product->first()->product->stockamount >=  $request->quantity)
             {
-                $product->update([
-                    'price' => $request->price,
-                    ]);
-                $product = OrderProduct::where('id', $id);
-                $singleProduct = $product->first();
-                $data = ['id' => $id,
-                    'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
-                    'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
-                ];
+                $data = $this->getTotal->updateOrder ($request->quantity, $product);
             }else{
-                if ($product->first()->product->stock->first()->amount >=  $request->quantity)
-                {
-                    $product->update($request->except('_token'));
-                    $singleProduct = $product->first();
-                    $data = ['id' => $id,
-                        'totalQuantity' => $this->getTotal->getTotalCartQuantity($singleProduct->order),
-                        'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
-                        'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
-                    ];
-                }else{
-                    $product->update(['quantity' => $product->first()->product->stock->first()->amount]);
-                    $data = ['id' => $id,
-                        'singleQuantity' => $product->first()->product->stock->first()->amount,
-                        'true' => true,
-                    ];
-                }
+                $product->update(['quantity' => $product->first()->product->stockamount]);
+                $data = ['id' => $id,
+                    'singleQuantity' => $product->first()->product->stockamount,
+                    'true' => true,
+                    'singlePrice' => $this->getTotal->getSingleProductPrice($product->first()),
+                ];
             }
-
+        }else{
+            $data = $this->getTotal->updateOrder ($request->quantity, $product);
+        }
         return $data;
     }
 
@@ -124,17 +121,49 @@ class CartController extends Controller
         $order_product = OrderProduct::findOrFail($id);
         $order_product->delete();
         $order_products = OrderProduct::where('order_id', $order_product->order_id)->get();
-        if (count($order_products) == 0){
+        if ($order_products->count() == 0){
             Order::findOrFail($order_product->order_id)->delete();
         }
         return redirect()->back();
     }
 
+    public function destroySelected(Request $request)
+    {
+        if ($request->has('checkbox')){
+            foreach ($request->checkbox as $orderProduct) {
+                OrderProduct::findOrFail($orderProduct)->delete();
+            }
+            $orders = [$request->get('order_id'),
+                $request->get('backorder_id'),
+                $request->get('preorder_id')];
+            for ($i = 0 ; $i < count($orders); $i++)
+            {
+                if ($orders[$i] !== null)
+                {
+                    $order = Order::findOrFail($orders[$i]);
+                    if ($order->orderProducts->count() == 0) {
+                        $order->delete();
+                    }
+                }
+            }
+        }
+
+        return redirect()->back();
+    }
 
     public function confirm(Request $request)
     {
         if ($request->has('order_id')) {
-            Order::findOrFail($request->order_id)->update(['status' => Order::UNCONFIRMED]);
+            $order = Order::findOrFail($request->order_id);
+            $order->update(['status' => Order::UNCONFIRMED]);
+            foreach ($order->orderProducts as $product) {
+                $stock = $product->product->stockamount;
+                $quantity = $stock - $product->quantity;
+                if ($quantity < 0) {
+                    $quantity = 0;
+                }
+                $product->product->stock()->create(['amount' => $quantity]);
+            }
         }
         if ($request->has('backorder_id')) {
             Order::findOrFail($request->backorder_id)->update(['status' => Order::UNCONFIRMED]);
@@ -142,6 +171,6 @@ class CartController extends Controller
         if ($request->has('preorder_id')) {
             Order::findOrFail($request->preorder_id)->update(['status' => Order::UNCONFIRMED]);
         }
-    return redirect()->back();
+        return redirect()->back();
     }
 }
