@@ -14868,6 +14868,10 @@ ul ul {
   text-decoration: none;
 }
 
+.btn-outline-danger:focus {
+  color: black !important;
+}
+
 .nav a:hover {
   color: red;
   text-decoration: underline;
