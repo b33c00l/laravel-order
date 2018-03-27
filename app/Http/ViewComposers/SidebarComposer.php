@@ -19,9 +19,7 @@ class SidebarComposer
 
     public function compose(View $view)
     {
-        $cats = Category::all();
-        $products_latest = Product::orderBy('id', 'desc')->take(8)->get();
-        $mostPopularProducts = $this->productService->getMostPopular();
-        $view->with(['cats' => $cats, 'products_latest' => $products_latest, 'mpp' => $mostPopularProducts]);
+
+        $view->with(['cats' => Category::all(), 'products_latest' => $this->productService->newArrivals(), 'mpp' => $this->productService->getMostPopular()]);
     }
 }
