@@ -86,7 +86,7 @@
     }
 
     .nav {
-        width:50%;
+        width:40%;
         font-size: 16px;
         line-height: 20px;
     }
@@ -121,6 +121,10 @@
         text-decoration: none;
     }
 
+    .btn-outline-danger:focus {
+        color: black !important;
+    }
+
     .nav a:hover {
         color:red;
         text-decoration: underline;
@@ -130,7 +134,7 @@
     .cart-menu {
         font-size: 30px;
         text-align: center;
-        width:20%;
+        width:30%;
 
     }
 
@@ -385,6 +389,10 @@
 /*
 Single product
 */
+
+.single-price-block input {
+    line-height:30px;
+}
 
 .single-product-title {
     height: 50px;

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Image;
+use Image as Resizer;
 use App\SpecialOffer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -64,14 +65,43 @@ class ImageService
     public function storeProductImages($product, $image)
     {
         $featured = 1;
-        $filename = $this->uploadImage($image);
-        Image::create(['filename' => $filename, 'featured' => $featured, 'product_id' => $product->id]);
-    }
+
+        $file = $image;
+        $filename = basename($path);
+        
+
+        $width = 600; // your max width
+        $height = 600; // your max height
+
+
+
+        $img_thumb = Resizer::make($image->getRealPath());
+
+        $img_thumb->height() > $img_thumb->width() ? $width=null : $height=null;
+        $img_thumb->resize($width, $height, function ($constraint) {
+        $constraint->aspectRatio();
+        });
+
+        $img_thumb->save( storage_path('app/public/image/medium-' . $filename , 90) ); 
+
+        $thumb_filename = $img_thumb->basename;
+
+        Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+}
 
     public function uploadImage($file)
     {
-        $path = $file->storePublicly($this->image_dir);
-        $filename = basename($path);
+
+        $img_thumb = Resizer::make($file->getRealPath());
+
+        $img_thumb->height() > $img_thumb->width() ? $width=null : $height=null;
+        $img_thumb->resize($width, $height, function ($constraint) {
+        $constraint->aspectRatio();
+        });
+
+        $img_thumb->save( storage_path('app/public/image/medium-' . $filename , 90) ); 
+
+        $filename = $img_thumb->basename;
         return $filename;
     }
 }

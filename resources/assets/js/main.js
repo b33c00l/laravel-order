@@ -165,6 +165,40 @@ $('.add-into-cart').click(function(){
 	})
 });
 
+
+$('.add-into-cart-single').click(function(){
+    var element = $(".add-to-cart-span");
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var quantity = $(".counter-inputas").val();
+    var button = $(this);
+    button.css('display', 'none');
+    $(this).parent().append('<span class="loader"></span>');
+    $.ajax({
+        type: "post",
+        url: $(this).data('url'),
+        data: {quantity: quantity,_token: token},
+        dataType: "json",
+        success:function (data)
+        {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
+            $('.totalQuantityTop').html('Items: ' + data['totalQuantity']);
+            $('.totalPriceTop').html('  € '+data['totalPrice'].toFixed(2));
+            $('.add-to-cart-span').show();
+        },
+        error:function (error)
+        {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
+            element.html(error['responseJSON']['errors']['quantity'][0]);
+            element.css({'color':'red','display':'block'});
+            setTimeout(function () { element.css({'display':'none'});
+            }, 3000);
+        }
+    })
+});
+
+
 $('#show_packshots').click(function () {
     $('.packshots').toggle();
     return;
