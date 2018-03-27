@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Http\Requests\StoreCountryRequest;
-use Illuminate\Http\Request;
+
 
 class CountriesController extends Controller
 {
@@ -45,7 +45,8 @@ class CountriesController extends Controller
     public function edit($id)
     {
         $country = Country::findOrFail($id);
-        return view('countries.edit', ['countriesEdit' => $country]);
+        $checkedCountry = 1;
+        return view('countries.edit', ['countriesEdit' => $country, 'checkedCountry' => $checkedCountry]);
     }
 
 
