@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Orders'])
 @section('content')
 
 <div class="col-10 mt-5">

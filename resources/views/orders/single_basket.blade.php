@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Single basket'])
 @section('content')
     @inject('cartService', "App\Services\CartService")
     <div class="col-10 mt-5">

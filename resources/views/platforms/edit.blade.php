@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Edit platform'])
 @section('content')
 <div class="col-10 mt-5">
     <form action="{{ route('platforms.update', ['id' => $platformEdit->id])}}" method="post">
