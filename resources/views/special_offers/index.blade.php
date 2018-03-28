@@ -4,6 +4,11 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12 text-center mt-5 mb-5">
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <h2>Special offer</h2>
             </div>
         </div>
@@ -58,11 +63,11 @@
                         </div>
                         <div class="col-12">
                             <label>Expiration date</label>
-                            <input class="form-control" type="datetime-local" name="expiration_date">
+                            <input class="form-control" type="date" name="expiration_date">
                         </div>
                         <div class="col-12">
-                            <label>Price</label>
-                            <input class="form-control" type="number" step="0.01" name="price">
+                            <label>Price coefficient</label>
+                            <input class="form-control" type="number" step="0.01" name="price_coef">
                         </div>
                         <div class="col-12 ">
                             <label for="exampleFormControlTextarea1"><h4>Description</h4></label>
@@ -74,6 +79,11 @@
                             <input class="form-control" type="file" name="filename">
                         </div>
                     </div>
+                    @if ($errors->has('filename'))
+                            <div class="alert alert-danger" role="alert">
+                                <p>{{ $errors->first('filename') }}</p>
+                            </div>
+                    @endif
                     <div class="col-12 ml-4 mr-4">
                         <h4 class="mt-4">Products list</h4>
                         <div class="pt-3 pb-3">
@@ -83,20 +93,27 @@
                             </label>
                             <div class="row">
                                 @foreach($products as $product)
-                                    <div class="col-lg-4 col-md-12">
+                                    <div style="margin-right: auto" class="col-lg-6 col-md-12">
                                         <input class="form-check-input gamescheckall" name="games[]" type="checkbox"
                                                value="{{ $product->id }}">
                                         <label class="form-check-label" for="defaultCheck1">
                                             {{ $product->name }}
                                         </label>
+                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number">
                                     </div>
                                 @endforeach
                             </div>
+                            @if ($errors->has('games'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p>{{ $errors->first('games') }}</p>
+                                    </div>
+                            @endif
                         </div>
                         <div class="col-12">
                             <button class="btn btn-dark btn-block mt-5" type="submit" value="submit">Submit</button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
