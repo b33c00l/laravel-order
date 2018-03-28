@@ -152,4 +152,5 @@ class Product extends Model
         return asset($path);
     }
 
+
 }
