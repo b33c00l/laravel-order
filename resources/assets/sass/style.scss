@@ -86,7 +86,7 @@
     }
 
     .nav {
-        width:50%;
+        width:40%;
         font-size: 16px;
         line-height: 20px;
     }
@@ -121,6 +121,10 @@
         text-decoration: none;
     }
 
+    .btn-outline-danger:focus {
+        color: black !important;
+    }
+
     .nav a:hover {
         color:red;
         text-decoration: underline;
@@ -130,7 +134,7 @@
     .cart-menu {
         font-size: 30px;
         text-align: center;
-        width:20%;
+        width:30%;
 
     }
 
@@ -386,6 +390,10 @@
 Single product
 */
 
+.single-price-block input {
+    line-height:30px;
+}
+
 .single-product-title {
     height: 50px;
 }
@@ -465,10 +473,21 @@ Single product
     border-bottom: 1px solid red;
 }
 
+.related-products {
+    width: 100%;
+    height: 250px;
+    overflow:hidden;
+}
+
 .related-products img {
     height:250px;
+    object-fit:cover;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border: none !important;
+}
+
+.related-products-wrap {
+    width: 100%;
 }
 
 .slider-mobile-margin {

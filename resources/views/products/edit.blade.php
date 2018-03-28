@@ -90,7 +90,7 @@
                                 <label class="col control-label">Select a category</label>
                                 <div class="col selectContainer">
                                     <div class="input-group">
-                                        @if($product->categories != null)
+                                        @if($product->categories->count() > 0)
                                         @foreach($product->categories as $category)
                                             <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category->name}}">
                                         @endforeach
