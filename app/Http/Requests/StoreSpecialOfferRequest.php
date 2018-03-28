@@ -26,7 +26,7 @@ class StoreSpecialOfferRequest extends FormRequest
     {
         return [
             'filename' => 'required',
-            'expiration_date' => 'required'
+            'games' => 'required',
         ];
     }
 }

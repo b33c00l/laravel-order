@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Http\Requests\StoreSpecialOfferRequest;
 use App\Platform;
+use App\Price;
 use App\Product;
 use App\Publisher;
 use App\Services\ImageService;
@@ -38,11 +39,11 @@ class SpecialOffersController extends Controller
 
     public function store(StoreSpecialOfferRequest $request)
     {
+        $products = Product::all();
         $clients = $request->get('client_id');
         $file = $request->filename;
         $filename = $this->imageService->uploadImage($file);
         $specialOffer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
-
         foreach ($clients as $client_id) {
             $client = Client::findOrFail($client_id);
             $specialOffer->users()->attach($client->user->id);
@@ -51,9 +52,11 @@ class SpecialOffersController extends Controller
         $games = $request->get('games');
 
         foreach ($games as $game) {
-            $specialOffer->prices()->create(['amount' => $request->get('price'), 'product_id' => $game]);
+            $product = Product::FindOrFail($game);
+            $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
+            $specialOffer->prices()->create(['amount' => $request->get('price_coef') * $price->amount, 'product_id' => $game]);
         }
-        return redirect(route('special.index')->with('status', 'Success'));
+        return redirect()->back()->with('status', 'Success');
     }
 
     public function filter(Request $request)
