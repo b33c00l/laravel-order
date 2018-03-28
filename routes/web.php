@@ -66,3 +66,5 @@ Route::post('special/country', 'SpecialOffersController@getByCountry')->name('sp
 Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 
 Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');
+
+Route::get('export/{type}', 'OrderExportController@export')->name('export');

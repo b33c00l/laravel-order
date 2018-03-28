@@ -57,6 +57,11 @@ class Order extends Model
 		return $query->where('status', Order::PENDING);
 	}
 
+    public function scopeUnconfirmedOrder($query)
+    {
+        return $query->where('status', Order::UNCONFIRMED);
+	}
+
     public function chat()
     {
         return $this->hasOne(Chat::class);
@@ -74,6 +79,4 @@ class Order extends Model
     public function scopeOrder($query){
         return $query->where('type', Order::ORDER);
     }
-
-
 }
