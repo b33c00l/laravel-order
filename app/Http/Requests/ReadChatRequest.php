@@ -16,7 +16,7 @@ class ReadChatRequest extends FormRequest
     public function authorize()
     {
         $chat_id = $this->route('chat');
-        $chat = Chat::findOrFail($chat_id)->first();
+        $chat = Chat::findOrFail($chat_id);
         if (Auth::user()->role !== 'admin' && $chat->user_id !== Auth::id()) {
             return false;
         }
