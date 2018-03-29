@@ -35,6 +35,7 @@ class SpecialOffersController extends Controller
         $platforms = Platform::all();
         $selectedPlatform = null;
         $selectedPublisher = null;
+
         return view('special_offers.index', compact('products', 'publishers', 'platforms', 'selectedPlatform', 'selectedPublisher', 'clients'));
     }
 
@@ -52,11 +53,34 @@ class SpecialOffersController extends Controller
 
         $games = $request->get('games');
 
+        $check = true;
+
         foreach ($games as $game) {
             $product = Product::FindOrFail($game);
             $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
-            $specialOffer->prices()->create(['amount' => $request->get('price_coef') * $price->amount, 'product_id' => $game]);
+
+            if (($request->get('price_coef') != null && $price->amount != $request->get('specialProductPrice')[$game])) {
+                $check = false;
+            }
         }
+        if ($check == true){
+            foreach ($games as $game) {
+                $product = Product::FindOrFail($game);
+                $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
+
+                if ($request->get('price_coef') != null) {
+                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price->amount, 2, '.', ''), 'product_id' => $game]);
+                    $status = 'Special offer has been made successfully';
+                } else {
+                    $specialOffer->prices()->create(['amount' => $request->get('specialProductPrice')[$game], 'product_id' => $game]);
+                    $status = 'Special offer has been made successfully';
+                }
+            }
+        }else{
+            $status = 'Please SELECT special offer with coefficient or make it by changing prices';
+        }
+
+        return redirect()->back()->with('status', $status);
 
         foreach ($specialOffer->users as $user) {
             $email = $user->client->email;
