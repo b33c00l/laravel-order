@@ -95,7 +95,7 @@ class CartController extends Controller
                 'price' => $request->price,
             ]);
             $product = OrderProduct::findOrFail($id);
-            $singleProduct = $product->first();
+            $singleProduct = $product;
             $data = ['id' => $id,
                 'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
                 'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),

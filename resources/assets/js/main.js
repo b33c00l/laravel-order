@@ -354,6 +354,7 @@ $('.updateP').keyup(function() {
             dataType: "json",
             success:function (data)
             {
+                console.log(data);
                 $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
                 $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
             },
