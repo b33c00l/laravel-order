@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Http\Requests\StoreCountryRequest;
-use Illuminate\Http\Request;
+
 
 class CountriesController extends Controller
 {

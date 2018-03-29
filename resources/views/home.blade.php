@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Home page'])
 @section('content')
     <!-- Table filters -->
     <div class="col-lg-10 col-md-12">
@@ -73,8 +73,16 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="preorders">Order deadline:
-                            <i class="fa fa-sort-down"></i>
+                        <th scope="col" class="preorders">
+                            @if ($sortName == 'deadline' && $direction == 'asc')
+                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc']) }}">
+                                    Order deadline: <i class="fa fa-sort-up"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'asc']) }}">
+                                    Order deadline: <i class="fa fa-sort-down"></i>
+                                </a>
+                            @endif
                         </th>
                         <th scope="col" class="publisher">
                             @if ($sortName == 'pub' && $direction == 'asc')
@@ -128,7 +136,7 @@
                             <td Data-label="Title:" class="align-middle text-right"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
                             <td Data-label="Platform:" class="align-middle text-right">{{ $product->platform->name }}</td>
                             <td Data-label="Release date:" class="align-middle text-right release">{{ $product->release_date }}</td>
-                            <td Data-label="Order deadline:" class="align-middle text-right preorders">2018-03-15</td>
+                            <td Data-label="Order deadline:" class="align-middle text-right preorders">{{ $product->deadline}}</td>
                             <td Data-label="Publisher:" class="align-middle text-right publisher">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
                             <td Data-label="Stock:" class="align-middle text-right">{{$product->stockamount}}</td>
                             <td Data-label="Price:" class="align-middle text-right">{{ number_format($product->priceamount, 2, '.', '')}}</td>

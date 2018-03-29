@@ -43212,24 +43212,29 @@ $(function () {
 
 $('#gll').slickLightbox();
 
+function addAutocomplete(input) {
+    input = $(input);
+    var autocomplete = input.attr('data-autocomplete');
+
+    autocomplete = JSON.parse(autocomplete);
+
+    activeList = [];
+
+    $.each(autocomplete, function (key, value) {
+        activeList.push(value['name']);
+    });
+
+    input.autocomplete({
+        source: activeList
+    });
+}
+
 $(function () {
     var inputs = $('.autocomplete');
 
     inputs.each(function (key, input) {
-        input = $(input);
-        var autocomplete = input.attr('data-autocomplete');
 
-        autocomplete = JSON.parse(autocomplete);
-
-        activeList = [];
-
-        $.each(autocomplete, function (key, value) {
-            activeList.push(value['name']);
-        });
-
-        input.autocomplete({
-            source: activeList
-        });
+        addAutocomplete(input);
     });
 });
 
@@ -43267,14 +43272,49 @@ $('.add-into-cart').click(function () {
     });
 });
 
-$('#show_packshots').click(function () {
-    $('.packshots').toggle();
-    return;
+$(document).ready(function () {
+    $('#show_packshots').click(function () {
+        $('.packshots').toggle();
+        return;
+    });
 });
 
-$('#show_preorders').click(function () {
-    $('.preorders').toggle();
-    return;
+$('.add-into-cart-single').click(function () {
+    var element = $(".add-to-cart-span");
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var quantity = $(".counter-inputas").val();
+    var button = $(this);
+    button.css('display', 'none');
+    $(this).parent().append('<span class="loader"></span>');
+    $.ajax({
+        type: "post",
+        url: $(this).data('url'),
+        data: { quantity: quantity, _token: token },
+        dataType: "json",
+        success: function success(data) {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
+            $('.totalQuantityTop').html('Items: ' + data['totalQuantity']);
+            $('.totalPriceTop').html('  € ' + data['totalPrice'].toFixed(2));
+            $('.add-to-cart-span').show();
+        },
+        error: function error(_error2) {
+            button.css('display', 'inline-block');
+            $('.loader').remove();
+            element.html(_error2['responseJSON']['errors']['quantity'][0]);
+            element.css({ 'color': 'red', 'display': 'block' });
+            setTimeout(function () {
+                element.css({ 'display': 'none' });
+            }, 3000);
+        }
+    });
+});
+
+$(document).ready(function () {
+    $('#show_preorders').click(function () {
+        $('.preorders').toggle();
+        return;
+    });
 });
 
 var timer = null;
@@ -43317,9 +43357,9 @@ $('.setquantity').keyup(function () {
                     }, 3000);
                 }
             },
-            error: function error(_error2) {
+            error: function error(_error3) {
                 var message = $('#' + messageId);
-                message.html(_error2['responseJSON']['errors']['quantity'][0]);
+                message.html(_error3['responseJSON']['errors']['quantity'][0]);
                 message.css({ 'color': 'red', 'display': 'block' });
                 setTimeout(function () {
                     message.css({ 'display': 'none' });
@@ -43356,9 +43396,9 @@ $('.setquantity_BP').keyup(function () {
                     element.css({ 'display': 'none' });
                 }, 3000);
             },
-            error: function error(_error3) {
+            error: function error(_error4) {
                 var message = $('#' + messageId);
-                message.html(_error3['responseJSON']['errors']['quantity'][0]);
+                message.html(_error4['responseJSON']['errors']['quantity'][0]);
                 message.css({ 'color': 'red', 'display': 'block' });
                 setTimeout(function () {
                     message.css({ 'display': 'none' });
@@ -43366,12 +43406,6 @@ $('.setquantity_BP').keyup(function () {
             }
         });
     }, 0);
-});
-
-$(".table-tr").hover(function () {
-    $(this).css("background-color", "white").css("opacity", "0.7");
-}, function () {
-    $(this).css("background-color", "").css("opacity", "1");
 });
 
 var timer = null;
@@ -43394,8 +43428,8 @@ $('.updateQ').keyup(function () {
                 $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
                 $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
             },
-            error: function error(_error4) {
-                $('#' + messageId).html(_error4['responseJSON']['errors']['quantity'][0]);
+            error: function error(_error5) {
+                $('#' + messageId).html(_error5['responseJSON']['errors']['quantity'][0]);
                 $('#' + messageId).css({ 'color': 'red', 'display': 'block' });
             }
         });
@@ -43420,8 +43454,8 @@ $('.updateP').keyup(function () {
                 $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
                 $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
             },
-            error: function error(_error5) {
-                $('#' + messageId).html(_error5['responseJSON']['errors']['price'][0]);
+            error: function error(_error6) {
+                $('#' + messageId).html(_error6['responseJSON']['errors']['price'][0]);
                 $('#' + messageId).css({ 'color': 'red', 'display': 'block' });
             }
         });
@@ -43442,26 +43476,41 @@ $(document).ready(function () {
     });
 });
 
-$(".selectAll").click(function () {
-    if (this.checked) {
-        $("." + $(this).val()).each(function () {
-            this.checked = true;
-        });
-    } else {
-        $("." + $(this).val()).each(function () {
-            this.checked = false;
-        });
-    }
+$(document).ready(function () {
+    $(".selectAll").click(function () {
+        if (this.checked) {
+            $("." + $(this).val()).each(function () {
+                this.checked = true;
+            });
+        } else {
+            $("." + $(this).val()).each(function () {
+                this.checked = false;
+            });
+        }
+    });
 });
 
-$('.no').on("click", function () {
-    $('.deadline').prop("disabled", true);
-    return;
+$(document).ready(function () {
+    $('.no').on("click", function () {
+        $('.deadline').prop("disabled", true);
+        return;
+    });
 });
 
-$('.yes').on("click", function () {
-    $('.deadline').prop("disabled", false);
-    return;
+$(document).ready(function () {
+    $('.yes').on("click", function () {
+        $('.deadline').prop("disabled", false);
+        return;
+    });
+});
+
+$(document).ready(function () {
+    $('.add_cat').on("click", function () {
+        var categories = $('.input_cat input').attr('data-autocomplete').replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");;
+        var div = $('.input_cat').append('<input data-autocomplete="' + categories + '" class="form-control autocomplete" type="text" name="category_name[]" value="">');
+        addAutocomplete(div.children().last());
+        return;
+    });
 });
 
 /***/ }),

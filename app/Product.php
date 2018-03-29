@@ -15,7 +15,7 @@ class Product extends Model
 
     protected $searchRules = [MySearchRule::class];
     public $timestamps = false;
-    protected $fillable = ['name', 'platform_id', 'publisher_id', 'ean', 'description', 'release_date', 'video', 'pegi', 'preorder'];
+    protected $fillable = ['name', 'platform_id', 'publisher_id', 'ean', 'description', 'release_date', 'video', 'pegi', 'preorder', 'deadline'];
     protected $indexConfigurator = MyIndexConfigurator::class;
 
     protected $mapping = [
@@ -151,5 +151,6 @@ class Product extends Model
         $path = 'image/default_featured.png';
         return asset($path);
     }
+
 
 }

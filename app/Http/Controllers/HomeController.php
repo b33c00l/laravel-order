@@ -77,6 +77,9 @@ class HomeController extends Controller
             case 'release':
                 $products = $products->orderBy('release_date', $direction);
                 break;
+            case 'deadline':
+                $products = $products->orderBy('deadline', $direction);
+                break;
             case 'stock':
                 $products = Product::select('products.*',
                     DB::raw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) AS amount'))

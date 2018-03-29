@@ -37,11 +37,10 @@
                 </div>
             </div>
             <div class="form-group no-gutters">
-                    <label class="col control-label">Pre-order?</label>
                     <div class="col">
                         <div class="checkbox">
                             <label>
-                                <input type="radio" name="default" value="1" />Make default
+                                <input type="radio" name="default" value="1" {{ $countriesEdit->default == 1 ? 'checked="checked"' : '' }}>Make default
                             </label>
                         </div>
                     </div>

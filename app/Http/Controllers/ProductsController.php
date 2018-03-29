@@ -49,17 +49,32 @@ class ProductsController extends Controller
             $platform = Platform::create( ['name' => $request->get('platform_name')] );
         } 
 
-        if ($category == null) {
-            $category = Category::create( ['name' => $request->get('category_name')] );
+        $category_id = [];
+        $category_name = $request->get('category_name');
 
-        } 
+        foreach ($category_name as $name)
+        {   
+            if($name == null)
+            {
+                continue;
+            }
+
+            $category = Category::where('name', $name)->first();
+
+            if($category == null)
+            {
+                $category = Category::Create(['name' => $name]);
+            }
+
+            $category_id[] = $category->id;    
+        }    
 
         if ($publisher == null) {
             $publisher = Publisher::create( ['name' => $request->get('publisher_name')] );
         } 
 
         $product = Product::create($request->except('_token') + ['platform_id' => $platform->id, 'publisher_id' => $publisher->id]);
-        $product->categories()->attach($category->id);
+        $product->categories()->attach($category_id);
         $product->stock()->create( ['amount' => $request->get('stock_amount')] );
         $product->prices()->create( ['amount' => $request->get('price_amount')] );
         if ($request->has('image')) {
@@ -100,6 +115,11 @@ class ProductsController extends Controller
 
         foreach ($category_name as $name)
         {   
+            if($name == null)
+            {
+                continue;
+            }
+
             $category = Category::where('name', $name)->first();
 
             if($category == null)
@@ -109,8 +129,6 @@ class ProductsController extends Controller
 
             $category_id[] = $category->id;    
         }
-        // dd($category_id);
-
 
         $publisher_name = $request->get('publisher_name');
         $publisher = Publisher::where('name', $publisher_name)->first();
@@ -133,7 +151,7 @@ class ProductsController extends Controller
         $product->categories()->sync($category_id);
 
         $product->update([
-            'preorder' => $request->get('pre_order'),
+            'preorder' => $request->get('preorder'),
             'name' => $request->get('name'),
             'ean' => $request->get('ean'),
             'description' => $request->get('description'),
@@ -142,6 +160,7 @@ class ProductsController extends Controller
             'video' => $request->get('video'),
             'platform_id' => $platform->id,
             'publisher_id' => $publisher->id,
+            'deadline' => $request->get('deadline'),
         ]);
 
         if($product->stock_amount !=  $request->get('stock_amount')) {
