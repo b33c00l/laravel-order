@@ -154,4 +154,13 @@ class Product extends Model
     }
 
 
+    public function getBasePriceAttribute()
+    {
+        $price = $this->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
+        if ($price == null){
+            return  0;
+        }
+        return $price->amount;
+
+    }
 }
