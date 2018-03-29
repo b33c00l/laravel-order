@@ -17,7 +17,7 @@
 <body>
     <div class="container-fluid login-container" >
         <div class="row justify-content-center login-row">
-            <div class="col-lg-3 col-md-4 col-sm-5 col-10 login-box align-middle">
+            <div class="col-lg-4 col-md-5 col-sm-5 col-10 login-box align-middle">
                 <div class="login-form">
                     <div>
                         <img class="mb-3 login_logo" src="{{ asset('images/logo2.png') }}">

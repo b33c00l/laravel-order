@@ -81,9 +81,9 @@
     </div>
     <div class="row">
         <div class="btn-group" role="group" aria-label="export_buttons">
-            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export">Orders</a>
-            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export">Pre-orders</a>
-            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export">Back-orders</a>
+            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export m-1">Orders</a>
+            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export m-1">Pre-orders</a>
+            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export m-1">Back-orders</a>
         </div>
     </div>
     <!-- Pagination -->
