@@ -40,7 +40,7 @@ class Product extends Model
     {
         $suggestArray[] = $this->name;
         $suggestArray[] = $this->platform->name;
-        if(isset($this->publisher->name)){
+        if (isset($this->publisher->name)){
             $suggestArray[] = $this->publisher->name;
         }
         $splittingName = $this->name;

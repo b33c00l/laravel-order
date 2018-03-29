@@ -95,7 +95,7 @@
                                             <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category->name}}">
                                         @endforeach
                                         @else
-                                            <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" placeholder="Select a category">    
+                                            <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" placeholder="Select a category">
                                         @endif
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col control-label">Images</label>
                                 <div class="col inputGroupContainer">
@@ -122,7 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="col-lg-6 col-md-12">
                             <div class="form-group">
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -220,7 +220,7 @@
                                             <a target="_blank" href="{{ $image->url}}"><img style="width: 100%;" src="{{ $image->url}}"></a>
                                         </div>
                                         <input class="form-radio-input" name="image_id[]" type="checkbox" value="{{ $image->id }}" id="{{ $image->filename }}"
-                                    @if ((is_array(old('image_id'))) && in_array($image->id, old('image_id'))) checked 
+                                    @if ((is_array(old('image_id'))) && in_array($image->id, old('image_id'))) checked
                                     @endif>
                                     @endforeach
                                 </div>

@@ -40,4 +40,9 @@ class Chat extends Model
         }
         return false;
     }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 }

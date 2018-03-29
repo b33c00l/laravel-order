@@ -23,7 +23,7 @@ class HeaderComposer {
                 $email = $default_country->email;
                 $phone = $default_country->phone;
             }
-        }else {
+        } else {
             $email = $user->country->email;
             $phone = $user->country->phone;
         }

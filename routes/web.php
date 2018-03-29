@@ -11,13 +11,12 @@
 |
 */
 
-
-
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 
 Route::middleware('auth')->group(function()
 {
+    Route::middleware('trackingUser')->group(function () {
 
 	Route::middleware('role:admin')->group(function()
 	{
