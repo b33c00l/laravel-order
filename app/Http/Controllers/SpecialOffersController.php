@@ -35,6 +35,7 @@ class SpecialOffersController extends Controller
         $platforms = Platform::all();
         $selectedPlatform = null;
         $selectedPublisher = null;
+
         return view('special_offers.index', compact('products', 'publishers', 'platforms', 'selectedPlatform', 'selectedPublisher', 'clients'));
     }
 
@@ -52,17 +53,44 @@ class SpecialOffersController extends Controller
 
         $games = $request->get('games');
 
+        $check = true;
+
         foreach ($games as $game) {
             $product = Product::FindOrFail($game);
-            $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
-            $specialOffer->prices()->create(['amount' => $request->get('price_coef') * $price->amount, 'product_id' => $game]);
+            $price = $product->base_price;
+
+            if (($request->get('price_coef') != null && $price != $request->get('specialProductPrice')[$game])) {
+                $check = false;
+            }
+        }
+        if ($check == true){
+            $specialProductPrice = $request->get('specialProductPrice');
+            foreach ($games as $game) {
+                $product = Product::FindOrFail($game);
+                $price = $product->base_price;
+
+                if ($request->get('price_coef') != null) {
+                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
+                    $status = 'success';
+                    $msg = 'Special offer has been made successfully';
+                } else {
+                    $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
+                    $status = 'success';
+                    $msg = 'Special offer has been made successfully';
+
+                }
+            }
+        }else{
+            $status = 'danger';
+            $msg = 'Please SELECT special offer with coefficient or make it by changing prices';
         }
 
         foreach ($specialOffer->users as $user) {
             $email = $user->client->email;
             Mail::to($email)->send(new SpecialOfferMail($specialOffer, $user));
         }
-        return redirect()->back()->with('status', 'Success');
+
+        return redirect()->back()->with(['status' =>$status, 'msg'=>$msg]);
     }
 
     public function filter(Request $request)
