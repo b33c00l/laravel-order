@@ -73,13 +73,15 @@ class SpecialOffersController extends Controller
                 } else {
                     $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
                 }
-                $status = 'success';
-                $msg = 'Special offer has been made successfully';
             }
+            $status = 'success';
+            $msg = 'Special offer has been made successfully';
         }else{
             $status = 'danger';
             $msg = 'Please SELECT special offer with coefficient or make it by changing prices';
         }
+
+
 
         foreach ($specialOffer->users as $user) {
             $email = $user->client->email;
