@@ -1,24 +1,28 @@
 @inject('cartService', "App\Services\CartService")
 <!-- Top Bar -->
 <div class="row">
-    <div class="top-bar">
-        <ul>
-            <li><i class="fa fa-phone-volume"></i> <a href="#">{{$phone}}</a></li>
-            <li><i class="fa fa-envelope"></i> <a href="#">{{$email}}</a></li>
-        </ul>
-    </div>
+
+ <div class="top-bar">
+    <ul>
+        <li><i class="fa fa-angle-right"></i>  <a href="{{ route('logout') }}">Logout</a></li>
+        <li><i class="fa fa-user"></i>  {{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</li>
+    </ul>
+    <ul>
+       <li><i class="fa fa-phone"></i>  <a href="tel:{{$phone}}">{{$phone}}</a></li>
+       <li><i class="fa fa-envelope"></i>  <a href="mailto:{{$email}}">{{$email}}</a></li>
+   </ul>
+</div>
 </div>
 <!-- Header -->
 <div class="row">
     <div class="logo">
-        <a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
-    </div>
-    <div class="cart-menu-mobile">
-
-					<span class="cart-menu-icon-mobile">
-						<a href="{{ route('order.index') }}"><i class="fa fa-cart-arrow-down"></i></a>
-					</span>
-    </div>
+       <a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
+   </div>
+   <div class="cart-menu-mobile">
+       <span class="cart-menu-icon-mobile">
+          <a href="{{ route('order.index') }}"><i class="fa fa-cart-arrow-down"></i></a>
+      </span>
+  </div>
     <div class="nav d-flex justify-content-end ">
         <nav class="navbar navbar-expand-lg navbar-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -52,9 +56,8 @@
                 </span>
                 <span class="cart-menu-price totalQuantityTop">Items: {{ $cartService->getUserOrderTotalQuantity()}}</span>
                 <span class="cart-menu-price totalPriceTop">  € {{ number_format($cartService->getUserOrderTotalPrice(), 2, '.', '') }}</span>
-            </span>
-        </a>
-    </div>
+    </a>
+</div>
 </div>
 <!-- Slider -->
 <div id="search" class="row justify-content-center">
@@ -78,11 +81,11 @@
     <div class="col-12 d-flex justify-content-center pt-3 pb-3 search-bar-back">
         <form class="form-inline justify-content-center" action="{{ route('products.search') }}" method="GET">
             @if (isset($query))
-                <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
-                       placeholder="Search" aria-label="Search" value="{{ old('name', $query) }}">
+            <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
+            placeholder="Search" aria-label="Search" value="{{ old('name', $query) }}">
             @else
-                <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
-                       placeholder="Search" aria-label="Search" value="{{ old('name') }}">
+            <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
+            placeholder="Search" aria-label="Search" value="{{ old('name') }}">
             @endif
             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
         </form>

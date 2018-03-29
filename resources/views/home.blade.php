@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Home page'])
 @section('content')
     <!-- Table filters -->
     <div class="col-lg-10 col-md-12">

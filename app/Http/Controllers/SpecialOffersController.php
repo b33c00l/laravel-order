@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Http\Requests\StoreSpecialOfferRequest;
+use App\Mail\SpecialOfferMail;
 use App\Platform;
 use App\Price;
 use App\Product;
@@ -13,6 +14,7 @@ use App\Services\PricingService;
 use App\SpecialOffer;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SpecialOffersController extends Controller
 {
@@ -33,10 +35,8 @@ class SpecialOffersController extends Controller
         $platforms = Platform::all();
         $selectedPlatform = null;
         $selectedPublisher = null;
-        $current_price = [];
 
-
-        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'current_price', 'selectedPlatform', 'selectedPublisher', 'clients'));
+        return view('special_offers.index', compact('products', 'publishers', 'platforms', 'selectedPlatform', 'selectedPublisher', 'clients'));
     }
 
     public function store(StoreSpecialOfferRequest $request)
@@ -45,6 +45,7 @@ class SpecialOffersController extends Controller
         $file = $request->filename;
         $filename = $this->imageService->uploadImage($file);
         $specialOffer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
+
         foreach ($clients as $client_id) {
             $client = Client::findOrFail($client_id);
             $specialOffer->users()->attach($client->user->id);
@@ -82,8 +83,13 @@ class SpecialOffersController extends Controller
         }else{
             $status = 'danger';
             $msg = 'Please SELECT special offer with coefficient or make it by changing prices';
-
         }
+
+        foreach ($specialOffer->users as $user) {
+            $email = $user->client->email;
+            Mail::to($email)->send(new SpecialOfferMail($specialOffer, $user));
+        }
+
         return redirect()->back()->with(['status' =>$status, 'msg'=>$msg]);
     }
 

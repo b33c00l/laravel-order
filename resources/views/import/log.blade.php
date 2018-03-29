@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Import products log'])
 
 @section('content')
 <div class="col-10">

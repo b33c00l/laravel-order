@@ -162,6 +162,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Messerli90\IGDB\IGDBServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -213,6 +214,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'IGDB' => \Messerli90\IGDB\Facades\IGDB::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

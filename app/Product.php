@@ -40,7 +40,7 @@ class Product extends Model
     {
         $suggestArray[] = $this->name;
         $suggestArray[] = $this->platform->name;
-        if(isset($this->publisher->name)){
+        if (isset($this->publisher->name)){
             $suggestArray[] = $this->publisher->name;
         }
         $splittingName = $this->name;
@@ -152,6 +152,7 @@ class Product extends Model
         return asset($path);
     }
 
+
     public function getBasePriceAttribute()
     {
         $price = $this->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
@@ -161,5 +162,4 @@ class Product extends Model
         return $price->amount;
 
     }
-
 }
