@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeOrderStatusRequest;
+
+use App\Mail\OrderConfirmed;
+use App\Mail\OrderRejected;
+
 use App\Order;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 use App\Services\InvoiceService;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,9 +34,9 @@ class OrdersController extends Controller
         $user = Auth::user();
         if($user->role == 'admin')
         {
-            $orders = Order::paginate(20);
+            $orders = Order::paginate(config('pagination.value'));
         }else{
-            $orders = $user->orders()->paginate(20);
+            $orders =$user->orders()->paginate(config('pagination.value'));
         }
         return view('orders.orders', [
             'orders'=>$orders,
@@ -46,12 +52,20 @@ class OrdersController extends Controller
 
     public function action(ChangeOrderStatusRequest $request, $id)
     {
+
+        $userEmail = Auth::user()->client->email;
+
         $order = Order::findOrFail($id);
         if ($request->action === 'confirm'){
+
             $status = Order::CONFIRMED;
-        }elseif($request->action === 'reject'){
+            Mail::to($userEmail)->send(new OrderConfirmed($id));
+
+        } elseif($request->action === 'reject') {
             $status = Order::REJECTED;
+            Mail::to($userEmail)->send(new OrderRejected($id));
         }
+
         $file=$request->file('invoice');
         if(isset($file))
         {
