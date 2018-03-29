@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ExportService;
 
-class OrderExportController extends Controller
+class OrdersExportController extends Controller
 {
     public function __construct(ExportService $exportExcelService)
     {

@@ -21,4 +21,11 @@ class InvoiceService
         }
         return $filenameWithExt;
     }
+
+    public function uploadInvoice($file)
+    {
+        $filenameWithExt = $this->generateName($file);
+        $file->storeAs('public/invoices', $filenameWithExt);
+        return $filenameWithExt;
+    }
 }

@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeOrderStatusRequest;
-use App\Invoice;
 use App\Order;
-use App\OrderProduct;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Services\InvoiceService;
+use Illuminate\Support\Facades\Storage;
 
 
 class OrdersController extends Controller
@@ -28,14 +25,13 @@ class OrdersController extends Controller
 
     public function index()
     {
-        $user=Auth::user();
+        $user = Auth::user();
         if($user->role == 'admin')
         {
             $orders = Order::paginate(20);
         }else{
-            $orders =$user->orders()->paginate(20);
+            $orders = $user->orders()->paginate(20);
         }
-
         return view('orders.orders', [
             'orders'=>$orders,
         ]);
@@ -50,27 +46,43 @@ class OrdersController extends Controller
 
     public function action(ChangeOrderStatusRequest $request, $id)
     {
-
+        $order = Order::findOrFail($id);
         if ($request->action === 'confirm'){
             $status = Order::CONFIRMED;
         }elseif($request->action === 'reject'){
             $status = Order::REJECTED;
         }
         $file=$request->file('invoice');
-        if (isset($file))
+        if(isset($file))
         {
-
-            $filenameWithExt = $this->checkInvoice->generateName($file);
-
-            Invoice::create($request->except('_token') + [
-                    'filename' => $filenameWithExt,
-                    'order_id' =>$id,
-                ]);
-
-            $file->storeAs('public/invoices', $filenameWithExt);
+            if (empty($order->invoice))
+            {
+                $filenameWithExt = $this->checkInvoice->uploadInvoice($file);
+                $order->invoice()->create($request->except('_token') + [
+                        'filename' => $filenameWithExt,
+                    ]);
+            }else {
+                Storage::delete('public/invoices/'.$order->invoice->filename);
+                $filenameWithExt = $this->checkInvoice->uploadInvoice($file);
+                $order->invoice->update($request->except('_token') + [
+                        'filename' => $filenameWithExt,
+                    ]);
+            }
         }
+        $order->update(['status' => $status]);
 
-        Order::findOrFail($id)->update(['status' => $status]);
         return redirect()->route('order.orders');
+    }
+
+    public function download($id)
+    {
+        $order = Order::findOrFail($id);
+        if (!empty($order->invoice->filename))
+        {
+            $path = storage_path('app/public/invoices/'.$order->invoice->filename);
+
+            return response()->download($path);
+        }
+        return redirect()->back();
     }
 }

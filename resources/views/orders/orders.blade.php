@@ -62,7 +62,9 @@
                     <td data-label="Status:" class="align-middle">{{$order->OrderStatus}}</td>
                     <td data-label="Type:" class="align-middle">{{$order->OrderType}}</td>
                     <td data-label="Invoice:" class="align-middle">
-                        <img width="20px" class="figure-img" src="images/pdf.png">
+                        @if(!empty($order->invoice))
+                            <a href="{{ route('order.invoice.download', $order->id) }}"><img width="20px" class="figure-img" src="images/pdf.png"></a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
