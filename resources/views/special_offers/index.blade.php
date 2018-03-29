@@ -4,10 +4,16 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12 text-center mt-5 mb-5">
-                @if (session('status'))
-                    <div class="alert alert-success">
+                @if(session ('status') == 'Please SELECT special offer with coefficient or make it by changing prices')
+                    <div class="alert alert-danger">
                         {{ session('status') }}
                     </div>
+                @else
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                 @endif
                 <h2>Special offer</h2>
             </div>
@@ -99,7 +105,7 @@
                                         <label class="form-check-label" for="defaultCheck1">
                                             {{ $product->name }}
                                         </label>
-                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number">
+                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number" step="any" value={{$product->base_price}}>
                                     </div>
                                 @endforeach
                             </div>
