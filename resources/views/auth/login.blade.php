@@ -11,15 +11,17 @@
     <title>{{ config('app.name', 'GameStar') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
     <div class="container-fluid login-container" >
         <div class="row justify-content-center login-row">
-            <div class="col-3 login-box align-middle">
+            <div class="col-lg-3 col-md-4 col-sm-5 col-10 login-box align-middle">
                 <div class="login-form">
-                    <img class="mb-3" src="{{ asset('image/logo.png') }}">
+                    <div>
+                        <img class="mb-3 login_logo" src="{{ asset('images/logo2.png') }}">
+                    </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" name="name" placeholder="Username" value="{{ old('name') }}" required autofocus>

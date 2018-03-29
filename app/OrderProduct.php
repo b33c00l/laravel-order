@@ -18,4 +18,14 @@ class OrderProduct extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function scopeInOrders($query, $orders_id)
+    {
+        return $query->whereIn('order_id', $orders_id);
+    }
+
+    public function scopeInProduct($query, $product_id)
+    {
+        return $query->where('product_id', $product_id);
+    }
 }
