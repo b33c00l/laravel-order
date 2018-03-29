@@ -4,9 +4,13 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12 text-center mt-5 mb-5">
-                @if (session('status'))
+                @if(session ('status') == 'success')
                     <div class="alert alert-success">
-                        {{ session('status') }}
+                        {{ session('msg') }}
+                    </div>
+                @elseif(session('status') == 'danger')
+                    <div class="alert alert-danger">
+                        {{ session('msg') }}
                     </div>
                 @endif
                 <h2>Special offer</h2>
@@ -99,7 +103,7 @@
                                         <label class="form-check-label" for="defaultCheck1">
                                             {{ $product->name }}
                                         </label>
-                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number">
+                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number" step="any" value={{$product->base_price}}>
                                     </div>
                                 @endforeach
                             </div>
