@@ -56,29 +56,35 @@ class SpecialOffersController extends Controller
 
         foreach ($games as $game) {
             $product = Product::FindOrFail($game);
-            $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
+            $price = $product->base_price;
 
-            if (($request->get('price_coef') != null && $price->amount != $request->get('specialProductPrice')[$game])) {
+            if (($request->get('price_coef') != null && $price != $request->get('specialProductPrice')[$game])) {
                 $check = false;
             }
         }
         if ($check == true){
+            $specialProductPrice = $request->get('specialProductPrice');
             foreach ($games as $game) {
                 $product = Product::FindOrFail($game);
-                $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
+                $price = $product->base_price;
 
                 if ($request->get('price_coef') != null) {
-                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price->amount, 2, '.', ''), 'product_id' => $game]);
-                    $status = 'Special offer has been made successfully';
+                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
+                    $status = 'success';
+                    $msg = 'Special offer has been made successfully';
                 } else {
-                    $specialOffer->prices()->create(['amount' => $request->get('specialProductPrice')[$game], 'product_id' => $game]);
-                    $status = 'Special offer has been made successfully';
+                    $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
+                    $status = 'success';
+                    $msg = 'Special offer has been made successfully';
+
                 }
             }
         }else{
-            $status = 'Please SELECT special offer with coefficient or make it by changing prices';
+            $status = 'danger';
+            $msg = 'Please SELECT special offer with coefficient or make it by changing prices';
+
         }
-        return redirect()->back()->with('status', $status);
+        return redirect()->back()->with(['status' =>$status, 'msg'=>$msg]);
     }
 
     public function filter(Request $request)

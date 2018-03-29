@@ -4,16 +4,14 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12 text-center mt-5 mb-5">
-                @if(session ('status') == 'Please SELECT special offer with coefficient or make it by changing prices')
-                    <div class="alert alert-danger">
-                        {{ session('status') }}
+                @if(session ('status') == 'success')
+                    <div class="alert alert-success">
+                        {{ session('msg') }}
                     </div>
-                @else
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                @elseif(session('status') == 'danger')
+                    <div class="alert alert-danger">
+                        {{ session('msg') }}
+                    </div>
                 @endif
                 <h2>Special offer</h2>
             </div>
