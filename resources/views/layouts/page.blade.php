@@ -13,7 +13,7 @@
 		<!-- Header -->
 			@include('layouts.partials.header')
 			<!-- Sidebar -->
-			<div class="row">
+			<div class="row justify-content-center">
 				@include('layouts.partials.sidebar_no_pop')
 			</div>
 				@yield('content')

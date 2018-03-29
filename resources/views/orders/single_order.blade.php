@@ -24,24 +24,23 @@
                 <tbody>
                     @foreach($products as $product)
                     <tr>
-                        <td data-label="EAN:" class="align-middle text-right">{{$product->product->ean}}</td>
-                        <td data-label="Platform:" class="align-middle text-right">{{$product->product->platform->name}}</td>
-                        <td data-label="Name:" class="align-middle text-right">{{$product->product->name}}</td>
-                        <td data-label="Release date:" class="align-middle text-right">{{$product->product->release_date}}</td>
-                        <td data-label="Publisher:" class="align-middle text-right">{{ $product->product->has('publisher') ? $product->product->publisher->name : '-'}}</td>
-                        <td data-label="Price:" class="align-middle text-right">
+                        <td data-label="EAN:" class="align-middle text-right text-lg-center">{{$product->product->ean}}</td>
+                        <td data-label="Platform:" class="align-middle text-right text-lg-center">{{$product->product->platform->name}}</td>
+                        <td data-label="Name:" class="align-middle text-right text-lg-center">{{$product->product->name}}</td>
+                        <td data-label="Release date:" class="align-middle text-right text-lg-center">{{$product->product->release_date}}</td>
+                        <td data-label="Publisher:" class="align-middle text-right text-lg-center">{{ $product->product->has('publisher') ? $product->product->publisher->name : '-'}}</td>
+                        <td data-label="Price:" class="align-middle text-right text-lg-center">
                             @admin
-                            <input data-url="{{ route('order.update', $product->id) }}" class="input updateP align-middle" type="number" value="{{ $product->price }}" name="amount"> €
-                            <br>
-                            <span style="display: none; color: green" class="align-middle text-right" id="Pmessage{{ $product->id }}"></span>
+                            <input data-url="{{ route('order.update', $product->id) }}" class="input updateP text-right text-lg-center" type="number" value="{{ $product->price }}" name="amount"> €
+                            <span style="display: none; color: green" class="align-middle text-right text-lg-center" id="Pmessage{{ $product->id }}"></span>
                             @else
                             {{ number_format($product->product->priceamount, 2, '.', '')}} €
                             @endadmin
                         </td>
-                        <td data-label="Price Total:" class="align-middle text-right" id="singlePrice{{ $product->id }}">{{ number_format($cartService->getSingleProductPrice($product), 2, '.', '')}} €</td>
-                        <td data-label="Amount:" class="align-middle text-right">
+                        <td data-label="Price Total:" class="align-middle text-right text-lg-center" id="singlePrice{{ $product->id }}">{{ number_format($cartService->getSingleProductPrice($product), 2, '.', '')}} €</td>
+                        <td data-label="Amount:" class="align-middle text-right text-lg-center">
                             @admin
-                            <input data-url="{{ route('order.update', $product->id) }}" class="input updateQ align-middle text-right" type="number" value="{{$product->quantity}}" name="amount">
+                            <input data-url="{{ route('order.update', $product->id) }}" class="input updateQ align-middle text-right text-lg-center" type="number" value="{{$product->quantity}}" name="amount">
                             <br>
                             <span style="display: none; color: red" class="align-middle" id="Qmessage{{ $product->id }}"></span>
                             @else
@@ -49,7 +48,7 @@
                             @endadmin
                         </td>
                         @admin
-                        <td class="align-middle text-right">
+                        <td class="align-middle text-right text-lg-center">
                             <form action="{{route('order.product.delete', $product->id)}}" method="post">
                                 @csrf
                                 @method('delete')
@@ -60,9 +59,9 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <td class="total text-right" colspan="6" scope="Total"><b>Total</b></td>
-                        <td data-label="Total" class="text-right" id="totalPrice">{{!empty($products)?number_format($cartService->getTotalCartPrice($order), 2,'.',''):""}} €</td>
-                        <td data-label="Total quantity" class="text-right" id="totalQuantity">{{!empty($products)?$cartService->getTotalCartQuantity($order):""}}</td>
+                        <td class="total text-right text-lg-center" colspan="6" scope="Total"><b>Total</b></td>
+                        <td data-label="Total" class="text-right text-lg-center" id="totalPrice">{{!empty($products)?number_format($cartService->getTotalCartPrice($order), 2,'.',''):""}} €</td>
+                        <td data-label="Total quantity" class="text-right text-lg-center" id="totalQuantity">{{!empty($products)?$cartService->getTotalCartQuantity($order):""}}</td>
                         @admin
                         <td class="total"></td>
                         @endadmin
@@ -89,7 +88,6 @@
                     <input class="form-control" id="invoice" type="file" name="invoice">
                 </div>
             </div>
-            
         </div>
         <div class="row">
             <div class="col-6">
