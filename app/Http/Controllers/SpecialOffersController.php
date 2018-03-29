@@ -70,13 +70,11 @@ class SpecialOffersController extends Controller
 
                 if ($request->get('price_coef') != null) {
                     $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
-                    $status = 'success';
-                    $msg = 'Special offer has been made successfully';
                 } else {
                     $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
-                    $status = 'success';
-                    $msg = 'Special offer has been made successfully';
                 }
+                $status = 'success';
+                $msg = 'Special offer has been made successfully';
             }
         }else{
             $status = 'danger';
