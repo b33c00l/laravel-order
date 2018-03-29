@@ -54,17 +54,16 @@ class SpecialOffersController extends Controller
         $games = $request->get('games');
 
         $check = true;
-
+        $specialProductPrice = $request->get('specialProductPrice');
         foreach ($games as $game) {
             $product = Product::FindOrFail($game);
             $price = $product->base_price;
 
-            if (($request->get('price_coef') != null && $price != $request->get('specialProductPrice')[$game])) {
+            if (($request->get('price_coef') != null && $price != $specialProductPrice[$game])) {
                 $check = false;
             }
         }
         if ($check == true){
-            $specialProductPrice = $request->get('specialProductPrice');
             foreach ($games as $game) {
                 $product = Product::FindOrFail($game);
                 $price = $product->base_price;
@@ -77,7 +76,6 @@ class SpecialOffersController extends Controller
                     $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
                     $status = 'success';
                     $msg = 'Special offer has been made successfully';
-
                 }
             }
         }else{
