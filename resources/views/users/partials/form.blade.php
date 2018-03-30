@@ -130,7 +130,7 @@
 			<label class="col control-label">Company address</label>
 			<div class="col inputGroupContainer">
 				<div class="input-group">
-					<textarea class="form-control" name="registration_address" placeholder="Company address" rows="5" value="{{old('registration_address', $registration_address)}}"></textarea>
+					<input class="form-control" name="registration_address" placeholder="Company address" rows="5" value="{{old('registration_address', $registration_address)}}">
 				</div>
 				@include('users.partials.error', ['name' => 'company_address'])
 			</div>

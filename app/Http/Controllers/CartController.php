@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Http\Requests\StoreOrderRequest;
 use App\Mail\OrderReceived;
 use App\Order;
@@ -177,6 +178,11 @@ class CartController extends Controller
         if ($request->has('preorder_id')) {
             Order::findOrFail($request->preorder_id)->update(['status' => Order::UNCONFIRMED]);
         }
+        if (!empty($request->comments)) {
+            $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
+            $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+        }
+
         return redirect()->back();
     }
 }
