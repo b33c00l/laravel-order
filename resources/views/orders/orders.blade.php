@@ -74,12 +74,12 @@
         </div>
     </div>
     <!-- Export all to Excel -->
-    
+
     <div class="row">
         <div class="col-10">
             <label>
                 <h4>Export all to excel:</h4>
-            </label> 
+            </label>
         </div>
         <div class="btn-group col-10" role="group" aria-label="export_buttons">
             <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
