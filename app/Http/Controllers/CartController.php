@@ -10,10 +10,11 @@ use App\OrderProduct;
 use App\Product;
 use App\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
+use App\Invoice;
 use Illuminate\Support\Facades\Mail;
-
 
 class CartController extends Controller
 {
@@ -27,8 +28,8 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $order = $user->orders()->InCart()->Order()->first();
-        $backorder =$user->orders()->InCart()->BackOrder()->first();
-        $preorder =$user->orders()->InCart()->PreOrder()->first();
+        $backorder = $user->orders()->InCart()->BackOrder()->first();
+        $preorder = $user->orders()->InCart()->PreOrder()->first();
         if (!empty($order))
         {
             $order_products = $order->orderProducts()->get();
@@ -65,14 +66,14 @@ class CartController extends Controller
     {
         $product = Product::findOrfail($product_id);
 
-        if ($product->stockamount !== 0 && $product->preorder !== 1)
+        if ($product->stockamount !== 0 && $product->preorder !== 1 && $product->preorder !== 2)
         {
             $amount = $this->getTotal->storeOrder($product, $request);
             if ($amount !== 0 )
             {
                 $this->getTotal->storeBackOrder($product, $amount);
             }
-        }elseif($product->stockamount === 0 && $product->preorder == 0){
+        }elseif($product->stockamount === 0 && $product->preorder === 0){
             $this->getTotal->storeBackOrder($product, $request->quantity);
         } elseif($product->preorder === 1) {
             $this->getTotal->storePreOrder($product, $request->quantity);

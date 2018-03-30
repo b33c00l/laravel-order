@@ -24,7 +24,7 @@
 							<th scope="col">Quantity</th>
 						</tr>
 					</thead>
-					<tbody>	
+					<tbody>
 						@foreach($products as $product)
 						<tr>
 							<td data-label="Select:" class="align-middle text-right text-lg-center"><input type="checkbox" class="orders" name="checkbox[]" value="{{$product->id}}"></td>
