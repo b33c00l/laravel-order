@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Http\Requests\StoreOrderRequest;
 use App\Mail\OrderReceived;
 use App\Order;
@@ -97,7 +98,7 @@ class CartController extends Controller
                 'price' => $request->price,
             ]);
             $product = OrderProduct::findOrFail($id);
-            $singleProduct = $product->first();
+            $singleProduct = $product;
             $data = ['id' => $id,
                 'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
                 'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
@@ -185,6 +186,11 @@ class CartController extends Controller
         if ($request->has('preorder_id')) {
             $preOrder = Order::findOrFail($request->preorder_id);
             $preOrder->update(['status' => Order::UNCONFIRMED]);
+        }
+
+        if (!empty($request->comments)) {
+            $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
+            $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
         }
 
         $userEmail = Auth::user()->client->email;
