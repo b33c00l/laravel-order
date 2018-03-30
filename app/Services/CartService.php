@@ -176,14 +176,11 @@ class CartService
         $products = OrderProduct::where('product_id', $preorderProduct->id)->get();
         if (!empty($products)) {
             foreach ($products as $product) {
-                $order = $product->order()->first();
-                if ($order->status === Order::PENDING && $order->type === Order::PREORDER)
-                {
-                    $product->delete();
-                    $order = Order::findOrFail($order->id);
-                    if ($order->orderProducts->count() == 0) {
-                        $order->delete();
-                    }
+                $order = $product->order()->InCart()->Preorder()->first();
+                $product->delete();
+                $order = Order::findOrFail($order->id);
+                if ($order->orderProducts->count() == 0) {
+                    $order->delete();
                 }
             }
         }
