@@ -1,5 +1,5 @@
 <ul class="list-group">
-<li><a href="{{ route('order.orders') }}">Orders</a></li>
+<li><a href="{{route('order.orders')}}">Orders</a></li>
 <ul>
 <li>Pre-Orders</li>
 <li>Back-Orders</li>

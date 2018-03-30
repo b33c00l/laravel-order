@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeOrderStatusRequest;
-
 use App\Mail\OrderConfirmed;
 use App\Mail\OrderRejected;
-
 use App\Order;
+use App\OrderProduct;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
 use App\Services\InvoiceService;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,17 +29,43 @@ class OrdersController extends Controller
         $this->checkInvoice = $invoiceService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        if($user->role == 'admin')
-        {
-            $orders = Order::paginate(config('pagination.value'));
+        if($user->role == 'admin'){
+          $orders = Order::paginate(20);
+	        $user = User::all();
+            if ($request->has('filter')){
+            	$orders = new Order;
+            	if($request->get('user_id') >0){
+	            $orders = $orders->where('user_id', $request->get('user_id'));
+	            }
+	            if($request->get('type') >= 0){
+		            $orders = $orders->where('type', $request->get('type'));
+	            }
+	            if($request->get('status') >= 0){
+		            $orders = $orders->where('status', $request->get('status'));
+	            }
+	            $orders = $orders->paginate(20);
+            }
         }else{
-            $orders =$user->orders()->paginate(config('pagination.value'));
-        }
+            $orders =$user->orders()->paginate(20);
+	          if ($request->has('filter')){
+	        	  $orders = new Order();
+		          if($request->get('type') >= 0){
+			          $orders = $orders->where('user_id', $user->id)->where('type', $request->get('type'));
+		          }
+		          if($request->get('status') >= 0){
+			          $orders = $orders->where('user_id', $user->id)->where('status', $request->get('status'));
+		          }
+		          $orders = $orders->paginate(20);
+	          }
+            $orders = Order::paginate(config('pagination.value'));
+            }else{
+               $orders =$user->orders()->paginate(config('pagination.value'));
+          }
         return view('orders.orders', [
-            'orders'=>$orders,
+            'orders'=>$orders, 'users'=>$user
         ]);
     }
     public function show($id)
