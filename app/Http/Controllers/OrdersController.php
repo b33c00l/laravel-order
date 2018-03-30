@@ -56,12 +56,12 @@ class OrdersController extends Controller
         $userEmail = Auth::user()->client->email;
 
         $order = Order::findOrFail($id);
-        if ($request->action === 'confirm'){
+        if ($request->action === 'Confirm'){
 
             $status = Order::CONFIRMED;
             Mail::to($userEmail)->send(new OrderConfirmed($id));
 
-        } elseif($request->action === 'reject') {
+        } elseif($request->action === 'Reject') {
             $status = Order::REJECTED;
             Mail::to($userEmail)->send(new OrderRejected($id));
         }

@@ -13,13 +13,13 @@
 		<!-- Header -->
 			@include('layouts.partials.header')
 			<!-- Sidebar -->
-			<div class="row">
+			<div class="row justify-content-center">
 				@include('layouts.partials.sidebar_no_pop')
 			</div>
 				@yield('content')
 				<!-- New arrivals -->
 				<hr>
-				<div class="row">
+				<div class="row justify-content-center">
 					<div class="col-12 text-center">
 						<h4>New arrivals</h4>
 					</div>
@@ -37,7 +37,8 @@
 							@foreach ($products_latest as $product_latest)
 							<div class="karuseles-img">
 								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><img class="gallery" src="{{ $product_latest->featured_image_url }}"></a>
-								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><h5>{{ $product_latest->name }}</h5></a>
+								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><h6>{{ $product_latest->name }}</h6></a>
+								<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><p>{{ $product_latest->platform->name }}</p></a>
 							</div>
 							@endforeach
 
