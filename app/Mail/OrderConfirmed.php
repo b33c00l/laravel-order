@@ -2,24 +2,24 @@
 
 namespace App\Mail;
 
+use App\Services\CartService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class OrderConfirmed extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $id;
+    protected $order;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($order)
     {
-        $this->id = $id;
+        $this->order = $order;
     }
 
     /**
@@ -27,11 +27,13 @@ class OrderConfirmed extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(CartService $cartService)
     {
         return $this->view('emails.orders.confirmed')
             ->with([
-                'id' => $this->id
+                'order' => $this->order,
+                'orderProducts' => $this->order->orderProducts,
+                'totalOrder' => $cartService->getTotalCartPrice($this->order)
             ]);
     }
 }

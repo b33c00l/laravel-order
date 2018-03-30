@@ -24,6 +24,7 @@ class CartController extends Controller
     {
         $this->getTotal = $cartService;
     }
+
     public function index()
     {
         $user = Auth::user();
@@ -62,6 +63,7 @@ class CartController extends Controller
             'preorders' => $preorders,
         ]);
     }
+
     public function store($product_id, StoreOrderRequest $request)
     {
         $product = Product::findOrfail($product_id);
@@ -132,7 +134,6 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-
     public function destroySelected(Request $request)
     {
         if ($request->has('checkbox')){
@@ -160,6 +161,11 @@ class CartController extends Controller
 
     public function confirm(Request $request)
     {
+        $order = null;
+        $backOrder = null;
+        $preOrder = null;
+        $orderComment = null;
+
         if ($request->has('order_id')) {
             $order = Order::findOrFail($request->order_id);
             $order->update(['status' => Order::UNCONFIRMED]);
@@ -172,16 +178,26 @@ class CartController extends Controller
                 $product->product->stock()->create(['amount' => $quantity]);
             }
         }
+
         if ($request->has('backorder_id')) {
-            Order::findOrFail($request->backorder_id)->update(['status' => Order::UNCONFIRMED]);
+            $backOrder = Order::findOrFail($request->backorder_id);
+            $backOrder->update(['status' => Order::UNCONFIRMED]);
+
         }
+
         if ($request->has('preorder_id')) {
-            Order::findOrFail($request->preorder_id)->update(['status' => Order::UNCONFIRMED]);
+            $preOrder = Order::findOrFail($request->preorder_id);
+            $preOrder->update(['status' => Order::UNCONFIRMED]);
         }
+
         if (!empty($request->comments)) {
             $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
             $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+            $orderComment = $request->comments;
         }
+
+        $userEmail = Auth::user()->client->email;
+        Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $orderComment, $this->getTotal));
 
         return redirect()->back();
     }

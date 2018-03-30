@@ -177,7 +177,7 @@
 				@csrf
 				<div class="form-group">
 					<label for="exampleFormControlTextarea1"><h3>Comments</h3></label>
-					<textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+					<textarea class="form-control" id="exampleFormControlTextarea1" name="comments" rows="6"></textarea>
 				</div>
 				@if(!empty($product))
 				<input type="hidden" name="order_id" value="{{$order->id}}">
