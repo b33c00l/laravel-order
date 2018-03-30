@@ -28,7 +28,10 @@ class Product extends Model
                 'type' => 'text',
                 "analyzer" => "simple",
             ],
-            'ean' => ['type' => 'text'],
+            'ean' => ['type' => 'keyword'],
+            'release_date' => ['type' => 'date'],
+            'platform' => ['type' => 'keyword'],
+            'stock' => ['type' => 'integer']
         ]
     ];
 
@@ -55,6 +58,8 @@ class Product extends Model
             'name'      => $this->name,
             'ean'       => $this->ean,
             'platform'  => $this->platform->name,
+            'release_date' => $this->release_date,
+            'stock' => $this->getStockAmountAttribute(),
             'suggest' => [
                 'input' => $suggestArray,
             ]

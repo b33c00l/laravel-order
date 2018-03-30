@@ -12,7 +12,6 @@ class OrderRejected extends Mailable
     use Queueable, SerializesModels;
 
     protected $order;
-    protected $cartService;
 
 
     /**
@@ -23,7 +22,6 @@ class OrderRejected extends Mailable
     public function __construct($order , CartService $cartService)
     {
         $this->order = $order;
-        $this->cartService = $cartService;
     }
 
     /**
@@ -31,13 +29,13 @@ class OrderRejected extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(CartService $cartService)
     {
         return $this->view('emails.orders.rejected')
             ->with([
                 'order' => $this->order,
                 'orderProducts' => $this->order->orderProducts,
-                'totalOrder' => $this->cartService->getTotalCartPrice($this->order)
+                'totalOrder' => $cartService->getTotalCartPrice($this->order)
             ]);
     }
 }

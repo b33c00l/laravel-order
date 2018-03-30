@@ -12,16 +12,14 @@ class OrderConfirmed extends Mailable
     use Queueable, SerializesModels;
 
     protected $order;
-    protected $cartService;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($order , CartService $cartService)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->cartService = $cartService;
     }
 
     /**
@@ -29,13 +27,13 @@ class OrderConfirmed extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(CartService $cartService)
     {
         return $this->view('emails.orders.confirmed')
             ->with([
                 'order' => $this->order,
                 'orderProducts' => $this->order->orderProducts,
-                'totalOrder' => $this->cartService->getTotalCartPrice($this->order)
+                'totalOrder' => $cartService->getTotalCartPrice($this->order)
             ]);
     }
 }
