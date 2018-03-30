@@ -14971,7 +14971,7 @@ ul ul {
 .login-container {
   height: 100%;
   background-size: cover;
-  background: #000000 url("http://localhost/voldemaras/laravel-html/images/textura.png");
+  background: #000000 url(/images/textura.png?44e11fda9e05aada55b501901cdfbc3f);
   background-repeat: repeat;
 }
 
@@ -14983,6 +14983,10 @@ ul ul {
   -ms-flex-item-align: center;
       align-self: center;
   padding: 30px;
+}
+
+.login_logo {
+  width: 100%;
 }
 
 .login-row {

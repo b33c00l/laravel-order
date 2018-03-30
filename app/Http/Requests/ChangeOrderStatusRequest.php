@@ -24,7 +24,7 @@ class ChangeOrderStatusRequest extends FormRequest
     public function rules()
     {
             return [
-                'action' => 'required|in:confirm,reject',
+                'action' => 'required|in:Confirm,Reject',
                 'invoice' => 'mimes:pdf',
                 'text' => 'max:200'
             ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Mail\OrderReceived;
 use App\Order;
 use App\OrderProduct;
 use App\Product;
@@ -12,7 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
 use App\Invoice;
-
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -129,6 +130,7 @@ class CartController extends Controller
         }
         return redirect()->back();
     }
+
 
     public function destroySelected(Request $request)
     {
