@@ -38,11 +38,7 @@ class CartService
 
         if (empty($user_order))
         {
-            $order = $user->orders()->create([
-                'status' => Order::PENDING,
-                'date' => Carbon::now(),
-                'type' => Order::ORDER
-            ]);
+            $this->createOrder($user);
         }else{
             $order = $user_order;
         }
@@ -76,6 +72,17 @@ class CartService
         }
         return $value;
     }
+
+    public function createOrder($user)
+    {
+        $order = $user->orders()->create([
+            'status' => Order::PENDING,
+            'date' => Carbon::now(),
+            'type' => Order::ORDER
+        ]);
+        return $order;
+    }
+
     public function storeBackOrder($product, $quantity)
     {
         $user = Auth::user();
@@ -161,5 +168,46 @@ class CartService
             'totalPrice' => $this->getTotalCartPrice($singleProduct->order),
         ];
         return $data;
+    }
+
+    public function delPendingPreorders($preorderProduct)
+    {
+        $orders = Order::InCart()->Preorder()->get();
+        if (!empty($orders))
+        {
+            foreach ($orders as $order)
+            {
+                foreach ($order->orderProducts as $product)
+                {
+                    if ($product->product_id == $preorderProduct->id)
+                    {
+                        $product->delete();
+                    }
+                }
+            }
+        }
+    }
+
+    public function preorderToOrder($preOrderProduct)
+    {
+        $orders = Order::UnconfirmedOrder()->Preorder()->get();
+        foreach ($orders as $order)
+        {
+            foreach ($order->orderProducts as $product)
+            {
+                if ($product->product_id === $preOrderProduct->id)
+                {
+                    $user = $product->order->user;
+                    $order = $user->orders()->InCart()->Order()->first();
+                    if (isset($order))
+                    {
+                        $product->update(['order_id' => $order->id]);
+                    }else{
+                        $order = $this->createOrder($user);
+                        $product->update(['order_id' => $order->id]);
+                    }
+                }
+            }
+        }
     }
 }
