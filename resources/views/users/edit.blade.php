@@ -23,7 +23,7 @@
                     'payment_terms' => $client->payment_terms,
                     'phone' => $client->phone,
                     'country_id' => $user->country_id,
-                    'company_address' => $user->company_address
+                    'registration_address' => $client->registration_address
                     ])
                 @else
                     @include('users.partials.form', [
@@ -39,7 +39,7 @@
                     'payment_terms' => '',
                     'phone' => '',
                     'country_id' => '',
-                    'company_address' => ''
+                    'registration_address' => ''
                     ])
                 @endif
                 <div class="col-12 form-group">
