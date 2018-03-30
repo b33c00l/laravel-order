@@ -21,7 +21,7 @@ class DisablePreorder extends Command
      *
      * @var string
      */
-    protected $description = 'Disable pre-order update quantity function and move to order';
+    protected $description = 'Disable pre-order update quantity function';
 
     /**
      * Create a new command instance.

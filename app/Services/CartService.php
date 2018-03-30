@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Order;
 use Auth;
 use Carbon\Carbon;
+use App\OrderProduct;
 
 class CartService
 {
@@ -172,24 +173,20 @@ class CartService
 
     public function delPendingPreorders($preorderProduct)
     {
-        $preOrders = Order::InCart()->Preorder()->get();
-        if (!empty($preOrders))
-        {
-            foreach ($preOrders as $order)
-            {
-                foreach ($order->orderProducts as $product)
+        $products = OrderProduct::where('product_id', $preorderProduct->id)->get();
+        if (!empty($products)) {
+            foreach ($products as $product) {
+                $order = $product->order()->first();
+                if ($order->status === Order::PENDING && $order->type === Order::PREORDER)
                 {
-                    if ($product->product_id == $preorderProduct->id)
-                    {
-                        $product->delete();
-                        $order = Order::findOrFail($order->id);
-                        if ($order->orderProducts->count() == 0)
-                        {
-                            $order->delete();
-                        }
+                    $product->delete();
+                    $order = Order::findOrFail($order->id);
+                    if ($order->orderProducts->count() == 0) {
+                        $order->delete();
                     }
                 }
             }
         }
+
     }
 }
