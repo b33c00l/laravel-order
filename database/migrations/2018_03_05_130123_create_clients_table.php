@@ -15,10 +15,10 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('vat_number', 50)->nullable();
-            $table->string('registration_number', 50)->nullable();
-            $table->string('registration_address', 255)->nullable();
-            $table->string('shipping_address', 255)->nullable();
+            $table->string('vat_number', 50);
+            $table->string('registration_number', 50);
+            $table->string('registration_address', 255);
+            $table->string('shipping_address', 255);
             $table->string('email', 255);
             $table->string('contact_person', 255);
             $table->string('payment_terms', 255);
