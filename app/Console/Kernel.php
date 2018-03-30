@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('disable:preorder')
-            ->everyMinute();
+            ->dailyAt('3:00');;
     }
 
     /**

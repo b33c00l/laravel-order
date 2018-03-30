@@ -2,13 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\OrderProduct;
 use App\Product;
 use App\Services\CartService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use App\Invoice;
-use App\Order;
 
 class DisablePreorder extends Command
 {
