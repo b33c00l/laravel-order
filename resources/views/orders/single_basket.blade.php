@@ -24,7 +24,7 @@
 							<th scope="col">Quantity</th>
 						</tr>
 					</thead>
-					<tbody>	
+					<tbody>
 						@foreach($products as $product)
 						<tr>
 							<td data-label="Select:" class="align-middle text-right text-lg-center"><input type="checkbox" class="orders" name="checkbox[]" value="{{$product->id}}"></td>
@@ -177,7 +177,7 @@
 				@csrf
 				<div class="form-group">
 					<label for="exampleFormControlTextarea1"><h3>Comments</h3></label>
-					<textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+					<textarea class="form-control" id="exampleFormControlTextarea1" name="comments" rows="6"></textarea>
 				</div>
 				@if(!empty($product))
 				<input type="hidden" name="order_id" value="{{$order->id}}">

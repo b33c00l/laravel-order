@@ -16,17 +16,19 @@ class OrderReceived extends Mailable
     protected $backOrder;
     protected $preOrder;
     protected $cartService;
+    protected $orderComment;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($order, $backOrder, $preOrder, CartService $cartService)
+    public function __construct($order, $backOrder, $preOrder, $orderComment, CartService $cartService)
     {
         $this->cartService = $cartService;
         $this->order = $order;
         $this->backOrder = $backOrder;
         $this->preOrder = $preOrder;
+        $this->orderComment = $orderComment;
     }
 
     /**
@@ -39,13 +41,13 @@ class OrderReceived extends Mailable
         return
             $this->view('emails.orders.userOrderSent')
             ->with([
-                'orderProducts' => ($this->order != null ? $this->order->orderProducts : null),
+                'orderProducts'     => ($this->order != null ? $this->order->orderProducts : null),
                 'backOrderProducts' => ($this->backOrder != null ? $this->backOrder->orderProducts : null),
-                'preOrderProducts' => ($this->preOrder != null ? $this->preOrder->orderProducts : null),
-
-                'totalOrder' => ($this->order != null ? $this->cartService->getTotalCartPrice($this->order) : null),
-                'totalBackOrder' => ($this->backOrder != null ? $this->cartService->getTotalCartPrice($this->backOrder) : null),
-                'totalPreOrder' => ($this->preOrder != null ? $this->cartService->getTotalCartPrice($this->preOrder) : null),
+                'preOrderProducts'  => ($this->preOrder != null ? $this->preOrder->orderProducts : null),
+                'orderComment'      => ($this->orderComment != null ? $this->orderComment : null),
+                'totalOrder'        => ($this->order != null ? $this->cartService->getTotalCartPrice($this->order) : null),
+                'totalBackOrder'    => ($this->backOrder != null ? $this->cartService->getTotalCartPrice($this->backOrder) : null),
+                'totalPreOrder'     => ($this->preOrder != null ? $this->cartService->getTotalCartPrice($this->preOrder) : null),
             ]);
     }
 }

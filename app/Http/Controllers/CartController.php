@@ -163,6 +163,7 @@ class CartController extends Controller
         $order = null;
         $backOrder = null;
         $preOrder = null;
+        $orderComment = null;
 
         if ($request->has('order_id')) {
             $order = Order::findOrFail($request->order_id);
@@ -191,10 +192,11 @@ class CartController extends Controller
         if (!empty($request->comments)) {
             $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
             $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+            $orderComment = $request->comments;
         }
 
         $userEmail = Auth::user()->client->email;
-        Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $this->getTotal));
+        Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $orderComment, $this->getTotal));
 
         return redirect()->back();
     }

@@ -4,6 +4,7 @@
 </head>
 <body style="">
 <h1>Good choice!</h1>
+<blockquote>{{$orderComment}}</blockquote>
 @isset($orderProducts)
 <h1>Order received</h1>
 @foreach($orderProducts as $product)
