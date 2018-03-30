@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    const DISABLED = 2;
+    const ENABLED = 1;
+
     use Searchable;
 
     use SoftDeletes;
