@@ -52,7 +52,7 @@ class OrdersController extends Controller
 
     public function action(ChangeOrderStatusRequest $request, $id)
     {
-
+        dd(Order::findOrFail($id));
         $userEmail = Auth::user()->client->email;
 
         $order = Order::findOrFail($id);
