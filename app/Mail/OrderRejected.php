@@ -19,7 +19,7 @@ class OrderRejected extends Mailable
      *
      * @return void
      */
-    public function __construct($order , CartService $cartService)
+    public function __construct($order)
     {
         $this->order = $order;
     }
