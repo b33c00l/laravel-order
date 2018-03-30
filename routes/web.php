@@ -15,6 +15,7 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('complete/{token}', 'UsersController@getToken')->name('complete.show');
 Route::post('complete', 'UsersController@storePassword')->name('complete.store');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->group(function () {
 
@@ -38,7 +39,6 @@ Route::middleware('auth')->group(function () {
 
         });
 
-        Route::get('/', 'HomeController@index')->name('home');
         Route::get('sort/', 'HomeController@sort')->name('home.sort');
 
         Route::get('chat', 'ChatsController@index')->name('chat.index');
