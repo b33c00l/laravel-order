@@ -48,7 +48,7 @@ class PricingService
     }
 
     public function getPrice($user, $product)
-    {   
+    {
         $price1 = $this->countPriceWithCoef($user, $product);
         $price2 = $this->countPriceWithSpecialOffer($user, $product);
         $price3 = $this->countIndividualPrice($user, $product);

@@ -27,7 +27,7 @@ class ProductService {
     }
 
     public function getNewArrivals()
-    {   
+    {
         $products = Product::all();
         $products_latest = [];
 
