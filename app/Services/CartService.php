@@ -172,16 +172,21 @@ class CartService
 
     public function delPendingPreorders($preorderProduct)
     {
-        $orders = Order::InCart()->Preorder()->get();
-        if (!empty($orders))
+        $preOrders = Order::InCart()->Preorder()->get();
+        if (!empty($preOrders))
         {
-            foreach ($orders as $order)
+            foreach ($preOrders as $order)
             {
                 foreach ($order->orderProducts as $product)
                 {
                     if ($product->product_id == $preorderProduct->id)
                     {
                         $product->delete();
+                        $order = Order::findOrFail($order->id);
+                        if ($order->orderProducts->count() == 0)
+                        {
+                            $order->delete();
+                        }
                     }
                 }
             }
@@ -190,10 +195,10 @@ class CartService
 
     public function preorderToOrder($preOrderProduct)
     {
-        $orders = Order::UnconfirmedOrder()->Preorder()->get();
-        foreach ($orders as $order)
+        $preOrders = Order::UnconfirmedOrder()->Preorder()->get();
+        foreach ($preOrders as $preOrder)
         {
-            foreach ($order->orderProducts as $product)
+            foreach ($preOrder->orderProducts as $product)
             {
                 if ($product->product_id === $preOrderProduct->id)
                 {
@@ -205,6 +210,10 @@ class CartService
                     }else{
                         $order = $this->createOrder($user);
                         $product->update(['order_id' => $order->id]);
+                    }
+                    if ($order->orderProducts->count() == 0)
+                    {
+                        $order->delete();
                     }
                 }
             }

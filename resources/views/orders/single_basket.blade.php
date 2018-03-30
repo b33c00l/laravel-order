@@ -44,8 +44,8 @@
                         @endforeach
                         <tr>
                             <td scope="total" colspan="7" class="text-right"><b>Total</b></td>
-                            <td class="align-middle text-right text-lg-center totalPrice" rowspan="6" data-label="Total">{{ !empty($products) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
-                            <td class="align-middle text-right text-lg-center totalQuantity" data-label="Total quantity">{{ !empty($products) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
+                            <td class="align-middle text-right text-lg-center totalPrice" rowspan="6" data-label="Total">{{ !empty($order) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
+                            <td class="align-middle text-right text-lg-center totalQuantity" data-label="Total quantity">{{ !empty($order) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
                         </tr>
                         @else
                         <tr>

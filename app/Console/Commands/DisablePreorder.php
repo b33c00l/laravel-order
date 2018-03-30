@@ -47,9 +47,9 @@ class DisablePreorder extends Command
         $preorderProducts = Product::where('preorder', 1)->get();
         foreach ($preorderProducts as $preorderProduct) {
             if ($preorderProduct->deadline == Carbon::today()->toDateString()) {
-                $this->getTotal->delPendingPreorders($preorderProduct);
+                $this->cartService->delPendingPreorders($preorderProduct);
                 $preorderProduct->update(['preorder' => 2]);
-                $this->getTotal->preorderToOrder($preorderProduct);
+                $this->cartService->preorderToOrder($preorderProduct);
             }
         }
     }
