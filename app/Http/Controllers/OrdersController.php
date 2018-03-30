@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Http\Requests\ChangeOrderStatusRequest;
 
 use App\Mail\OrderConfirmed;
@@ -32,22 +33,23 @@ class OrdersController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if($user->role == 'admin')
-        {
+        if ($user->role == 'admin') {
             $orders = Order::paginate(config('pagination.value'));
-        }else{
-            $orders =$user->orders()->paginate(config('pagination.value'));
+        } else {
+            $orders = $user->orders()->paginate(config('pagination.value'));
         }
         return view('orders.orders', [
-            'orders'=>$orders,
+            'orders' => $orders,
         ]);
     }
+
     public function show($id)
     {
         $order = Order::findOrFail($id);
+        $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
-
-        return view('orders.single_order', ['products'=> $products, 'order'=> $order]);
+        $messages = $chat->messages()->get();
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'messages' => $messages]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)
@@ -56,27 +58,25 @@ class OrdersController extends Controller
         $userEmail = Auth::user()->client->email;
 
         $order = Order::findOrFail($id);
-        if ($request->action === 'Confirm'){
+        if ($request->action === 'Confirm') {
 
             $status = Order::CONFIRMED;
             Mail::to($userEmail)->send(new OrderConfirmed($id));
 
-        } elseif($request->action === 'Reject') {
+        } elseif ($request->action === 'Reject') {
             $status = Order::REJECTED;
             Mail::to($userEmail)->send(new OrderRejected($id));
         }
 
-        $file=$request->file('invoice');
-        if(isset($file))
-        {
+        $file = $request->file('invoice');
+        if (isset($file)) {
             $filenameWithExt = $this->checkInvoice->uploadInvoice($file);
-            if (empty($order->invoice))
-            {
+            if (empty($order->invoice)) {
                 $order->invoice()->create($request->except('_token') + [
                         'filename' => $filenameWithExt,
                     ]);
-            }else {
-                Storage::delete('public/invoices/'.$order->invoice->filename);
+            } else {
+                Storage::delete('public/invoices/' . $order->invoice->filename);
                 $order->invoice->update($request->except('_token') + [
                         'filename' => $filenameWithExt,
                     ]);
@@ -90,9 +90,8 @@ class OrdersController extends Controller
     public function download($id)
     {
         $order = Order::findOrFail($id);
-        if (!empty($order->invoice->filename))
-        {
-            $path = storage_path('app/public/invoices/'.$order->invoice->filename);
+        if (!empty($order->invoice->filename)) {
+            $path = storage_path('app/public/invoices/' . $order->invoice->filename);
 
             return response()->download($path);
         }
