@@ -192,31 +192,4 @@ class CartService
             }
         }
     }
-
-    public function preorderToOrder($preOrderProduct)
-    {
-        $preOrders = Order::UnconfirmedOrder()->Preorder()->get();
-        foreach ($preOrders as $preOrder)
-        {
-            foreach ($preOrder->orderProducts as $product)
-            {
-                if ($product->product_id === $preOrderProduct->id)
-                {
-                    $user = $product->order->user;
-                    $order = $user->orders()->InCart()->Order()->first();
-                    if (isset($order))
-                    {
-                        $product->update(['order_id' => $order->id]);
-                    }else{
-                        $order = $this->createOrder($user);
-                        $product->update(['order_id' => $order->id]);
-                    }
-                    if ($order->orderProducts->count() == 0)
-                    {
-                        $order->delete();
-                    }
-                }
-            }
-        }
-    }
 }
