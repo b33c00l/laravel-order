@@ -2,25 +2,28 @@
 
 namespace App\Mail;
 
+use App\Services\CartService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class OrderRejected extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $id;
+    protected $order;
+    protected $cartService;
+
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($order , CartService $cartService)
     {
-        $this->id = $id;
+        $this->order = $order;
+        $this->cartService = $cartService;
     }
 
     /**
@@ -32,7 +35,9 @@ class OrderRejected extends Mailable
     {
         return $this->view('emails.orders.rejected')
             ->with([
-                'id' => $this->id
+                'order' => $this->order,
+                'orderProducts' => $this->order->orderProducts,
+                'totalOrder' => $this->cartService->getTotalCartPrice($this->order)
             ]);
     }
 }

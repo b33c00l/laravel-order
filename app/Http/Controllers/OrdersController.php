@@ -8,6 +8,8 @@ use App\Mail\OrderConfirmed;
 use App\Mail\OrderRejected;
 
 use App\Order;
+
+use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -23,10 +25,13 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $checkInvoice;
+    private $cartService;
 
-    public function __construct(InvoiceService $invoiceService)
+    public function __construct(InvoiceService $invoiceService, CartService $cartService)
     {
         $this->checkInvoice = $invoiceService;
+        $this->cartService = $cartService;
+
     }
 
     public function index()
@@ -52,18 +57,17 @@ class OrdersController extends Controller
 
     public function action(ChangeOrderStatusRequest $request, $id)
     {
-        dd(Order::findOrFail($id));
-        $userEmail = Auth::user()->client->email;
+        $userEmail = Order::findOrFail($id)->user->client->email;
 
         $order = Order::findOrFail($id);
         if ($request->action === 'Confirm'){
 
             $status = Order::CONFIRMED;
-            Mail::to($userEmail)->send(new OrderConfirmed($id));
+            Mail::to($userEmail)->send(new OrderConfirmed($order, $this->cartService));
 
         } elseif($request->action === 'Reject') {
             $status = Order::REJECTED;
-            Mail::to($userEmail)->send(new OrderRejected($id));
+            Mail::to($userEmail)->send(new OrderRejected($order, $this->cartService));
         }
 
         $file=$request->file('invoice');
