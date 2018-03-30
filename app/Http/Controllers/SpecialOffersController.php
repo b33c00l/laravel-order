@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Http\Requests\StoreSpecialOfferRequest;
+use App\Mail\SpecialOfferMail;
 use App\Platform;
 use App\Price;
 use App\Product;
@@ -13,6 +14,7 @@ use App\Services\PricingService;
 use App\SpecialOffer;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SpecialOffersController extends Controller
 {
@@ -43,6 +45,7 @@ class SpecialOffersController extends Controller
         $file = $request->filename;
         $filename = $this->imageService->uploadImage($file);
         $specialOffer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
+
         foreach ($clients as $client_id) {
             $client = Client::findOrFail($client_id);
             $specialOffer->users()->attach($client->user->id);
@@ -50,12 +53,42 @@ class SpecialOffersController extends Controller
 
         $games = $request->get('games');
 
+        $check = true;
+        $specialProductPrice = $request->get('specialProductPrice');
         foreach ($games as $game) {
             $product = Product::FindOrFail($game);
-            $price = $product->prices()->where('special_offer_id', null)->where('user_id', null)->orderBy('date', 'DESC')->first();
-            $specialOffer->prices()->create(['amount' => $request->get('price_coef') * $price->amount, 'product_id' => $game]);
+            $price = $product->base_price;
+
+            if (($request->get('price_coef') != null && $price != $specialProductPrice[$game])) {
+                $check = false;
+            }
         }
-        return redirect()->back()->with('status', 'Success');
+        if ($check == true){
+            foreach ($games as $game) {
+                $product = Product::FindOrFail($game);
+                $price = $product->base_price;
+
+                if ($request->get('price_coef') != null) {
+                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
+                } else {
+                    $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
+                }
+            }
+            $status = 'success';
+            $msg = 'Special offer has been made successfully';
+        }else{
+            $status = 'danger';
+            $msg = 'Please SELECT special offer with coefficient or make it by changing prices';
+        }
+
+
+
+        foreach ($specialOffer->users as $user) {
+            $email = $user->client->email;
+            Mail::to($email)->send(new SpecialOfferMail($specialOffer, $user));
+        }
+
+        return redirect()->back()->with(['status' =>$status, 'msg'=>$msg]);
     }
 
     public function filter(Request $request)

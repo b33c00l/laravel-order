@@ -3,9 +3,8 @@
 
 <div class="col-10 mt-5">
     <!-- Filters -->
-        <div class="form-row align-items-center">
+     <div class="form-row align-items-center">
         <form class="form-inline" action="{{route('order.orders')}}" method="get">
-
             @admin
             <div class=" col-auto my-1">
                 <select class="form-control" name="user_id" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,13 +53,15 @@
                 @foreach ($orders as $order)
 
                 <tr>
-                    <td data-label="Order:" class="align-middle"><a href="{{route('order.products', $order->id)}}">{{$order->id}} </a></td>
-                    <td data-label="Date:" class="align-middle">{{$order->date}}</td>
-                    <td data-label="User name:" class="align-middle">{{$order->user->name}}</td>
-                    <td data-label="Status:" class="align-middle">{{$order->OrderStatus}}</td>
-                    <td data-label="Type:" class="align-middle">{{$order->OrderType}}</td>
-                    <td data-label="Invoice:" class="align-middle">
-                        <img width="20px" class="figure-img" src="images/pdf.png">
+                    <td data-label="Order:" class="align-middle text-right text-lg-center"><a href="{{route('order.products', $order->id)}}">{{$order->id}} </a></td>
+                    <td data-label="Date:" class="align-middle text-right text-lg-center">{{$order->date}}</td>
+                    <td data-label="User name:" class="align-middle text-right text-lg-center">{{$order->user->name}}</td>
+                    <td data-label="Status:" class="align-middle text-right text-lg-center">{{$order->OrderStatus}}</td>
+                    <td data-label="Type:" class="align-middle text-right text-lg-center">{{$order->OrderType}}</td>
+                    <td data-label="Invoice:" class="align-middle text-right text-lg-center">
+                        @if(!empty($order->invoice))
+                            <a href="{{ route('order.invoice.download', $order->id) }}"><img width="20px" class="figure-img text-right text-lg-center" src="images/pdf.png"></a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -70,16 +71,17 @@
         </div>
     </div>
     <!-- Export all to Excel -->
-    <div class="row export">
-        <label>
-            <h4>Export all to excel:</h4>
-        </label>
-    </div>
+    
     <div class="row">
-        <div class="btn-group" role="group" aria-label="export_buttons">
-            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export">Orders</a>
-            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export">Pre-orders</a>
-            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export">Back-orders</a>
+        <div class="col-10">
+            <label>
+                <h4>Export all to excel:</h4>
+            </label> 
+        </div>
+        <div class="btn-group col-10" role="group" aria-label="export_buttons">
+            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
+            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
+            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
         </div>
     </div>
     <!-- Pagination -->
@@ -92,5 +94,6 @@
     </div>
 
 
+</div>
 </div>
 @endsection
