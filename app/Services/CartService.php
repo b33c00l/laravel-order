@@ -38,11 +38,7 @@ class CartService
 
         if (empty($user_order))
         {
-            $order = $user->orders()->create([
-                'status' => Order::PENDING,
-                'date' => Carbon::now(),
-                'type' => Order::ORDER
-            ]);
+            $this->createOrder($user);
         }else{
             $order = $user_order;
         }
@@ -76,6 +72,17 @@ class CartService
         }
         return $value;
     }
+
+    public function createOrder($user)
+    {
+        $order = $user->orders()->create([
+            'status' => Order::PENDING,
+            'date' => Carbon::now(),
+            'type' => Order::ORDER
+        ]);
+        return $order;
+    }
+
     public function storeBackOrder($product, $quantity)
     {
         $user = Auth::user();
@@ -161,5 +168,28 @@ class CartService
             'totalPrice' => $this->getTotalCartPrice($singleProduct->order),
         ];
         return $data;
+    }
+
+    public function delPendingPreorders($preorderProduct)
+    {
+        $preOrders = Order::InCart()->Preorder()->get();
+        if (!empty($preOrders))
+        {
+            foreach ($preOrders as $order)
+            {
+                foreach ($order->orderProducts as $product)
+                {
+                    if ($product->product_id == $preorderProduct->id)
+                    {
+                        $product->delete();
+                        $order = Order::findOrFail($order->id);
+                        if ($order->orderProducts->count() == 0)
+                        {
+                            $order->delete();
+                        }
+                    }
+                }
+            }
+        }
     }
 }
