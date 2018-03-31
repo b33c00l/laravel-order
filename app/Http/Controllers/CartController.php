@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Http\Requests\StoreOrderRequest;
+use App\Mail\OrderReceived;
 use App\Order;
 use App\OrderProduct;
 use App\Product;
@@ -10,6 +12,7 @@ use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
+use Illuminate\Support\Facades\Mail;
 
 
 class CartController extends Controller
@@ -93,7 +96,7 @@ class CartController extends Controller
                 'price' => $request->price,
             ]);
             $product = OrderProduct::findOrFail($id);
-            $singleProduct = $product->first();
+            $singleProduct = $product;
             $data = ['id' => $id,
                 'singleProductPrice' => $this->getTotal->getSingleProductPrice($singleProduct),
                 'totalPrice' => $this->getTotal->getTotalCartPrice($singleProduct->order),
@@ -127,6 +130,7 @@ class CartController extends Controller
         }
         return redirect()->back();
     }
+
 
     public function destroySelected(Request $request)
     {
@@ -173,6 +177,11 @@ class CartController extends Controller
         if ($request->has('preorder_id')) {
             Order::findOrFail($request->preorder_id)->update(['status' => Order::UNCONFIRMED]);
         }
+        if (!empty($request->comments)) {
+            $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
+            $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+        }
+
         return redirect()->back();
     }
 }

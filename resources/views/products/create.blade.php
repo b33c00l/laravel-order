@@ -98,7 +98,7 @@
                             @else
                                 <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{ old('publisher_name') }}">
                             @endif
-                            
+
                         </div>
                     </div>
                 </div>

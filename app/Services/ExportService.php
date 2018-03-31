@@ -33,7 +33,7 @@ class ExportService
                     }
                 }
                 $orderProducts = OrderProduct::whereIn('product_id', $product_id)->InOrders($orders_id)->get()->unique('product_id');
-                $sheet->loadView('ExportOrders', compact(['orders', 'orderProducts', 'type']));
+                $sheet->loadView('export.exportOrders', compact(['orders', 'orderProducts', 'type']));
             });
         })->export('xlsx');
     }

@@ -27,7 +27,6 @@
     padding: 0;
     }
 
-
     .page-link {
     color: #000000;
     }
@@ -226,7 +225,7 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    background: #000000 url('http://localhost/voldemaras/laravel-html/images/textura.png');
+    background: #000000 url('../images/textura.png');
     background-repeat: repeat;
     }
 
@@ -237,6 +236,10 @@
     min-height: 400px;
     align-self: center;
     padding:30px;
+    }
+
+    .login_logo {
+        width: 100%;
     }
 
     .login-row {
@@ -324,7 +327,7 @@
 
     div.packshot {
     width: 100%;
-    margin-left: 5px; 
+    margin-left: 5px;
     display: inline-block;
     justify-content: center;
     }
@@ -798,10 +801,6 @@
     width: 75px;
     }
 
-    .preorders {
-    width: 75px;
-    }
-
     .publisher {
     width: 80px;
     }
@@ -901,3 +900,4 @@
     display: none;
     color: green;
     }
+

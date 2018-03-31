@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeOrderStatusRequest;
-use App\Invoice;
+use App\Mail\OrderConfirmed;
+use App\Mail\OrderRejected;
 use App\Order;
 use App\OrderProduct;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Services\InvoiceService;
+use Illuminate\Support\Facades\Storage;
 
 
 class OrdersController extends Controller
@@ -29,6 +31,7 @@ class OrdersController extends Controller
 
     public function index(Request $request)
     {
+<<<<<<< HEAD
         $user=Auth::user();
 	    $orders = new Order;
 	    $selectedUser= -1;
@@ -38,12 +41,18 @@ class OrdersController extends Controller
         
         if($user->role == 'admin')
         {
+=======
+        $user = Auth::user();
+        if($user->role == 'admin'){
+          $orders = Order::paginate(20);
+>>>>>>> edb38b5daec1a13cc9228e88114c3d0964bfbadf
 	        $user = User::all();
             if ( $request->has('user_id') && $request->get('user_id')>0){
 	            $orders = $orders->where('user_id', $request->get('user_id'));
 	            $selectedUser=$request->get('user_id');
             }
         }else{
+<<<<<<< HEAD
             $orders = $orders->where('user_id', $user->id);
         }
 	    if($request->has('type') && $request->get('type') >= 0){
@@ -55,6 +64,23 @@ class OrdersController extends Controller
 		    $selectedStatus=$request->get('status');
 	    }
 	    $orders = $orders->paginate(20);
+=======
+            $orders =$user->orders()->paginate(20);
+	          if ($request->has('filter')){
+	        	  $orders = new Order();
+		          if($request->get('type') >= 0){
+			          $orders = $orders->where('user_id', $user->id)->where('type', $request->get('type'));
+		          }
+		          if($request->get('status') >= 0){
+			          $orders = $orders->where('user_id', $user->id)->where('status', $request->get('status'));
+		          }
+		          $orders = $orders->paginate(20);
+	          }
+            $orders = Order::paginate(config('pagination.value'));
+            }else{
+               $orders =$user->orders()->paginate(config('pagination.value'));
+          }
+>>>>>>> edb38b5daec1a13cc9228e88114c3d0964bfbadf
         return view('orders.orders', [
             'orders'=>$orders,
             'users'=>$user,
@@ -74,26 +100,49 @@ class OrdersController extends Controller
     public function action(ChangeOrderStatusRequest $request, $id)
     {
 
-        if ($request->action === 'confirm'){
+        $userEmail = Auth::user()->client->email;
+
+        $order = Order::findOrFail($id);
+        if ($request->action === 'Confirm'){
+
             $status = Order::CONFIRMED;
-        }elseif($request->action === 'reject'){
+            Mail::to($userEmail)->send(new OrderConfirmed($id));
+
+        } elseif($request->action === 'Reject') {
             $status = Order::REJECTED;
+            Mail::to($userEmail)->send(new OrderRejected($id));
         }
+
         $file=$request->file('invoice');
-        if (isset($file))
+        if(isset($file))
         {
-
-            $filenameWithExt = $this->checkInvoice->generateName($file);
-
-            Invoice::create($request->except('_token') + [
-                    'filename' => $filenameWithExt,
-                    'order_id' =>$id,
-                ]);
-
-            $file->storeAs('public/invoices', $filenameWithExt);
+            $filenameWithExt = $this->checkInvoice->uploadInvoice($file);
+            if (empty($order->invoice))
+            {
+                $order->invoice()->create($request->except('_token') + [
+                        'filename' => $filenameWithExt,
+                    ]);
+            }else {
+                Storage::delete('public/invoices/'.$order->invoice->filename);
+                $order->invoice->update($request->except('_token') + [
+                        'filename' => $filenameWithExt,
+                    ]);
+            }
         }
+        $order->update(['status' => $status]);
 
-        Order::findOrFail($id)->update(['status' => $status]);
         return redirect()->route('order.orders');
+    }
+
+    public function download($id)
+    {
+        $order = Order::findOrFail($id);
+        if (!empty($order->invoice->filename))
+        {
+            $path = storage_path('app/public/invoices/'.$order->invoice->filename);
+
+            return response()->download($path);
+        }
+        return redirect()->back();
     }
 }
