@@ -11,7 +11,7 @@
                 <select class="form-control" name="user_id" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <option value="-1">User name</option>
                 @foreach($users as $user)
-                     <option value="{{$user->id}}">{{$user->name}}</option>
+                     <option {{($selectedUser == $user->id)?'selected="selected"':''}} value="{{$user->id}}">{{$user->name}}</option>
                 @endforeach
                 </select>
             </div>
@@ -19,18 +19,18 @@
             <div class=" col-auto my-1">
                 <select class="form-control" name="status" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <option value="-1">Status</option>
-                    <option value="{{App\Order::PENDING}}">Pending</option>
-                    <option value="{{App\Order::UNCONFIRMED}}">Unconfirmed</option>
-                    <option value="{{App\Order::CONFIRMED}}">Confirmed</option>
-                    <option value="{{App\Order::REJECTED}}">Rejected</option>
+                    <option {{($selectedStatus == App\Order::PENDING)?'selected="selected"':''}} value="{{App\Order::PENDING}}">Pending</option>
+                    <option {{($selectedStatus == App\Order::UNCONFIRMED)?'selected="selected"':''}} value="{{App\Order::UNCONFIRMED}}">Unconfirmed</option>
+                    <option {{($selectedStatus == App\Order::CONFIRMED)?'selected="selected"':''}} value="{{App\Order::CONFIRMED}}">Confirmed</option>
+                    <option {{($selectedStatus == App\Order::REJECTED)?'selected="selected"':''}} value="{{App\Order::REJECTED}}">Rejected</option>
                 </select>
             </div>
             <div class=" col-auto my-1">
                 <select class="form-control" name="type" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <option value="-1">Type</option>
-                    <option value="{{App\Order::ORDER}}">Order</option>
-                    <option value="{{App\Order::PREORDER}}">Preorder</option>
-                    <option value="{{App\Order::BACKORDER}}">Backorder</option>
+                    <option {{($selectedStatus == App\Order::ORDER)?'selected="selected"':''}} value="{{App\Order::ORDER}}">Order</option>
+                    <option {{($selectedStatus == App\Order::PREORDER)?'selected="selected"':''}} value="{{App\Order::PREORDER}}">Preorder</option>
+                    <option {{($selectedStatus == App\Order::BACKORDER)?'selected="selected"':''}} value="{{App\Order::BACKORDER}}">Backorder</option>
                 </select>
             </div>
             <button type="submit" name="filter" class="btn btn-danger filters">Filter</button>

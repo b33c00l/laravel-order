@@ -30,38 +30,37 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $user=Auth::user();
+	    $orders = new Order;
+	    $selectedUser= -1;
+	    $selectedType= -1;
+	    $selectedStatus= -1;
+	    
+        
         if($user->role == 'admin')
         {
-            $orders = Order::paginate(20);
 	        $user = User::all();
-            if ($request->has('filter')){
-            	$orders = new Order;
-            	if($request->get('user_id') >0){
+            if ( $request->has('user_id') && $request->get('user_id')>0){
 	            $orders = $orders->where('user_id', $request->get('user_id'));
-	            }
-	            if($request->get('type') >= 0){
-		            $orders = $orders->where('type', $request->get('type'));
-	            }
-	            if($request->get('status') >= 0){
-		            $orders = $orders->where('status', $request->get('status'));
-	            }
-	            $orders = $orders->paginate(20);
+	            $selectedUser=$request->get('user_id');
             }
         }else{
-            $orders =$user->orders()->paginate(20);
-	        if ($request->has('filter')){
-	        	$orders = new Order();
-		        if($request->get('type') >= 0){
-			        $orders = $orders->where('user_id', $user->id)->where('type', $request->get('type'));
-		        }
-		        if($request->get('status') >= 0){
-			        $orders = $orders->where('user_id', $user->id)->where('status', $request->get('status'));
-		        }
-		        $orders = $orders->paginate(20);
-	        }
+            $orders = $orders->where('user_id', $user->id);
         }
+	    if($request->has('type') && $request->get('type') >= 0){
+		    $orders = $orders->where('type', $request->get('type'));
+		    $selectedType=$request->get('type');
+	    }
+	    if($request->has('status') && $request->get('status') >= 0){
+		    $orders = $orders->where('status', $request->get('status'));
+		    $selectedStatus=$request->get('status');
+	    }
+	    $orders = $orders->paginate(20);
         return view('orders.orders', [
-            'orders'=>$orders, 'users'=>$user
+            'orders'=>$orders,
+            'users'=>$user,
+	        'selectedUser'=>$selectedUser,
+	        'selectedType'=>$selectedType,
+	        'selectedStatus'=>$selectedStatus
         ]);
     }
     public function show($id)
