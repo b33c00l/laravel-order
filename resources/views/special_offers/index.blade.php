@@ -78,9 +78,10 @@
                             <textarea class="form-control" name="description" id="exampleFormControlTextarea1"
                                       rows="6"></textarea>
                         </div>
-                        <div class="col-12">
-                            <label><h4>Banner image</h4></label>
-                            <input class="form-control" type="file" name="filename">
+                        <div class="col-12 custom-file">
+                            <label for="exampleFormControlTextarea1"><h4>Upload banner</h4></label>
+                            <input id="file-upload" type="file" name="filename" class="custom-file-input">
+                            <label id="file-upload-filename" class="custom-file-label" for="file-upload">Choose file</label>
                         </div>
                     </div>
                     @if ($errors->has('filename'))
