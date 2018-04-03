@@ -25,24 +25,19 @@
     </div>
     <div class="row">
         <div class="col-sm-6 mx-auto mt-4">
-            <form action="{{ route('products.importgit') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('products.import') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Import file</span>
+                        <input class="form-control" type="file" name="file">
                     </div>
-                        <div class="col-12">
-                            <input class="form-control" type="file" name="file">
-                        </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-dark btn-block" type="submit" name="submit" value="Import">Import</button>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-dark btn-block" type="submit" name="submit" value="Import">Import</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 </div>
 </div>
 @endsection
