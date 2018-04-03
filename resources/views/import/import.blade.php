@@ -33,10 +33,9 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Import file</span>
                     </div>
-                    <div class="custom-file">
-                        <input type="file" name="file" class="custom-file-input" id="inputGroupFile01">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                    </div>
+                        <div class="col-12">
+                            <input class="form-control" type="file" name="file">
+                        </div>
                 </div>
                 <div class="d-flex justify-content-center">
                 <button class="btn btn-outline-dark" type="submit" name="submit" value="Import">Import</button>
