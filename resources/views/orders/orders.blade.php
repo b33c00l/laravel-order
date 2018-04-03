@@ -76,14 +76,6 @@
 							</td>
 						</tr>
 					@endforeach
-
-<<<<<<< HEAD
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<!-- Export all to Excel -->
-=======
                 </tbody>
             </table>
         </div>
@@ -110,28 +102,5 @@
             </ul>
         </nav>
     </div>
->>>>>>> 80234d440423b156878473479dc9fdf6d19db354
-
-		<div class="row">
-			<div class="col-10">
-				<label>
-					<h4>Export all to excel:</h4>
-				</label>
-			</div>
-			<div class="btn-group col-10" role="group" aria-label="export_buttons">
-				<a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
-				<a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
-				<a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
-			</div>
-		</div>
-		<!-- Pagination -->
-		<div id="pagination" class="row justify-content-center">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-					{{ $orders->links() }}
-				</ul>
-			</nav>
-		</div>
-	</div>
 	</div>
 @endsection
