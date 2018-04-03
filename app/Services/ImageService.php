@@ -88,9 +88,9 @@ class ImageService
         while (file_exists( storage_path('app/public/image/medium-' . $filename ) )) {
             $six_digit_random_number = mt_rand(100000, 999999);
             $filename = $six_digit_random_number . $filename;
-        }   
+        }
 
-        $img_thumb->save( storage_path('app/public/image/medium-' . $filename ) ); 
+        $img_thumb->save( storage_path('app/public/image/medium-' . $filename ) );
 
         $filename = $img_thumb->basename;
         return $filename;
