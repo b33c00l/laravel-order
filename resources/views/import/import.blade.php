@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-10">
     <div class="row">
-        <div class="col-12 mt-5 mb-5 text-center">
+        <div class="col-12 mt-5 text-center">
             <h2>Import products</h2>
         </div>
         <div class="col-sm-6 mx-auto">
@@ -37,8 +37,9 @@
                             <input class="form-control" type="file" name="file">
                         </div>
                 </div>
+
                 <div class="d-flex justify-content-center">
-                <button class="btn btn-outline-dark" type="submit" name="submit" value="Import">Import</button>
+                <button class="btn btn-dark btn-block" type="submit" name="submit" value="Import">Import</button>
             </div>
             </div>
         </form>

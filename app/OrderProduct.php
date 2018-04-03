@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderProduct extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['quantity','product_id','price'];
+    protected $fillable = ['quantity','product_id','price','order_id'];
 
     public function product()
     {
