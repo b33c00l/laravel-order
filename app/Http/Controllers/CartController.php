@@ -187,7 +187,6 @@ class CartController extends Controller
         }
         $userEmail = Auth::user()->client->email;
         Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $orderComment));
-
         return redirect()->back();
     }
 }
