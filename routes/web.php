@@ -16,6 +16,7 @@ Route::post('login', 'Auth\LoginController@login');
 
 Route::get('complete/{token}', 'UsersController@getToken')->name('complete.show');
 Route::post('complete', 'UsersController@storePassword')->name('complete.store');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->group(function()
 {	
@@ -83,5 +84,4 @@ Route::middleware('auth')->group(function()
 	Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');
 
 	});
-
 });

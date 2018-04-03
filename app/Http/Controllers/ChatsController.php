@@ -45,7 +45,7 @@ class ChatsController extends Controller
         $chat = Chat::create($request->only('topic', 'order_id') + ['user_id' => Auth::id()]);
         $chat->messages()->create($request->only('message') + ['user_id' => Auth::id()]);
 
-        if(Auth::user()->role == 'user'){
+        if (Auth::user()->role == 'user') {
             $adminEmail = $this->contactService->getEmailForCountry(Auth::user()->country);
             Mail::to($adminEmail)->send(new ChatTopicCreated($chat->id));
         }
@@ -81,7 +81,7 @@ class ChatsController extends Controller
             $adminRole = $admin->role;
             $adminEmail = $this->contactService->getEmailForCountry($admin->country);
             $diffTimeAdmin = carbon::now()->diffInMinutes($adminTrack);
-            if($adminRole == 'admin' && $diffTimeAdmin > config('session.active_time')) {
+            if ($adminRole == 'admin' && $diffTimeAdmin > config('session.active_time')) {
                 Mail::to($adminEmail)->send(new ChatMessageReceived('admin', $chat->id, $message));
             }
         }
@@ -94,11 +94,11 @@ class ChatsController extends Controller
 
         $chat->messages()->create($request->only('message') + ['user_id' => Auth::id()]);
 
-        if($clientRole == 'user' && $diffTimeClient > config('session.active_time')){
+        if ($clientRole == 'user' && $diffTimeClient > config('session.active_time')) {
             Mail::to($clientEmail)->send(new ChatMessageReceived('client', $chat->id, $message, $client->name));
         }
 
-        return redirect()->route('chat.show', $request->chat_id);
+        return redirect()->back();
     }
 
     public function disable(DisableChatRequest $request)

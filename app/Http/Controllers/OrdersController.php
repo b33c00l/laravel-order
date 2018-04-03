@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Http\Requests\ChangeOrderStatusRequest;
 use App\Mail\OrderConfirmed;
 use App\Mail\OrderRejected;
@@ -23,36 +24,33 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $checkInvoice;
+    private $cartService;
 
     public function __construct(InvoiceService $invoiceService)
     {
         $this->checkInvoice = $invoiceService;
+
     }
 
     public function index(Request $request)
     {
-<<<<<<< HEAD
-        $user=Auth::user();
+ $user=Auth::user();
 	    $orders = new Order;
 	    $selectedUser= -1;
 	    $selectedType= -1;
 	    $selectedStatus= -1;
-	    
-        
+	   
         if($user->role == 'admin')
         {
-=======
         $user = Auth::user();
-        if($user->role == 'admin'){
-          $orders = Order::paginate(20);
->>>>>>> edb38b5daec1a13cc9228e88114c3d0964bfbadf
-	        $user = User::all();
-            if ( $request->has('user_id') && $request->get('user_id')>0){
-	            $orders = $orders->where('user_id', $request->get('user_id'));
-	            $selectedUser=$request->get('user_id');
-            }
+        if($user->role == 'admin') {
+	        $user = User ::all();
+	        if ( $request -> has( 'user_id' ) && $request -> get( 'user_id' ) > 0 ) {
+		        $orders       = $orders -> where( 'user_id', $request -> get( 'user_id' ) );
+		        $selectedUser = $request -> get( 'user_id' );
+	        }
+        }
         }else{
-<<<<<<< HEAD
             $orders = $orders->where('user_id', $user->id);
         }
 	    if($request->has('type') && $request->get('type') >= 0){
@@ -63,67 +61,49 @@ class OrdersController extends Controller
 		    $orders = $orders->where('status', $request->get('status'));
 		    $selectedStatus=$request->get('status');
 	    }
-	    $orders = $orders->paginate(20);
-=======
-            $orders =$user->orders()->paginate(20);
-	          if ($request->has('filter')){
-	        	  $orders = new Order();
-		          if($request->get('type') >= 0){
-			          $orders = $orders->where('user_id', $user->id)->where('type', $request->get('type'));
-		          }
-		          if($request->get('status') >= 0){
-			          $orders = $orders->where('user_id', $user->id)->where('status', $request->get('status'));
-		          }
-		          $orders = $orders->paginate(20);
-	          }
-            $orders = Order::paginate(config('pagination.value'));
-            }else{
-               $orders =$user->orders()->paginate(config('pagination.value'));
-          }
->>>>>>> edb38b5daec1a13cc9228e88114c3d0964bfbadf
+	    $orders = $orders->paginate(config('pagination.value'));
         return view('orders.orders', [
-            'orders'=>$orders,
-            'users'=>$user,
+          'orders'=>$orders,
+          'users'=>$user,
 	        'selectedUser'=>$selectedUser,
 	        'selectedType'=>$selectedType,
 	        'selectedStatus'=>$selectedStatus
         ]);
     }
+
     public function show($id)
     {
         $order = Order::findOrFail($id);
+        $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
-
-        return view('orders.single_order', ['products'=> $products, 'order'=> $order]);
+        $messages = $chat->messages()->get();
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'messages' => $messages]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)
     {
-
-        $userEmail = Auth::user()->client->email;
+        $userEmail = Order::findOrFail($id)->user->client->email;
 
         $order = Order::findOrFail($id);
-        if ($request->action === 'Confirm'){
+        if ($request->action === 'Confirm') {
 
             $status = Order::CONFIRMED;
-            Mail::to($userEmail)->send(new OrderConfirmed($id));
+            Mail::to($userEmail)->send(new OrderConfirmed($order));
 
-        } elseif($request->action === 'Reject') {
+        } elseif ($request->action === 'Reject') {
             $status = Order::REJECTED;
-            Mail::to($userEmail)->send(new OrderRejected($id));
+            Mail::to($userEmail)->send(new OrderRejected($order));
         }
 
-        $file=$request->file('invoice');
-        if(isset($file))
-        {
+        $file = $request->file('invoice');
+        if (isset($file)) {
             $filenameWithExt = $this->checkInvoice->uploadInvoice($file);
-            if (empty($order->invoice))
-            {
+            if (empty($order->invoice)) {
                 $order->invoice()->create($request->except('_token') + [
                         'filename' => $filenameWithExt,
                     ]);
-            }else {
-                Storage::delete('public/invoices/'.$order->invoice->filename);
+            } else {
+                Storage::delete('public/invoices/' . $order->invoice->filename);
                 $order->invoice->update($request->except('_token') + [
                         'filename' => $filenameWithExt,
                     ]);
@@ -137,9 +117,8 @@ class OrdersController extends Controller
     public function download($id)
     {
         $order = Order::findOrFail($id);
-        if (!empty($order->invoice->filename))
-        {
-            $path = storage_path('app/public/invoices/'.$order->invoice->filename);
+        if (!empty($order->invoice->filename)) {
+            $path = storage_path('app/public/invoices/' . $order->invoice->filename);
 
             return response()->download($path);
         }
