@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function()
 	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
-	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
+	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:admin');
 	Route::get('chat/create', 'ChatsController@create')->name('chat.create');
 	Route::post('chat/store', 'ChatsController@store')->name('chat.store');
 	Route::get('chat/user', 'ChatsController@getUserChats')->name('chat.user');
