@@ -28,7 +28,8 @@
                         </div>
                         <div class="form-group">
                             <label>Message</label>
-                            <textarea class="form-control" rows="6" type="text" name="message" placeholder="Enter message"></textarea>
+                            <textarea class="form-control" rows="6" type="text" name="message"
+                                      placeholder="Enter message"></textarea>
                             @include('chat.partials.error', ['name' => 'message'])
                         </div>
                         <button type="submit" class="btn btn-primary">Send message</button>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-10">
     <div class="row">
-        <div class="col-12 mt-5 mb-5 text-center">
+        <div class="col-12 mt-5 text-center">
             <h2>Import products</h2>
         </div>
         <div class="col-sm-6 mx-auto">
@@ -29,17 +29,14 @@
             <form action="{{ route('products.import') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Import file</span>
-                    </div>
                     <div class="custom-file">
-                        <input type="file" name="file" class="custom-file-input" id="inputGroupFile01">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        <input id="file-upload" type="file" name="file" class="custom-file-input">
+                        <label id="file-upload-filename" class="custom-file-label" for="file-upload">Choose file</label>
                     </div>
                 </div>
+
                 <div class="d-flex justify-content-center">
-                <button class="btn btn-outline-dark" type="submit" name="submit" value="Import">Import</button>
+                <button class="btn btn-dark btn-block" type="submit" name="submit" value="Import">Import</button>
             </div>
             </div>
         </form>
