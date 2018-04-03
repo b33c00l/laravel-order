@@ -44,11 +44,12 @@ class SpecialOffersController extends Controller
         $clients = $request->get('client_id');
         $file = $request->filename;
         $filename = $this->imageService->uploadImage($file);
-        $specialOffer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
+        $special_offer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
 
         foreach ($clients as $client_id) 
         {
             $client = Client::findOrFail($client_id);
+
             if($client->user != null)
             {
                 $specialOffer->users()->attach($client->user->id);
@@ -73,9 +74,9 @@ class SpecialOffersController extends Controller
                 $price = $product->base_price;
 
                 if ($request->get('price_coef') != null) {
-                    $specialOffer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
+                    $special_offer->prices()->create(['amount' => number_format($request->get('price_coef') * $price, 2, '.', ''), 'product_id' => $game]);
                 } else {
-                    $specialOffer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
+                    $special_offer->prices()->create(['amount' => $specialProductPrice[$game], 'product_id' => $game]);
                 }
             }
             $status = 'success';
@@ -87,9 +88,9 @@ class SpecialOffersController extends Controller
 
 
 
-        foreach ($specialOffer->users as $user) {
+        foreach ($special_offer->users as $user) {
             $email = $user->client->email;
-            Mail::to($email)->send(new SpecialOfferMail($specialOffer, $user));
+            Mail::to($email)->send(new SpecialOfferMail($special_offer, $user));
         }
 
         return redirect()->back()->with(['status' =>$status, 'msg'=>$msg]);
@@ -125,7 +126,7 @@ class SpecialOffersController extends Controller
 
     public function show($id)
     {
-        $specialOffer = SpecialOffer::FindOrFail($id);
-        return view('special_offers.show', compact('specialOffer'));
+        $special_offer = SpecialOffer::FindOrFail($id);
+        return view('special_offers.show', compact('special_offer'));
     }
 }
