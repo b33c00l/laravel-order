@@ -75,7 +75,7 @@ class CartController extends Controller
             {
                 $this->getTotal->storeBackOrder($product, $amount);
             }
-        }elseif($product->stockamount === 0 && $product->preorder === 0){
+        }elseif($product->stockamount === 0 && $product->preorder == 0){
             $this->getTotal->storeBackOrder($product, $request->quantity);
         } elseif($product->preorder === 1) {
             $this->getTotal->storePreOrder($product, $request->quantity);
