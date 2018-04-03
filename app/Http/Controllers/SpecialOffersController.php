@@ -46,9 +46,13 @@ class SpecialOffersController extends Controller
         $filename = $this->imageService->uploadImage($file);
         $specialOffer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
 
-        foreach ($clients as $client_id) {
+        foreach ($clients as $client_id) 
+        {
             $client = Client::findOrFail($client_id);
-            $specialOffer->users()->attach($client->user->id);
+            if($client->user != null)
+            {
+                $specialOffer->users()->attach($client->user->id);
+            }
         }
 
         $games = $request->get('games');

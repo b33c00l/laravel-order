@@ -19,7 +19,7 @@
         <div class="row pl-4 pr-4">
             <div class="col-lg-6 col-md-12">
                 <h6>Filter by platform and publisher</h6>
-                <form action="{{ route('special.filter') }}" method="post" class="form-inline">
+                <form action="{{ route('special.filter') }}" method="get" class="form-inline">
                     @csrf
                     <div class="input-group">
                         <select name="platform" class="custom-select" id="inputGroupSelect04">

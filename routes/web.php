@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function()
 			Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 			Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
 			Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
-			Route::post('special/filter', 'SpecialOffersController@filter')->name('special.filter');
+			Route::get('special/filter', 'SpecialOffersController@filter')->name('special.filter');
 			Route::post('special/country', 'SpecialOffersController@getByCountry')->name('special.filter.country');
 			Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
