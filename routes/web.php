@@ -76,7 +76,6 @@ Route::middleware('auth')->group(function()
 
 	Route::post('update/{id}', 'CartController@update')->name('order.update');
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
-	Route::delete('order', 'CartController@destroySelected')->name('order.product.del_selected');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 

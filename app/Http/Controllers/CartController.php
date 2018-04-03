@@ -75,7 +75,7 @@ class CartController extends Controller
             {
                 $this->getTotal->storeBackOrder($product, $amount);
             }
-        }elseif($product->stockamount === 0 && $product->preorder === 0){
+        }elseif($product->stockamount === 0 && $product->preorder == 0){
             $this->getTotal->storeBackOrder($product, $request->quantity);
         } elseif($product->preorder === 1) {
             $this->getTotal->storePreOrder($product, $request->quantity);
@@ -128,35 +128,19 @@ class CartController extends Controller
         $order_product->delete();
         $order_products = $order_product->order->orderProducts()->get();
         if ($order_products->count() == 0){
-            Order::findOrFail($order_product->order_id)->delete();
-            return redirect()->route('order.orders');
-        }
-        return redirect()->back();
-    }
-
-    public function destroySelected(Request $request)
-    {
-        if ($request->has('checkbox')){
-            foreach ($request->checkbox as $orderProduct) {
-                $selectedProducts[] = $orderProduct;
-            }
-            OrderProduct::whereIn('id', $selectedProducts)->delete();
-            $orders = [$request->get('order_id'),
-                $request->get('backorder_id'),
-                $request->get('preorder_id')];
-            for ($i = 0 ; $i < count($orders); $i++)
+            $order = Order::findOrFail($order_product->order_id);
+            if ($order->chat()->count() != null)
             {
-                if ($orders[$i] !== null)
+                foreach ($order->chat()->first()->messages as $message)
                 {
-                    $order = Order::findOrFail($orders[$i]);
-                    if ($order->orderProducts->count() == 0) {
-                        $order->delete();
-                    }
+                    $message->delete();
                 }
+                $order->chat()->delete();
             }
+            $order->delete();
+            return 'emptyOrder';
         }
-
-        return redirect()->back();
+        return 'Order';
     }
 
     public function confirm(Request $request)
@@ -165,6 +149,7 @@ class CartController extends Controller
         $backOrder = null;
         $preOrder = null;
         $orderComment = null;
+        $id = [];
 
         if ($request->has('order_id')) {
             $order = Order::findOrFail($request->order_id);
@@ -177,25 +162,29 @@ class CartController extends Controller
                 }
                 $product->product->stock()->create(['amount' => $quantity]);
             }
+            $id[] = $request->order_id;
         }
 
         if ($request->has('backorder_id')) {
             $backOrder = Order::findOrFail($request->backorder_id);
             $backOrder->update(['status' => Order::UNCONFIRMED]);
-
+            $id[] = $request->backorder_id;
         }
 
         if ($request->has('preorder_id')) {
             $preOrder = Order::findOrFail($request->preorder_id);
             $preOrder->update(['status' => Order::UNCONFIRMED]);
+            $id[] = $request->preorder_id;
         }
 
         if (!empty($request->comments)) {
-            $chat = Chat::create($request->only('order_id') + ['user_id' => Auth::id(),'topic' => 'Order nr. ' . $request->order_id]);
-            $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+            for ($i = 0; count($id) > $i; $i++)
+            {
+                $chat = Chat::create(['order_id' => $id[$i], 'user_id' => Auth::id(),'topic' => 'Order nr. ' . $id[$i]]);
+                $chat->messages()->create(['user_id' => Auth::id(), 'message' => $request->comments]);
+            }
             $orderComment = $request->comments;
         }
-
         $userEmail = Auth::user()->client->email;
         Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $orderComment));
 

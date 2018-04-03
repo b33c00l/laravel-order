@@ -63,11 +63,7 @@
                             </td>
                             @admin
                             <td class="align-middle text-right text-lg-center">
-                                <form action="{{route('order.product.delete', $product->id)}}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                                </form>
+                                    <button class="btn btn-danger btn-sm delete" data-html="{{ route('order.orders') }}" data-url="{{ route('order.product.delete', $product->id) }}">Delete</button>
                             </td>
                             @endadmin
                         </tr>

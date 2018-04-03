@@ -417,3 +417,25 @@ $(document).ready(function() {
         return;
     });
 });
+
+$('.delete').click(function(){
+    var row = $(this);
+    var url = row.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var pageUrl = row.data('html');
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        data: {
+            _token: token,
+        },
+        datatype: 'json',
+        success: function(data){
+            if (data === 'emptyOrder')
+            {
+                window.location.replace(pageUrl);
+            }
+            row.closest('tr').remove();
+        }
+    });
+});
