@@ -11,7 +11,9 @@ class SearchController extends Controller
         if ($request->get('query') == null) {
             $products = Product::paginate(config('pagination.value'));
         } else {
-            $products = Product::search('*' . $request->get('query') . '*')->paginate(config('pagination.value'));
+            $products = Product::search('*"' . $request->get('query') . '"*')
+//                ->orderBy('stock', 'desc')
+                ->paginate(config('pagination.value'));
         }
         return view('home', ['products' => $products,
             'categories' => $categories,

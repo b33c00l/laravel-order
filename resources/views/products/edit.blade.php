@@ -28,17 +28,17 @@
                                     <div class="radio">
                                         @if($product->preorder == 1)
                                             <label>
-                                                <input class="yes" checked type="radio" name="pre_order" value="1" /> Yes
+                                                <input class="yes" checked type="radio" name="preorder" value="1" /> Yes
                                             </label>
                                             <label>
-                                                <input class="no" type="radio" name="pre_order" value="0" /> No
+                                                <input class="no" type="radio" name="preorder" value="0" /> No
                                             </label>
                                         @else
                                             <label>
-                                                <input class="yes" type="radio" name="pre_order" value="1" /> Yes
+                                                <input class="yes" type="radio" name="preorder" value="1" /> Yes
                                             </label>
                                             <label>
-                                                <input class="no" checked  type="radio" name="pre_order" value="0" /> No
+                                                <input class="no" checked  type="radio" name="preorder" value="0" /> No
                                             </label>
                                         @endif
                                     </div>
@@ -49,7 +49,6 @@
                                 <label class="col control-label">Order deadline</label>
                                 <div class="col inputGroupContainer">
                                     <div class="input-group">
-                                        {{-- {{dd($product->deadline)}} --}}
                                         @if($product->preorder == 1)
                                             <input  name="deadline" placeholder="Order deadline" class="form-control deadline" type="date" value="{{ old('deadline', $product->deadline) }}">
                                         @else
@@ -89,13 +88,14 @@
                             <div class="form-group">
                                 <label class="col control-label">Select a category</label>
                                 <div class="col selectContainer">
-                                    <div class="input-group">
-                                        @if($product->categories->count() > 0)
+                                    <div class="input-group-prepend input_cat">
+                                        <button class="btn btn-dark add_cat" type="button">Add</button>
+                                        @if($categories->isNotEmpty())
                                         @foreach($product->categories as $category)
                                             <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category->name}}">
                                         @endforeach
                                         @else
-                                            <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]">    
+                                            <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" placeholder="Select a category">
                                         @endif
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                             <div class="form-group">
                                 <label class="col control-label">Select a publisher</label>
                                 <div class="col selectContainer">
-                                    <div class="input-group">
+                                    <div class="input-group ">
                                         @if($product->publisher != null)
                                         <input data-autocomplete="{{ $publishers }}" class="form-control autocomplete" type="text" name="publisher_name" value="{{ old('publisher', $product->publisher->name) }}">
                                         @else
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col control-label">Images</label>
                                 <div class="col inputGroupContainer">
@@ -122,7 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="col-lg-6 col-md-12">
                             <div class="form-group">
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -220,7 +220,7 @@
                                             <a target="_blank" href="{{ $image->url}}"><img style="width: 100%;" src="{{ $image->url}}"></a>
                                         </div>
                                         <input class="form-radio-input" name="image_id[]" type="checkbox" value="{{ $image->id }}" id="{{ $image->filename }}"
-                                    @if ((is_array(old('image_id'))) && in_array($image->id, old('image_id'))) checked 
+                                    @if ((is_array(old('image_id'))) && in_array($image->id, old('image_id'))) checked
                                     @endif>
                                     @endforeach
                                 </div>

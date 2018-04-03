@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 15);
@@ -10778,7 +10778,7 @@ return $.ui.version = "1.12.1";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.0
+ * @version 1.14.1
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -43212,24 +43212,29 @@ $(function () {
 
 $('#gll').slickLightbox();
 
+function addAutocomplete(input) {
+    input = $(input);
+    var autocomplete = input.attr('data-autocomplete');
+
+    autocomplete = JSON.parse(autocomplete);
+
+    activeList = [];
+
+    $.each(autocomplete, function (key, value) {
+        activeList.push(value['name']);
+    });
+
+    input.autocomplete({
+        source: activeList
+    });
+}
+
 $(function () {
     var inputs = $('.autocomplete');
 
     inputs.each(function (key, input) {
-        input = $(input);
-        var autocomplete = input.attr('data-autocomplete');
 
-        autocomplete = JSON.parse(autocomplete);
-
-        activeList = [];
-
-        $.each(autocomplete, function (key, value) {
-            activeList.push(value['name']);
-        });
-
-        input.autocomplete({
-            source: activeList
-        });
+        addAutocomplete(input);
     });
 });
 
@@ -43267,6 +43272,13 @@ $('.add-into-cart').click(function () {
     });
 });
 
+$(document).ready(function () {
+    $('#show_packshots').click(function () {
+        $('.packshots').toggle();
+        return;
+    });
+});
+
 $('.add-into-cart-single').click(function () {
     var element = $(".add-to-cart-span");
     var token = $('meta[name="csrf-token"]').attr('content');
@@ -43298,14 +43310,11 @@ $('.add-into-cart-single').click(function () {
     });
 });
 
-$('#show_packshots').click(function () {
-    $('.packshots').toggle();
-    return;
-});
-
-$('#show_preorders').click(function () {
-    $('.preorders').toggle();
-    return;
+$(document).ready(function () {
+    $('#show_preorders').click(function () {
+        $('.preorders').toggle();
+        return;
+    });
 });
 
 var timer = null;
@@ -43442,6 +43451,7 @@ $('.updateP').keyup(function () {
             data: { price: price, _token: token },
             dataType: "json",
             success: function success(data) {
+                console.log(data);
                 $('#singlePrice' + data['id']).html(data['singleProductPrice'].toFixed(2) + ' €');
                 $('#totalPrice').html(data['totalPrice'].toFixed(2) + ' €');
             },
@@ -43467,26 +43477,41 @@ $(document).ready(function () {
     });
 });
 
-$(".selectAll").click(function () {
-    if (this.checked) {
-        $("." + $(this).val()).each(function () {
-            this.checked = true;
-        });
-    } else {
-        $("." + $(this).val()).each(function () {
-            this.checked = false;
-        });
-    }
+$(document).ready(function () {
+    $(".selectAll").click(function () {
+        if (this.checked) {
+            $("." + $(this).val()).each(function () {
+                this.checked = true;
+            });
+        } else {
+            $("." + $(this).val()).each(function () {
+                this.checked = false;
+            });
+        }
+    });
 });
 
-$('.no').on("click", function () {
-    $('.deadline').prop("disabled", true);
-    return;
+$(document).ready(function () {
+    $('.no').on("click", function () {
+        $('.deadline').prop("disabled", true);
+        return;
+    });
 });
 
-$('.yes').on("click", function () {
-    $('.deadline').prop("disabled", false);
-    return;
+$(document).ready(function () {
+    $('.yes').on("click", function () {
+        $('.deadline').prop("disabled", false);
+        return;
+    });
+});
+
+$(document).ready(function () {
+    $('.add_cat').on("click", function () {
+        var categories = $('.input_cat input').attr('data-autocomplete').replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");;
+        var div = $('.input_cat').append('<input data-autocomplete="' + categories + '" class="form-control autocomplete" type="text" name="category_name[]" value="">');
+        addAutocomplete(div.children().last());
+        return;
+    });
 });
 
 /***/ }),

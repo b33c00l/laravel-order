@@ -49,17 +49,32 @@ class ProductsController extends Controller
             $platform = Platform::create( ['name' => $request->get('platform_name')] );
         } 
 
-        if ($category == null) {
-            $category = Category::create( ['name' => $request->get('category_name')] );
+        $category_id = [];
+        $category_name = $request->get('category_name');
 
-        } 
+        foreach ($category_name as $name)
+        {
+            if($name == null)
+            {
+                continue;
+            }
+
+            $category = Category::where('name', $name)->first();
+
+            if($category == null)
+            {
+                $category = Category::Create(['name' => $name]);
+            }
+
+            $category_id[] = $category->id;
+        }
 
         if ($publisher == null) {
             $publisher = Publisher::create( ['name' => $request->get('publisher_name')] );
         } 
 
         $product = Product::create($request->except('_token') + ['platform_id' => $platform->id, 'publisher_id' => $publisher->id]);
-        $product->categories()->attach($category->id);
+        $product->categories()->attach($category_id);
         $product->stock()->create( ['amount' => $request->get('stock_amount')] );
         $product->prices()->create( ['amount' => $request->get('price_amount')] );
         if ($request->has('image')) {
@@ -92,14 +107,19 @@ class ProductsController extends Controller
     }
 
     public function update(StoreProductsRequest $request, $id)
-    {   
+    {
         $product = Product::findOrFail($id);
-        
+
         $category_id = [];
         $category_name = $request->get('category_name');
 
         foreach ($category_name as $name)
         {   
+            if($name == null)
+            {
+                continue;
+            }
+
             $category = Category::where('name', $name)->first();
 
             if($category == null)
@@ -107,20 +127,18 @@ class ProductsController extends Controller
                 $category = Category::Create(['name' => $name]);
             }
 
-            $category_id[] = $category->id;    
+            $category_id[] = $category->id;
         }
-        // dd($category_id);
-
 
         $publisher_name = $request->get('publisher_name');
         $publisher = Publisher::where('name', $publisher_name)->first();
 
         $platform_name = $request->get('platform_name');
-        $platform = Platform::where('name', $platform_name)->first();   
+        $platform = Platform::where('name', $platform_name)->first();
 
         if ($publisher == null) {
             $publisher = Publisher::create( ['name' => $publisher_name] );
-        } 
+        }
 
         if ($platform == null) {
             $platform = Platform::create( ['name' => $platform_name] );
@@ -128,12 +146,12 @@ class ProductsController extends Controller
 
         if ($category == null) {
             $category = Category::create( ['name' => $category_name] );
-        }  
+        }
 
         $product->categories()->sync($category_id);
 
         $product->update([
-            'preorder' => $request->get('pre_order'),
+            'preorder' => $request->get('preorder'),
             'name' => $request->get('name'),
             'ean' => $request->get('ean'),
             'description' => $request->get('description'),

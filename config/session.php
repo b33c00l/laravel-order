@@ -194,4 +194,15 @@ return [
 
     'same_site' => null,
 
+    /*
+    |--------------------------------------------------------------------------
+    | User active time
+    |--------------------------------------------------------------------------
+    |
+    | This option determines how much time user can remain inactive before
+    | receiving an email notification.
+    |
+    */
+    'active_time' => env('ACTIVE_TIME', 60)
+
 ];

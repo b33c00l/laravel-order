@@ -15,9 +15,8 @@
                 'client_name' => "",
                 'vat_number' => "",
                 'registration_number' => "",
-                'registration_address' => "",
                 'shipping_address' => "",
-                'company_address' => "",
+                'registration_address' => "",
                 'email' => "",
                 'contact_person' => "",
                 'payment_terms' => "",
@@ -25,7 +24,7 @@
                 ])
                 <div class="col-12 form-group">
                     <div class="col">
-                        <button type="submit" class="btn btn-danger btn-block" >Create</button>
+                        <button type="submit" class="btn btn-danger btn-block">Create</button>
                     </div>
                 </div>
             </form>

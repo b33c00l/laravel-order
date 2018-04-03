@@ -26,10 +26,10 @@
                     <div class="col">
                         <div class="radio">
                             <label>
-                                <input class="yes" type="radio" name="pre_order" value="yes" /> Yes
+                                <input class="yes" type="radio" name="preorder" value="1" /> Yes
                             </label>
                             <label>
-                                <input class="no" type="radio" name="pre_order" value="no" /> No
+                                <input class="no" type="radio" name="preorder" value="0" /> No
                             </label>
                         </div>
                     </div>
@@ -89,8 +89,16 @@
                 <div class="form-group">
                     <label class="col control-label">Select a category</label>
                     <div class="col selectContainer">
-                        <div class="input-group">
-                            <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name" value="{{ old('category_name') }}">
+                        <div class="input-group-prepend input_cat">
+                            <button class="btn btn-dark add_cat" type="button">Add</button>
+                            @if(old('category_name') != null)
+                                @foreach (old('category_name') as $category)
+                                <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category}}">
+                                @endforeach
+                            @else
+                                <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{ old('publisher_name') }}">
+                            @endif
+
                         </div>
                     </div>
                 </div>
