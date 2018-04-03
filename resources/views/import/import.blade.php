@@ -29,10 +29,13 @@
             <form action="{{ route('products.import') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <div class="custom-file">
-                        <input id="file-upload" type="file" name="file" class="custom-file-input">
-                        <label id="file-upload-filename" class="custom-file-label" for="file-upload">Choose file</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Import file</span>
                     </div>
+                        <div class="col-12">
+                            <input class="form-control" type="file" name="file">
+                        </div>
                 </div>
 
                 <div class="d-flex justify-content-center">
