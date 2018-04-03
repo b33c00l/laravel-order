@@ -46,7 +46,16 @@
 				<table class="table table-sm">
 					<thead class="thead-light">
 					<tr>
-						<th scope="col">Order ID:</th>
+						<th scope="col">
+							@if ($sortName == 'order_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif</th>
 						<th scope="col">Date:</th>
 						<th scope="col">User name:</th>
 						<th scope="col">Status:</th>
