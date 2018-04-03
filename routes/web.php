@@ -64,7 +64,6 @@ Route::middleware('auth')->group(function()
 
 	Route::patch('chat/enable', 'ChatsController@enable')->name('chat.enable');
 
-	Route::get('search/', 'SearchController@search')->name('products.search');
 	Route::get('suggest/', 'SuggestionController@suggest')->name('products.suggest');
 
 	Route::post('order/{id}', 'CartController@store')->name('order.store');
