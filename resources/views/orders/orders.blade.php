@@ -3,41 +3,38 @@
 
 <div class="col-10 mt-5">
     <!-- Filters -->
-    <div class="row">
-        <div class="btn-group col-10">
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User name
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+     <div class="form-row align-items-center">
+        <form class="form-inline" action="{{route('order.orders')}}" method="get">
+            @admin
+            <div class=" col-auto my-1">
+                <select class="form-control" name="user_id" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <option value="-1">User name</option>
+                @foreach($users as $user)
+                     <option {{($selectedUser == $user->id)?'selected="selected"':''}} value="{{$user->id}}">{{$user->name}}</option>
+                @endforeach
+                </select>
             </div>
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Status
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+            @endadmin
+            <div class=" col-auto my-1">
+                <select class="form-control" name="status" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <option value="-1">Status</option>
+                    <option {{($selectedStatus == App\Order::PENDING)?'selected="selected"':''}} value="{{App\Order::PENDING}}">Pending</option>
+                    <option {{($selectedStatus == App\Order::UNCONFIRMED)?'selected="selected"':''}} value="{{App\Order::UNCONFIRMED}}">Unconfirmed</option>
+                    <option {{($selectedStatus == App\Order::CONFIRMED)?'selected="selected"':''}} value="{{App\Order::CONFIRMED}}">Confirmed</option>
+                    <option {{($selectedStatus == App\Order::REJECTED)?'selected="selected"':''}} value="{{App\Order::REJECTED}}">Rejected</option>
+                </select>
             </div>
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Type
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
+            <div class=" col-auto my-1">
+                <select class="form-control" name="type" type="button" class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <option value="-1">Type</option>
+                    <option {{($selectedStatus == App\Order::ORDER)?'selected="selected"':''}} value="{{App\Order::ORDER}}">Order</option>
+                    <option {{($selectedStatus == App\Order::PREORDER)?'selected="selected"':''}} value="{{App\Order::PREORDER}}">Preorder</option>
+                    <option {{($selectedStatus == App\Order::BACKORDER)?'selected="selected"':''}} value="{{App\Order::BACKORDER}}">Backorder</option>
+                </select>
             </div>
-            <button type="button" class="btn btn-danger filters">Filter</button>
+            <button type="submit" name="filter" class="btn btn-danger filters">Filter</button>
+        </form>
         </div>
-    </div>
     <!-- Order table -->
     <div class="row">
         <div class="col-md-12 table-responsive">

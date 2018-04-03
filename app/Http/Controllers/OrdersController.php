@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Chat;
 use App\Http\Requests\ChangeOrderStatusRequest;
-
 use App\Mail\OrderConfirmed;
 use App\Mail\OrderRejected;
-
 use App\Order;
-
+use App\OrderProduct;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
 use App\Services\InvoiceService;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,16 +32,42 @@ class OrdersController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
+ $user=Auth::user();
+	    $orders = new Order;
+	    $selectedUser= -1;
+	    $selectedType= -1;
+	    $selectedStatus= -1;
+	   
+        if($user->role == 'admin')
+        {
         $user = Auth::user();
-        if ($user->role == 'admin') {
-            $orders = Order::paginate(config('pagination.value'));
-        } else {
-            $orders = $user->orders()->paginate(config('pagination.value'));
+        if($user->role == 'admin') {
+	        $user = User ::all();
+	        if ( $request -> has( 'user_id' ) && $request -> get( 'user_id' ) > 0 ) {
+		        $orders       = $orders -> where( 'user_id', $request -> get( 'user_id' ) );
+		        $selectedUser = $request -> get( 'user_id' );
+	        }
         }
+        }else{
+            $orders = $orders->where('user_id', $user->id);
+        }
+	    if($request->has('type') && $request->get('type') >= 0){
+		    $orders = $orders->where('type', $request->get('type'));
+		    $selectedType=$request->get('type');
+	    }
+	    if($request->has('status') && $request->get('status') >= 0){
+		    $orders = $orders->where('status', $request->get('status'));
+		    $selectedStatus=$request->get('status');
+	    }
+	    $orders = $orders->paginate(config('pagination.value'));
         return view('orders.orders', [
-            'orders' => $orders,
+          'orders'=>$orders,
+          'users'=>$user,
+	        'selectedUser'=>$selectedUser,
+	        'selectedType'=>$selectedType,
+	        'selectedStatus'=>$selectedStatus
         ]);
     }
 

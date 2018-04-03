@@ -36,7 +36,7 @@
                                     class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="#">Order</a>
+                        <a class="nav-link btn btn-danger" href="{{route('order.orders')}}">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-danger" href="#">Profile</a>
