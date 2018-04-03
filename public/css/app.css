@@ -15077,21 +15077,8 @@ div#radioboxes {
   padding: 10px;
 }
 
-div.packshot {
-  width: 100%;
-  margin-left: 5px;
-  display: inline-block;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
 .packshot img {
   width: 100%;
-}
-
-.packshots {
-  display: none;
 }
 
 img.gallery {
@@ -15467,21 +15454,6 @@ div#categories {
     text-align: left;
   }
 
-  img.packshot {
-    height: 150px;
-  }
-
-  .product-image-mobile-center {
-    display: block;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  .product-image-mobile-center table td {
-    text-align: center;
-  }
-
   .single-product-title-main {
     text-align: center;
   }
@@ -15542,6 +15514,10 @@ table tr {
   padding: .35em;
 }
 
+.preorders {
+  width: 75px;
+}
+
 .stock {
   width: 60px;
 }
@@ -15551,11 +15527,11 @@ table tr {
 }
 
 .title {
-  width: 250px;
+  width: 240px;
 }
 
 .platform {
-  width: 48px;
+  width: 75px;
 }
 
 .ean {
@@ -15563,7 +15539,7 @@ table tr {
 }
 
 .release {
-  width: 75px;
+  width: 70px;
 }
 
 .publisher {
@@ -15576,6 +15552,11 @@ table tr {
 
 .actions {
   width: 85px;
+}
+
+.packshots {
+  display: none;
+  width: 45px;
 }
 
 table th,
@@ -15591,6 +15572,10 @@ table th {
 }
 
 @media screen and (max-width: 990px) {
+  .packshots {
+    width: 100%;
+  }
+
   table {
     border: 0;
   }

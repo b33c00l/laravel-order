@@ -51,14 +51,14 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="platform" style="width: 45px;">
+                        <th scope="col" class="platform">
                             @if ($sortName == 'plat' && $direction == 'asc')
                                 <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'desc']) }}">
-                                    Pl.: <i class="fa fa-sort-up"></i>
+                                    Platform: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
                                 <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'asc']) }}">
-                                    Pl.: <i class="fa fa-sort-down"></i>
+                                    Platform: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
@@ -76,11 +76,11 @@
                         <th scope="col" class="preorders">
                             @if ($sortName == 'deadline' && $direction == 'asc')
                                 <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc']) }}">
-                                    Order deadline: <i class="fa fa-sort-up"></i>
+                                    Deadline: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
                                 <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'asc']) }}">
-                                    Order deadline: <i class="fa fa-sort-down"></i>
+                                    Deadline: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
@@ -95,7 +95,7 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="stock" style="width: 60px;">
+                        <th scope="col" class="stock">
                             @if ($sortName == 'stock' && $direction == 'asc')
                                 <a href="{{ route('home.sort', ['name' => 'stock', 'direction' => 'desc']) }}">
                                     Stock:<i class="fa fa-sort-up"></i>
@@ -126,26 +126,38 @@
                         {{ $errors->first() }}
                     @endif
                     @foreach($products as $product)
-                        <tr class="table-tr">
-                            <td class="align-middle product-image-mobile-center packshots">
+                        <tr class="table-tr justify-content-center">
+                            <td class="align-middle text-center product-image-mobile-center packshots">
                                 <div class="packshot">
                                     <a target="_blank" href="{{ $product->featured_image_url }}"><img src="{{ $product->featured_image_url }}"></a>
                                 </div>
                             </td>
-                            <td Data-label="EAN:" class="align-middle text-right" >{{$product->ean}}</td>
-                            <td Data-label="Title:" class="align-middle text-right"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
-                            <td Data-label="Platform:" class="align-middle text-right">{{ $product->platform->name }}</td>
-                            <td Data-label="Release date:" class="align-middle text-right release">{{ $product->release_date }}</td>
-                            <td Data-label="Order deadline:" class="align-middle text-right preorders">{{ $product->deadline}}</td>
-                            <td Data-label="Publisher:" class="align-middle text-right publisher">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
-                            <td Data-label="Stock:" class="align-middle text-right">{{$product->stockamount}}</td>
-                            <td Data-label="Price:" class="align-middle text-right">{{ number_format($product->priceamount, 2, '.', '')}}</td>
-                            <td Data-label="Amount" class="align-middle text-right">
+                            <td Data-label="EAN:" class="align-middle text-right text-lg-center" >{{$product->ean}}</td>
+                            <td Data-label="Title:" class="align-middle text-right text-lg-center"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
+                            <td Data-label="Platform:" class="align-middle text-right text-lg-center">{{ $product->platform->name }}</td>
+                            <td Data-label="Release date:" class="align-middle text-right text-lg-center">
+                                @if( $product->release_date != null)
+                                {{ $product->release_date }}
+                                @else
+                                -
+                                @endif
+                            </td>
+                            <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
+                                @if( $product->deadline != null)
+                                {{ $product->deadline}}
+                                @else
+                                -
+                                @endif
+                            </td>
+                            <td Data-label="Publisher:" class="align-middle text-right text-lg-center">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
+                            <td Data-label="Stock:" class="align-middle text-right text-lg-center">{{$product->stockamount}}</td>
+                            <td Data-label="Price:" class="align-middle text-right text-lg-center">{{ number_format($product->priceamount, 2, '.', '')}}</td>
+                            <td Data-label="Amount" class="align-middle text-right text-lg-center">
                                 <input class="input" type="number" id="value{{ $product->id }}" name="amount">
                                 <span style="display: none; color: green" id="message{{ $product->id }}" ></span>
                             </td>
                             @admin
-                            <td Data-label="Actions:" class="align-middle text-right">
+                            <td Data-label="Actions:" class="align-middle text-right text-lg-center">
                                 <div class="dropdown">
                                     <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Actions
@@ -162,7 +174,7 @@
                                 </div>
                             </td>
                             @else
-                                <td class="align-middle text-right product-image-mobile-center">
+                                <td class="align-middle text-right text-lg-center product-image-mobile-center">
                                     <button class="btn btn-dark btn-sm add-into-cart" data-url="{{ route('order.store', $product->id) }}">To cart</button>
                                 </td>
                                 @endadmin
