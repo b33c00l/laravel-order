@@ -116,8 +116,6 @@
                 <div class="col-sm-8 mx-auto">
                     @if($chat !== null)
                         <h4>This topic is related to <a href="#">order nr. {{ $chat->order->id }}</a></h4>
-                    @endif
-                    @if($chat !== null)
                         <ul class="list-group">
                             @foreach($chat->messages as $chat->message)
                                 <li class="list-group-item">
