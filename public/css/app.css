@@ -14881,7 +14881,7 @@ ul ul {
 
 .cart-menu {
   font-size: 30px;
-  text-align: center;
+  text-align: right;
   width: 30%;
 }
 
@@ -15674,6 +15674,16 @@ input.input {
 #message {
   display: none;
   color: green;
+}
+
+input[type="file"] {
+  z-index: -1;
+  position: absolute;
+  opacity: 0;
+}
+
+input:focus + label {
+  outline: 2px solid;
 }
 
 .select2-container {
