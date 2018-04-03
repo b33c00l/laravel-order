@@ -90,7 +90,7 @@
                                 <div class="col selectContainer">
                                     <div class="input-group-prepend input_cat">
                                         <button class="btn btn-dark add_cat" type="button">Add</button>
-                                        @if($categories->isNotEmpty())
+                                        @if($product->categories->isNotEmpty())
                                         @foreach($product->categories as $category)
                                             <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category->name}}">
                                         @endforeach
@@ -100,7 +100,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col control-label">Select a publisher</label>
                                 <div class="col selectContainer">
