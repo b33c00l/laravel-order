@@ -456,5 +456,4 @@ $(document).ready(function() {
 
       document.getElementById( 'file-upload-filename' ).innerHTML = fileName;
     }
-
 });

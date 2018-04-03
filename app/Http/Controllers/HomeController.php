@@ -32,13 +32,14 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $products = Product::with('platform','publisher', 'images')->paginate(config('pagination.value'));
+        $products = Product::with('platform', 'publisher', 'images')->paginate(config('pagination.value'));
 
         return view('home', [
             'products' => $products,
             'categories' => $categories,
             'direction' => '',
             'sortName' => '',
+            'query' => ''
         ]);
     }
 
@@ -46,12 +47,14 @@ class HomeController extends Controller
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, config('pagination.value')), $items->count(), config('pagination.value'), $page, $options);
+        return new LengthAwarePaginator($items->forPage($page, config('pagination.value')),
+            $items->count(), config('pagination.value'), $page, $options);
     }
 
     public function sort(Request $request)
     {
-        $products = Product::with('platform','publisher', 'images');
+        $products = Product::with('platform', 'publisher', 'images');
+        $query = $request->get('query');
 
         if ($request->get('direction') == 'asc') {
             $direction = 'asc';
@@ -59,13 +62,19 @@ class HomeController extends Controller
             $direction = 'desc';
         }
 
+        if (strlen($query) > 0) {
+            $ids = Product::search('*' . $query . '*')->get()->pluck('id');
+            $products = $products->whereIn('products.id', $ids);
+        }
+
         switch ($request->get('name')) {
             case 'pub':
-                $products = Product::select('products.*')->leftJoin('publishers as pub', 'pub.id', '=', 'publisher_id')
+                $products = $products->select('products.*')->leftJoin('publishers as pub', 'pub.id', '=', 'publisher_id')
                     ->orderBy('pub.name', $direction);
+
                 break;
             case 'plat':
-                $products = Product::select('products.*')->leftJoin('platforms as plat', 'plat.id', '=', 'platform_id')
+                $products = $products->select('products.*')->leftJoin('platforms as plat', 'plat.id', '=', 'platform_id')
                     ->orderBy('plat.name', $direction);
                 break;
             case 'title':
@@ -81,14 +90,14 @@ class HomeController extends Controller
                 $products = $products->orderBy('deadline', $direction);
                 break;
             case 'stock':
-                $products = Product::select('products.*',
+                $products = $products->select('products.*',
                     DB::raw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) AS amount'))
                     ->orderBy('amount', $direction);
                 break;
             case 'price':
-                $products = Product::all();
+                $products = $products->get();
                 if ($direction == 'desc') {
-                    $products = $this->paginate($products->sortBy('PriceAmount') );
+                    $products = $this->paginate($products->sortBy('PriceAmount'));
                 } else {
                     $products = $this->paginate($products->sortByDesc('PriceAmount'));
                 }
@@ -99,19 +108,22 @@ class HomeController extends Controller
                 break;
         }
 
-        if(!($products instanceof LengthAwarePaginator)){
+        if (!($products instanceof LengthAwarePaginator)) {
             $products = $products->paginate(config('pagination.value'));
         }
         $categories = Category::all();
+//        $products = Product::search('*' . $request->get('query') . '*')
+//            ->paginate(config('pagination.value'));
         return view('home', [
             'products' => $products->appends(Input::except('page')),
             'categories' => $categories,
-            'sortName' =>  $request->get('name'),
-            'direction' => $direction
+            'sortName' => $request->get('name'),
+            'direction' => $direction,
+            'query' => $query
         ]);
     }
 
-    public function contacts() 
+    public function contacts()
     {
         return view('pages.contacts');
     }
