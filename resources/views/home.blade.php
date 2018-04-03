@@ -5,13 +5,13 @@
         <div id="radioboxes" class="row justify-content-around">
             <div class="col-12 checkboxes">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_preorders">
+                    <input class="form-check-input" type="checkbox" value="" id="show_preorders" @if (isset($preorder) && $preorder == 'hide') checked="checked" @endif>
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Pre-orders
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_backorders">
+                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($backorder) && $backorder == 'hide') checked="checked" @endif">
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Back-orders
                     </label>
@@ -73,7 +73,7 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="preorders">
+                        <th style="@if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') display:none; @endif" scope="col" class="preorders">
                             @if ($sortName == 'deadline' && $direction == 'asc')
                                 <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc', 'query' => $query]) }}">
                                     Deadline: <i class="fa fa-sort-up"></i>
@@ -126,12 +126,14 @@
                         {{ $errors->first() }}
                     @endif
                     @foreach($products as $product)
+
                         <tr class="table-tr justify-content-center">
                             <td class="align-middle text-center product-image-mobile-center packshots">
                                 <div class="packshot">
                                     <a target="_blank" href="{{ $product->featured_image_url }}"><img src="{{ $product->featured_image_url }}"></a>
                                 </div>
                             </td>
+
                             <td Data-label="EAN:" class="align-middle text-right text-lg-center" >{{$product->ean}}</td>
                             <td Data-label="Title:" class="align-middle text-right text-lg-center"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
                             <td Data-label="Platform:" class="align-middle text-right text-lg-center">{{ $product->platform->name }}</td>
@@ -153,6 +155,7 @@
                             <td Data-label="Stock:" class="align-middle text-right text-lg-center">{{$product->stockamount}}</td>
                             <td Data-label="Price:" class="align-middle text-right text-lg-center">{{ number_format($product->priceamount, 2, '.', '')}}</td>
                             <td Data-label="Amount" class="align-middle text-right text-lg-center">
+
                                 <input class="input" type="number" id="value{{ $product->id }}" name="amount">
                                 <span style="display: none; color: green" id="message{{ $product->id }}" ></span>
                             </td>
