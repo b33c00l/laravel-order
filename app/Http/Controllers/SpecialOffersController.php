@@ -116,7 +116,6 @@ class SpecialOffersController extends Controller
 
         $products = $products->get();
 
-
         return view('special_offers.index', compact('products', 'publishers', 'platforms', 'selectedPublisher', 'selectedPlatform', 'clients'));
     }
 
