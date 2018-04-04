@@ -54,10 +54,9 @@ class CategoriesController extends Controller {
 
 	    public function show($id)
     {
-
         $cat = Category::findOrFail($id);
         $products = $cat->products()->paginate(config('pagination.value'));
-
-        return view('home', ['products' => $products, 'sortName' => '']);
+        
+        return view('home', ['products' => $products, 'sortName' => '', 'query'=>'']);
     }
 }
