@@ -30,9 +30,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                @php $name = Route::currentRouteName(); @endphp
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link btn btn-outline-danger" href="{{ route('home') }}">Home <span
+                        <a class="nav-link btn {{ ($name == 'home' ? 'btn-outline-danger' : 'btn-danger') }}" href="{{ route('home') }}">Home <span
                                     class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
@@ -42,7 +43,7 @@
                         <a class="nav-link btn btn-danger" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="{{ route('pages.contacts') }}">Contact</a>
+                        <a class="nav-link btn {{ ($name == 'pages.contacts' ? 'btn-outline-danger' : 'btn-danger') }}" href="{{ route('pages.contacts') }}">Contact</a>
                     </li>
                 </ul>
             </div>

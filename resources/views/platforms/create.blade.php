@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Create platform'])
 @section('content')
 <div class="col-10 mt-5">
     <form action="{{ route('platforms.store') }}" method="post">

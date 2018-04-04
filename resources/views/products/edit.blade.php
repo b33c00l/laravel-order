@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Edit product'])
 @section('content')
 <div class="col-10">
     <div class="row">
@@ -90,7 +90,7 @@
                                 <div class="col selectContainer">
                                     <div class="input-group-prepend input_cat">
                                         <button class="btn btn-dark add_cat" type="button">Add</button>
-                                        @if($categories->isNotEmpty())
+                                        @if($product->categories->isNotEmpty())
                                         @foreach($product->categories as $category)
                                             <input data-autocomplete="{{ $categories }}" class="form-control autocomplete" type="text" name="category_name[]" value="{{$category->name}}">
                                         @endforeach
@@ -100,7 +100,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col control-label">Select a publisher</label>
                                 <div class="col selectContainer">
@@ -180,10 +179,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col control-label">Synapsis</label>
+                                <label class="col control-label">Synopsis</label>
                                 <div class="col inputGroupContainer">
                                     <div class="input-group">
-                                        <textarea class="form-control" name="description" placeholder="Synapsis" rows="4">{{ old('description', $product->description) }}</textarea>
+                                        <textarea class="form-control" name="description" placeholder="Synopsis" rows="4">{{ old('description', $product->description) }}</textarea>
                                     </div>
                                 </div>
                             </div>

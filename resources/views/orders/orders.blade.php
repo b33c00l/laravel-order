@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.main', ['title' => 'Orders'])
 @section('content')
 
 	<div class="col-10 mt-5">
@@ -33,7 +33,7 @@
 					        aria-haspopup="true" aria-expanded="false">
 						<option value="-1">Type</option>
 						@foreach(['Order'=>App\Order::ORDER, 'Pre-order'=>App\Order::PREORDER, 'Back-order'=>App\Order::BACKORDER] as $key=>$value)
-							<option {{($selectedStatus == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
+							<option {{($selectedType == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
 						@endforeach
 					</select>
 				</div>
@@ -46,11 +46,61 @@
 				<table class="table table-sm">
 					<thead class="thead-light">
 					<tr>
-						<th scope="col">Order ID:</th>
-						<th scope="col">Date:</th>
-						<th scope="col">User name:</th>
-						<th scope="col">Status:</th>
-						<th scope="col">Type:</th>
+						<th scope="col">
+							@if ($sortName == 'order_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'date' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'desc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'asc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'user_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'status' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'desc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'asc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'type' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'desc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'asc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
 						<th scope="col">Invoice:</th>
 					</tr>
 					</thead>
@@ -89,9 +139,21 @@
             </label>
         </div>
         <div class="btn-group col-10" role="group" aria-label="export_buttons">
-            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
-            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
-            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+	        @if($selectedType == \App\Order::ORDER)
+		        <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
+			@elseif($selectedType == \App\Order::PREORDER)
+		        <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
+			@elseif($selectedType == \App\Order::BACKORDER)
+		        <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+			@else
+		        <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
+		        <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
+		        <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+			@endif
+
+
+
+
         </div>
     </div>
     <!-- Pagination -->

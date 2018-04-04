@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Create product'])
 @section('content')
 <div class="col-10">
     <div class="row">
@@ -178,10 +178,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col control-label">Synapsis</label>
+                    <label class="col control-label">Synopsis</label>
                     <div class="col inputGroupContainer">
                         <div class="input-group">
-                            <textarea class="form-control" name="description" placeholder="Synapsis" rows="2">{{ old('description') }}</textarea>
+                            <textarea class="form-control" name="description" placeholder="Synopsis" rows="2">{{ old('description') }}</textarea>
                         </div>
                     </div>
                 </div>
