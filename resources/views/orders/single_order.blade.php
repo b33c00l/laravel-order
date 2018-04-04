@@ -12,9 +12,9 @@
                         <th scope="col">Platform:</th>
                         <th scope="col">Name:</th>
                         <th scope="col">Release date:</th>
-                        @if($products->first()->product->deadline != null)
+                        @isset($preorder)
                         <th scope="col" class="preorders">Deadline:</th>
-                        @endif
+                        @endisset
                         <th scope="col">Publisher:</th>
                         <th scope="col">Price:</th>
                         <th scope="col">Price Total:</th>

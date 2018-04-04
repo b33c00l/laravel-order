@@ -70,10 +70,16 @@
     public function show($id)
     {
         $order = Order::findOrFail($id);
+        if ($order->type === Order::PREORDER)
+        {
+            $preorder = true;
+        }else{
+            $preorder = null;
+        }
         $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
 
-        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat]);
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'preorder' => $preorder]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)
