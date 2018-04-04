@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function()
 			Route::post('special/country', 'SpecialOffersController@getByCountry')->name('special.filter.country');
 			Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
+			Route::get('special/user', 'SpecialUserPriceController@index')->name('special.user.index');
+            Route::post('special/user/store', 'SpecialUserPriceController@store')->name('special.user.store');
+            Route::post('special/user/filter', 'SpecialUserPriceController@filter')->name('special.user.filter');
 
 		});
 		
@@ -80,6 +83,7 @@ Route::middleware('auth')->group(function()
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
+	Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
 
 
 	Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');
