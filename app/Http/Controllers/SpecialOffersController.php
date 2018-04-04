@@ -122,7 +122,6 @@ class SpecialOffersController extends Controller
     public function show($id)
     {
         $specialOffer = SpecialOffer::FindOrFail($id);
-
         return view('special_offers.show', compact('specialOffer'));
     }
 }
