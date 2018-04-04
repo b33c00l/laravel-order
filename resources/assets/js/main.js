@@ -210,58 +210,35 @@ $('.add-into-cart-single').click(function(){
     })
 });
 
+function showHideOrders (orderName) {
+    var url_delete = document.location.href;
+    urlObject = new URL(url_delete);
+    urlObject.searchParams.delete(orderName);
+
+    var fieldId = "#"+"show_"+orderName+"s";
+    console.log(fieldId);
+
+    if($(fieldId).is(':checked')) {
+        if(urlObject.href.indexOf('?') > -1) {
+            var url = urlObject.href+"&"+orderName+"=hide";
+        } else {
+            var url = urlObject.href+"?"+orderName+"=hide";
+        }
+    } else {
+        var url = urlObject.href;
+    } 
+    document.location = url; 
+}
+
 $(document).ready(function() {
     $('#show_preorders').click(function () {
-        if($("#show_preorders").is(':checked')) {
-
-            var url_delete = document.location.href;
-            urlObject = new URL(url_delete);
-            urlObject.searchParams.delete('preorder');
-
-            if(urlObject.href.indexOf('?') > -1) {
-                var url = urlObject.href+"&preorder=hide";
-            } else {
-                var url = urlObject.href+"?preorder=hide";
-            }
-            document.location = url;
-
-        } else {
-
-            var url_delete = document.location.href;
-            urlObject = new URL(url_delete);
-            urlObject.searchParams.delete('preorder');
-
-            var url = urlObject.href;
-
-            document.location = url; 
-
-        } 
+        showHideOrders("preorder");
     });
+
+
     $('#show_backorders').click(function () {
-        if($("#show_backorders").is(':checked')) {
-
-            var url_delete = document.location.href;
-            urlObject = new URL(url_delete);
-            urlObject.searchParams.delete('backorder');
-
-            if(document.location.href.indexOf('?') > -1) {
-                var url = urlObject.href+"&backorder=hide";
-            } else {
-                var url = urlObject.href+"?backorder=hide";
-            }
-            document.location = url;
-        } else {
-
-            var url_delete = document.location.href;
-            urlObject = new URL(url_delete);
-            urlObject.searchParams.delete('backorder');
-
-            var url = urlObject.href;
-            
-            document.location = url; 
-
-        }
-    });
+          showHideOrders("backorder");  
+  });
 });
 
 var timer = null;
@@ -494,7 +471,7 @@ $(document).ready(function() {
     input.addEventListener( 'change', showFileName );
 
     function showFileName( event ) {
-      
+
       var input = event.srcElement;
       
       var fileName = input.files[0].name;
@@ -502,5 +479,5 @@ $(document).ready(function() {
       console.log(fileName);
 
       document.getElementById( 'file-upload-filename' ).innerHTML = fileName;
-    }
+  }
 });
