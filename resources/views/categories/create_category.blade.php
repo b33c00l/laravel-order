@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Create category'])
 @section('content')
 <div class="col-10 mt-5">
 	<form action="{{route('categories.store')}}" method="post">
