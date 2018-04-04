@@ -5,13 +5,13 @@
         <div id="radioboxes" class="row justify-content-around">
             <div class="col-12 checkboxes">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_preorders">
+                    <input class="form-check-input" type="checkbox" value="" id="show_preorders" @if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') checked="checked" @endif>
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Pre-orders
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_backorders">
+                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($_GET['backorder']) && $_GET['backorder'] == 'hide') checked="checked" @endif">
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Back-orders
                     </label>
@@ -73,7 +73,7 @@
                                 </a>
                             @endif
                         </th>
-                        <th scope="col" class="preorders">
+                        <th style="@if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') display:none; @endif" scope="col" class="preorders">
                             @if ($sortName == 'deadline' && $direction == 'asc')
                                 <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc']) }}">
                                     Order deadline: <i class="fa fa-sort-up"></i>
@@ -126,6 +126,7 @@
                         {{ $errors->first() }}
                     @endif
                     @foreach($products as $product)
+
                         <tr class="table-tr">
                             <td class="align-middle product-image-mobile-center packshots">
                                 <div class="packshot">
@@ -136,7 +137,7 @@
                             <td Data-label="Title:" class="align-middle text-right"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
                             <td Data-label="Platform:" class="align-middle text-right">{{ $product->platform->name }}</td>
                             <td Data-label="Release date:" class="align-middle text-right release">{{ $product->release_date }}</td>
-                            <td Data-label="Order deadline:" class="align-middle text-right preorders">{{ $product->deadline}}</td>
+                            <td style="@if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') display:none; @endif" Data-label="Order deadline:" class="align-middle text-right preorders">{{ $product->deadline}}</td>
                             <td Data-label="Publisher:" class="align-middle text-right publisher">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
                             <td Data-label="Stock:" class="align-middle text-right">{{$product->stockamount}}</td>
                             <td Data-label="Price:" class="align-middle text-right">{{ number_format($product->priceamount, 2, '.', '')}}</td>

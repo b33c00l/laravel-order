@@ -132,7 +132,7 @@ $( function() {
     var inputs = $('.autocomplete');
 
     inputs.each(function(key, input) {
-        
+
         addAutocomplete(input);
     });
 });
@@ -145,30 +145,30 @@ $('.add-into-cart').click(function(){
 	button.css('display', 'none');
 	$(this).parent().append('<span class="loader"></span>');
     element.css({'display':'none'});
-	$.ajax({
-		type: "post",
-		url: $(this).data('url'),
-		data: {quantity: quantity,_token: token},
-		dataType: "json",
-		success:function (data)
-		{
-		    button.css('display', 'inline-block');
-		    $('.loader').remove();
-			$('.totalQuantityTop').html('Items: ' + data['totalQuantity']);
-			$('.totalPriceTop').html('  € '+data['totalPrice'].toFixed(2));
-            setTimeout(function () { element.css({'display':'none'});
-            }, 3000);
-		},
-		error:function (error)
-		{
-            button.css('display', 'inline-block');
-            $('.loader').remove();
-			element.html(error['responseJSON']['errors']['quantity'][0]);
-			element.css({'color':'red','display':'block'});
-            setTimeout(function () { element.css({'display':'none'});
-            }, 3000);
-		}
-	})
+    $.ajax({
+      type: "post",
+      url: $(this).data('url'),
+      data: {quantity: quantity,_token: token},
+      dataType: "json",
+      success:function (data)
+      {
+          button.css('display', 'inline-block');
+          $('.loader').remove();
+          $('.totalQuantityTop').html('Items: ' + data['totalQuantity']);
+          $('.totalPriceTop').html('  € '+data['totalPrice'].toFixed(2));
+          setTimeout(function () { element.css({'display':'none'});
+      }, 3000);
+      },
+      error:function (error)
+      {
+        button.css('display', 'inline-block');
+        $('.loader').remove();
+        element.html(error['responseJSON']['errors']['quantity'][0]);
+        element.css({'color':'red','display':'block'});
+        setTimeout(function () { element.css({'display':'none'});
+    }, 3000);
+    }
+})
 });
 
 $(document).ready(function() {
@@ -205,15 +205,62 @@ $('.add-into-cart-single').click(function(){
             element.html(error['responseJSON']['errors']['quantity'][0]);
             element.css({'color':'red','display':'block'});
             setTimeout(function () { element.css({'display':'none'});
-            }, 3000);
+        }, 3000);
         }
     })
 });
 
 $(document).ready(function() {
     $('#show_preorders').click(function () {
-        $('.preorders').toggle();
-        return;
+        if($("#show_preorders").is(':checked')) {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('preorder');
+
+            if(urlObject.href.indexOf('?') > -1) {
+                var url = urlObject.href+"&preorder=hide";
+            } else {
+                var url = urlObject.href+"?preorder=hide";
+            }
+            document.location = url;
+
+        } else {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('preorder');
+
+            var url = urlObject.href;
+
+            document.location = url; 
+
+        } 
+    });
+    $('#show_backorders').click(function () {
+        if($("#show_backorders").is(':checked')) {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('backorder');
+
+            if(document.location.href.indexOf('?') > -1) {
+                var url = urlObject.href+"&backorder=hide";
+            } else {
+                var url = urlObject.href+"?backorder=hide";
+            }
+            document.location = url;
+        } else {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('backorder');
+
+            var url = urlObject.href;
+            
+            document.location = url; 
+
+        }
     });
 });
 
@@ -243,7 +290,7 @@ $('.setquantity').keyup(function() {
                     input.val(data['singleQuantity']);
                     input.parent().prev().html(data['singlePrice'].toFixed(2) + ' €');
                     setTimeout(function () { element.css({'display':'none'});
-                    }, 3000);
+                }, 3000);
                 }else{
                     var element = $('#message' + data['id']);
                     $('.totalQuantityTop').html('Item: '+data['totalQuantity']);
@@ -254,7 +301,7 @@ $('.setquantity').keyup(function() {
                     element.html('updated');
                     element.css({'color':'green','display':'block'});
                     setTimeout(function () { element.css({'display':'none'});
-                    }, 3000);
+                }, 3000);
                 }
             },
             error:function (error)
@@ -263,7 +310,7 @@ $('.setquantity').keyup(function() {
                 message.html(error['responseJSON']['errors']['quantity'][0]);
                 message.css({'color':'red','display':'block'});
                 setTimeout(function () { message.css({'display':'none'});
-                }, 3000);
+            }, 3000);
             }
         });
     }, 0)
@@ -294,7 +341,7 @@ $('.setquantity_BP').keyup(function() {
                 element.html('updated');
                 element.css({'color':'green','display':'block'});
                 setTimeout(function () { element.css({'display':'none'});
-                }, 3000);
+            }, 3000);
             },
             error:function (error)
             {
@@ -302,7 +349,7 @@ $('.setquantity_BP').keyup(function() {
                 message.html(error['responseJSON']['errors']['quantity'][0]);
                 message.css({'color':'red','display':'block'});
                 setTimeout(function () { message.css({'display':'none'});
-                }, 3000);
+            }, 3000);
             }
         });
     }, 0)

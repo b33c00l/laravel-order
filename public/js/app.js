@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 15);
@@ -10778,7 +10778,7 @@ return $.ui.version = "1.12.1";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.1
+ * @version 1.14.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -43312,8 +43312,52 @@ $('.add-into-cart-single').click(function () {
 
 $(document).ready(function () {
     $('#show_preorders').click(function () {
-        $('.preorders').toggle();
-        return;
+        if ($("#show_preorders").is(':checked')) {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('preorder');
+
+            if (urlObject.href.indexOf('?') > -1) {
+                var url = urlObject.href + "&preorder=hide";
+            } else {
+                var url = urlObject.href + "?preorder=hide";
+            }
+            document.location = url;
+        } else {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('preorder');
+
+            var url = urlObject.href;
+
+            document.location = url;
+        }
+    });
+    $('#show_backorders').click(function () {
+        if ($("#show_backorders").is(':checked')) {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('backorder');
+
+            if (document.location.href.indexOf('?') > -1) {
+                var url = urlObject.href + "&backorder=hide";
+            } else {
+                var url = urlObject.href + "?backorder=hide";
+            }
+            document.location = url;
+        } else {
+
+            var url_delete = document.location.href;
+            urlObject = new URL(url_delete);
+            urlObject.searchParams.delete('backorder');
+
+            var url = urlObject.href;
+
+            document.location = url;
+        }
     });
 });
 
