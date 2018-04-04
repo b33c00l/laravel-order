@@ -22,7 +22,7 @@ $('.right').click(function(){
 $('.karusele').slick({
     slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     dots: false,
     arrows: false,
     responsive: [
@@ -216,7 +216,7 @@ function showHideOrders (orderName) {
     urlObject.searchParams.delete(orderName);
 
     var fieldId = "#"+"show_"+orderName+"s";
-    console.log(fieldId);
+
 
     if($(fieldId).is(':checked')) {
         if(urlObject.href.indexOf('?') > -1) {

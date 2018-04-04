@@ -35,34 +35,27 @@ class HomeController extends Controller
 
         $preorder = $request->get('preorder');
         $backorder = $request->get('backorder');
-        
-        if (!isset($preorder) && !isset($backorder)) {
 
-            $products = Product::with('platform','publisher', 'images')->paginate(config('pagination.value'));
+        $products = new Product;
 
-        } elseif ($preorder == 'hide' && !isset($backorder)) {
-
-            $products = Product::where('preorder', '=', '0')->with('platform','publisher', 'images')->paginate(config('pagination.value'));
-
-        } elseif ($backorder == 'hide' && !isset($preorder)) {
-
-            $products = Product::whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0')
-                ->paginate(config('pagination.value'));
-
-        } elseif ($backorder == 'hide' && $preorder == 'hide') {
-
-            $products = Product::where('preorder', '=', '0')->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0')->with('platform','publisher', 'images')->paginate(config('pagination.value'));
-            
-        } else {
-            $products = Product::with('platform','publisher', 'images')->paginate(config('pagination.value'));
+        if ($preorder == 'hide') {
+            $products = $products->where('preorder', '=', '0')->with('platform','publisher', 'images');
         }
+
+        if ($backorder == 'hide') {
+            $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
+        }
+
+        $products = $products->paginate(config('pagination.value'));
 
         return view('home', [
             'products' => $products,
             'categories' => $categories,
             'direction' => '',
             'sortName' => '',
-            'query' => ''
+            'query' => '',
+            'preorder' => $preorder,
+            'backorder' => $backorder
         ]);
     }
 

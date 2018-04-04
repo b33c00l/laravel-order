@@ -37,9 +37,17 @@
 
 				@foreach ($products_latest as $product_latest)
 					<div class="karuseles-img">
+						<div class="row d-flex justify-content-center">
+						<div class="karuseles-img-wrap d-flex justify-content-center">
 						<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><img class="gallery" src="{{ $product_latest->featured_image_url }}"></a>
+						</div>
+						<div class="col-12 mt-3">
 						<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><h6>{{ $product_latest->name }}</h6></a>
+						</div>
+						<div class="col-12">
 						<a href="{{ route('products.show', array('id'=>$product_latest->id)) }}"><p>{{ $product_latest->platform->name }}</p></a>
+						</div>
+					</div>
 					</div>
 				@endforeach
 			</div>

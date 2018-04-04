@@ -5,13 +5,13 @@
         <div id="radioboxes" class="row justify-content-around">
             <div class="col-12 checkboxes">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_preorders" @if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') checked="checked" @endif>
+                    <input class="form-check-input" type="checkbox" value="" id="show_preorders" @if (isset($preorder) && $preorder == 'hide') checked="checked" @endif>
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Pre-orders
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($_GET['backorder']) && $_GET['backorder'] == 'hide') checked="checked" @endif">
+                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($backorder) && $backorder == 'hide') checked="checked" @endif">
                     <label class="form-check-label" for="defaultCheck1">
                         Hide Back-orders
                     </label>
