@@ -12,13 +12,16 @@
                         <th scope="col">Platform:</th>
                         <th scope="col">Name:</th>
                         <th scope="col">Release date:</th>
+                        @if($products->first()->product->deadline != null)
+                        <th scope="col" class="preorders">Deadline:</th>
+                        @endif
                         <th scope="col">Publisher:</th>
                         <th scope="col">Price:</th>
                         <th scope="col">Price Total:</th>
                         <th scope="col">Amount</th>
-                        @admin
+                        @if(Auth::user()->role === 'admin' or $products->first()->product->deadline != null)
                         <th scope="col"></th>
-                        @endadmin
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -32,6 +35,11 @@
                                 class="align-middle text-right text-lg-center">{{$product->product->name}}</td>
                             <td data-label="Release date:"
                                 class="align-middle text-right text-lg-center">{{$product->product->release_date}}</td>
+                            @if( $product->product->deadline != null)
+                            <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
+                                    {{ $product->product->deadline}}
+                            </td>
+                            @endif
                             <td data-label="Publisher:"
                                 class="align-middle text-right text-lg-center">{{ $product->product->has('publisher') ? $product->product->publisher->name : '-'}}</td>
                             <td data-label="Price:" class="align-middle text-right text-lg-center">
@@ -50,35 +58,37 @@
                                 €
                             </td>
                             <td data-label="Amount:" class="align-middle text-right text-lg-center">
-                                @admin
-                                <input data-url="{{ route('order.update', $product->id) }}"
-                                       class="input updateQ align-middle text-right text-lg-center" type="number"
-                                       value="{{$product->quantity}}" name="amount">
-                                <br>
-                                <span style="display: none; color: red" class="align-middle"
-                                      id="Qmessage{{ $product->id }}"></span>
+                                @if(Auth::user()->role === 'admin' or $product->product->preorder == App\Product::ENABLED)
+                                    <input data-url="{{ route('order.update', $product->id) }}"
+                                           class="input updateQ align-middle text-right text-lg-center" type="number"
+                                           value="{{$product->quantity}}" name="amount">
+                                    <br>
+                                    <span style="display: none; color: red" class="align-middle"
+                                          id="Qmessage{{ $product->id }}"></span>
                                 @else
                                     {{ $product->quantity}}
-                                    @endadmin
+                                    @endif
                             </td>
-                            @admin
-                            <td class="align-middle text-right text-lg-center">
-                                    <button class="btn btn-danger btn-sm delete" data-html="{{ route('order.orders') }}" data-url="{{ route('order.product.delete', $product->id) }}">Delete</button>
-                            </td>
-                            @endadmin
+                            @if(Auth::user()->role === 'admin' or $product->product->preorder == App\Product::ENABLED)
+                                <td class="align-middle text-right text-lg-center">
+                                        <button class="btn btn-danger btn-sm delete" data-html="{{ route('order.orders') }}" data-url="{{ route('order.product.delete', $product->id) }}">Delete</button>
+                                </td>
+                            @elseif($products->first()->product->deadline != null)
+                                <td></td>
+                            @endif
                         </tr>
                     @endforeach
                     <tr>
-                        <td class="total text-right text-lg-center" colspan="6" scope="Total"><b>Total</b></td>
+                        <td class="total text-right text-lg-center" {{ $products->first()->product->deadline != null ? "colspan=7" : "colspan=6"}} scope="Total"><b>Total</b></td>
                         <td data-label="Total" class="text-right text-lg-center"
                             id="totalPrice">{{!empty($products)?number_format($cartService->getTotalCartPrice($order), 2,'.',''):""}}
                             €
                         </td>
                         <td data-label="Total quantity" class="text-right text-lg-center"
                             id="totalQuantity">{{!empty($products)?$cartService->getTotalCartQuantity($order):""}}</td>
-                        @admin
-                        <td class="total"></td>
-                        @endadmin
+                        @if(Auth::user()->role === 'admin' or $products->first()->product->deadline != null)
+                            <td class="total"></td>
+                        @endif
                     </tr>
                     </tbody>
                 </table>
