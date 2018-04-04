@@ -9,6 +9,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Mail\UserCreated;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Session;
 
@@ -86,12 +87,16 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
         $client = $user->client;
-
+        if ($request->get('price_coefficient') == null){
+            $price_coefficient = 1;
+        } else {
+            $price_coefficient = $request->get('price_coefficient');
+        }
         if($request->role != 'admin') {
             $user->update($request->only('name', 'price_coefficient', 'role', 'country_id'));
             $client->update($request->except('name', 'password', 'role', '_token')  + ['name' => $request->get('client_name')]);
         } else {
-            $user->update($request->only('name', 'price_coefficient', 'role'));
+            $user->update($request->only('name', 'role')  + ['price_coefficient' => $price_coefficient]);
         }
         session() -> flash( 'success', 'User updated successfully' );
         return redirect()->route('users.index', $id);
@@ -101,22 +106,25 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-
-        if($user->disabled == 1)
-        {
-            $user->update([
-            'disabled' => 0
-            ]);
-            session() -> flash( 'success', 'User enabled successfully' );
-
+        if (Auth::id() == $id) {
+            session() -> flash( 'warning', 'Action is not allowed' );
         } else {
-            $user->update([
-            'disabled' => 1
-            ]);
-            session() -> flash( 'success', 'User disabled successfully' );
+            if ($user->disabled == 1)
+            {
+                $user->update([
+                    'disabled' => 0
+                ]);
+                session() -> flash( 'success', 'User enabled successfully' );
+
+            } else {
+                $user->update([
+                    'disabled' => 1
+                ]);
+                session() -> flash( 'success', 'User disabled successfully' );
+            }
         }
 
-        return redirect()->back();    
+        return redirect()->back();
     }
 
     public function getToken($token)
