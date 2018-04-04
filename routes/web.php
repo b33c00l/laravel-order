@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function()
 		});
 		
 	Route::resource('products', 'ProductsController', ['only'=>'show']);
-		
+
 	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');

@@ -1,5 +1,5 @@
 <a href="{{ route('products.create') }}">Create a product</a>
-<form action="{{ route('products.search') }}" method="GET">
+<form action="{{ route('home.sort') }}" method="GET">
     @csrf
     @if (isset($query))
     <input type="text" name="name" value="{{ old('name', $query) }}">

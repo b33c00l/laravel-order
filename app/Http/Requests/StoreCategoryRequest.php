@@ -23,7 +23,7 @@ class StoreCategoryRequest extends FormRequest
      */
 	public function rules() {
 		return [
-			'name' => 'required|unique:categories,name|max:255|min:2'
+			'name' => 'required|unique:categories,name' . $this->route('category') . ',id|max:255|min:2'
 		];
 	}
 }
