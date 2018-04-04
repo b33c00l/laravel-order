@@ -62,7 +62,7 @@
                             @if(count($productSingle->categories) == $i+1)
                                 {{$productSingle->categories[$i]->name}}.
                             @else
-                                {{$productSingle->categories[$i]->name}}, 
+                                {{$productSingle->categories[$i]->name}},
                             @endif
                         @endfor
                     </p>

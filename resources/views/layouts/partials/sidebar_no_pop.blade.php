@@ -14,7 +14,7 @@
 						<div class="sidebar-categories">
 							<ul class="list-group">
 								@foreach ($cats as $category)
-								<li><a href="{{ route('products.cat', array('id'=>$category->id)) }}">{{$category->name}}</a></li>
+								<li><a href="{{ route('products.cat', $category->id) }}">{{$category->name}}</a></li>
 								@endforeach
 							</ul>
 						</div>

@@ -30,7 +30,6 @@ Route::middleware('auth')->group(function()
 			Route::get('products/import', 'ProductsImportController@importForm')->name('products.import.form');
 			Route::get('products/import/log', 'ProductsImportController@showLog')->name('products.import.log');
 			Route::post('products/import/log', 'ProductsImportController@filter')->name('products.import.filter');
-			Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 			Route::resource('publishers', 'PublishersController');
 			Route::resource('platforms', 'PlatformController');
 			Route::resource('countries', 'CountriesController');
@@ -46,6 +45,7 @@ Route::middleware('auth')->group(function()
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
 
 		});
+	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 		
 	Route::resource('products', 'ProductsController', ['only'=>'show']);
 		
