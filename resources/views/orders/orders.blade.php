@@ -1,74 +1,131 @@
 @extends('layouts.main', ['title' => 'Orders'])
 @section('content')
 
-<div class="col-10 mt-5">
-    <!-- Filters -->
-    <div class="row">
-        <div class="btn-group col-10">
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                User name
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Status
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-            <button type="button" class="btn btn-dark btn-sm dropdown-toggle filters mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Type
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-            <button type="button" class="btn btn-danger filters">Filter</button>
-        </div>
-    </div>
-    <!-- Order table -->
-    <div class="row">
-        <div class="col-md-12 table-responsive">
-            <table class="table table-sm">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">Order ID:</th>
-                    <th scope="col">Date:</th>
-                    <th scope="col">User name:</th>
-                    <th scope="col">Status:</th>
-                    <th scope="col">Type:</th>
-                    <th scope="col">Invoice:</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($orders as $order)
+	<div class="col-10 mt-5">
+		<!-- Filters -->
+		<div class="form-row align-items-center">
+			<form class="form-inline" action="{{route('order.orders')}}" method="get">
+				@admin
+				<div class=" col-auto my-1">
+					<select class="form-control" name="user_id" type="button"
+					        class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown"
+					        aria-haspopup="true" aria-expanded="false">
+						<option value="-1">User name</option>
+						@foreach($users as $user)
+							<option {{($selectedUser == $user->id)?'selected="selected"':''}} value="{{$user->id}}">{{$user->name}}</option>
+						@endforeach
+					</select>
+				</div>
+				@endadmin
+				<div class=" col-auto my-1">
+					<select class="form-control" name="status" type="button"
+					        class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown"
+					        aria-haspopup="true" aria-expanded="false">
+						<option value="-1">Status</option>
+						@foreach(['Pending'=>App\Order::PENDING, 'Unconfirmed'=>App\Order::UNCONFIRMED, 'Confirmed'=>App\Order::CONFIRMED, 'Rejected'=>App\Order::REJECTED] as $key=>$value)
+							<option {{($selectedStatus == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class=" col-auto my-1">
+					<select class="form-control" name="type" type="button"
+					        class="btn btn-dark btn-sm dropdown-toggle filters" data-toggle="dropdown"
+					        aria-haspopup="true" aria-expanded="false">
+						<option value="-1">Type</option>
+						@foreach(['Order'=>App\Order::ORDER, 'Pre-order'=>App\Order::PREORDER, 'Back-order'=>App\Order::BACKORDER] as $key=>$value)
+							<option {{($selectedStatus == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
+						@endforeach
+					</select>
+				</div>
+				<button type="submit" name="filter" class="btn btn-danger filters">Filter</button>
+			</form>
+		</div>
+		<!-- Order table -->
+		<div class="row">
+			<div class="col-md-12 table-responsive">
+				<table class="table table-sm">
+					<thead class="thead-light">
+					<tr>
+						<th scope="col">
+							@if ($sortName == 'order_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									Order ID: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'date' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'desc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'asc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'user_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'status' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'desc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'asc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'type' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'desc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'asc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">Invoice:</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach ($orders as $order)
 
-                <tr>
-                    <td data-label="Order:" class="align-middle text-right text-lg-center"><a href="{{route('order.products', $order->id)}}">{{$order->id}} </a></td>
-                    <td data-label="Date:" class="align-middle text-right text-lg-center">{{$order->date}}</td>
-                    <td data-label="User name:" class="align-middle text-right text-lg-center">{{$order->user->name}}</td>
-                    <td data-label="Status:" class="align-middle text-right text-lg-center">{{$order->OrderStatus}}</td>
-                    <td data-label="Type:" class="align-middle text-right text-lg-center">{{$order->OrderType}}</td>
-                    <td data-label="Invoice:" class="align-middle text-right text-lg-center">
-                        @if(!empty($order->invoice))
-                            <a href="{{ route('order.invoice.download', $order->id) }}"><img width="20px" class="figure-img text-right text-lg-center" src="images/pdf.png"></a>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-
+						<tr>
+							<td data-label="Order:" class="align-middle text-right text-lg-center"><a
+										href="{{route('order.products', $order->id)}}">{{$order->id}} </a></td>
+							<td data-label="Date:" class="align-middle text-right text-lg-center">{{$order->date}}</td>
+							<td data-label="User name:"
+							    class="align-middle text-right text-lg-center">{{$order->user->name}}</td>
+							<td data-label="Status:"
+							    class="align-middle text-right text-lg-center">{{$order->OrderStatus}}</td>
+							<td data-label="Type:"
+							    class="align-middle text-right text-lg-center">{{$order->OrderType}}</td>
+							<td data-label="Invoice:" class="align-middle text-right text-lg-center">
+								@if(!empty($order->invoice))
+									<a href="{{ route('order.invoice.download', $order->id) }}"><img width="20px"
+									                                                                 class="figure-img text-right text-lg-center"
+									                                                                 src="images/pdf.png"></a>
+								@endif
+							</td>
+						</tr>
+					@endforeach
                 </tbody>
             </table>
         </div>
@@ -95,8 +152,5 @@
             </ul>
         </nav>
     </div>
-
-
-</div>
-</div>
+	</div>
 @endsection

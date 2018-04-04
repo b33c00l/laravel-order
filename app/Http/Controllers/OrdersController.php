@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Chat;
 use App\Http\Requests\ChangeOrderStatusRequest;
-
 use App\Mail\OrderConfirmed;
 use App\Mail\OrderRejected;
-
 use App\Order;
-
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-
 use App\Services\InvoiceService;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,24 +24,52 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $checkInvoice;
-    private $cartService;
 
     public function __construct(InvoiceService $invoiceService)
     {
         $this->checkInvoice = $invoiceService;
-
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $orders = new Order;
+        $selectedUser = -1;
+        $selectedType = -1;
+        $selectedStatus = -1;
+
+
         if ($user->role == 'admin') {
-            $orders = Order::paginate(config('pagination.value'));
+            $user = Auth::user();
+            if ($user->role == 'admin') {
+                $user = User::whereNotIn('role', ['admin'])->get();
+                if ($request->has('user_id') && $request->get('user_id') > 0) {
+                    $orders = $orders->where('user_id', $request->get('user_id'));
+                    $selectedUser = $request->get('user_id');
+                }
+            }
         } else {
-            $orders = $user->orders()->paginate(config('pagination.value'));
+            $orders = $orders->where('user_id', $user->id);
         }
+        if ($request->has('type') && $request->get('type') >= 0) {
+            $orders = $orders->where('type', $request->get('type'));
+            $selectedType = $request->get('type');
+        }
+        if ($request->has('status') && $request->get('status') >= 0) {
+            $orders = $orders->where('status', $request->get('status'));
+            $selectedStatus = $request->get('status');
+        }
+        $orders = $orders->paginate();
+
         return view('orders.orders', [
             'orders' => $orders,
+            'users' => $user,
+            'selectedUser' => $selectedUser,
+            'selectedType' => $selectedType,
+            'selectedStatus' => $selectedStatus,
+            'direction' => '',
+            'sortName' => '',
+            'query' => ''
         ]);
     }
 
@@ -51,8 +78,8 @@ class OrdersController extends Controller
         $order = Order::findOrFail($id);
         $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
-        $messages = $chat->messages()->get();
-        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'messages' => $messages]);
+
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)
@@ -99,4 +126,81 @@ class OrdersController extends Controller
         }
         return redirect()->back();
     }
+
+    public function sort(Request $request)
+    {
+        $selectedUser = -1;
+        $selectedType = -1;
+        $selectedStatus = -1;
+        $user = Auth::user();
+        $orders = Order::with('user');
+        $query = $request->get('query');
+
+
+        if ($user->role == 'admin') {
+            $user = Auth::user();
+            if ($user->role == 'admin') {
+                $user = User::whereNotIn('role', ['admin'])->get();
+                if ($request->has('user_id') && $request->get('user_id') > 0) {
+                    $orders = $orders->where('user_id', $request->get('user_id'));
+                    $selectedUser = $request->get('user_id');
+                }
+            }
+        } else {
+            $orders = $orders->where('user_id', $user->id);
+        }
+        if ($request->has('type') && $request->get('type') >= 0) {
+            $orders = $orders->where('type', $request->get('type'));
+            $selectedType = $request->get('type');
+        }
+        if ($request->has('status') && $request->get('status') >= 0) {
+            $orders = $orders->where('status', $request->get('status'));
+            $selectedStatus = $request->get('status');
+        }
+
+
+
+        if ($request->get('direction') == 'asc') {
+            $direction = 'asc';
+        } else {
+            $direction = 'desc';
+        }
+
+        switch ($request->get('name')) {
+            case 'order_id':
+                $orders = $orders->orderBy('id', $direction);
+                break;
+            case 'date':
+                $orders = $orders->orderBy('date', $direction);
+                break;
+            case 'user_id':
+                $orders = $orders->orderBy('user_id', $direction);
+                break;
+            case 'status':
+                $orders = $orders->orderBy('status', $direction);
+                break;
+            case 'type':
+                $orders = $orders->orderBy('type', $direction);
+                break;
+
+            default:
+                $orders = $orders->orderBy('id', $direction);
+                break;
+        }
+
+        $orders = $orders->paginate();
+
+        return view('orders.orders', [
+            'orders' => $orders,
+            'sortName' => $request->get('name'),
+            'direction' => $direction,
+            'query' => $query,
+            'users' => $user,
+            'selectedUser' => $selectedUser,
+            'selectedType' => $selectedType,
+            'selectedStatus' => $selectedStatus,
+        ]);
+    }
+
 }
+

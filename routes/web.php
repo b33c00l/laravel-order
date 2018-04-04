@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function()
 			Route::resource('countries', 'CountriesController');
 			Route::resource('users', 'UsersController');
 			Route::resource('categories', 'CategoriesController');
-			Route::resource('products', 'ProductsController');
+			Route::resource('products', 'ProductsController', ['except'=>'show']);
 			Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 			Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
 			Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
@@ -47,12 +47,15 @@ Route::middleware('auth')->group(function()
 
 		});
 		
-	Route::get('export/{type}', 'OrderExportController@export')->name('export');
+	Route::resource('products', 'ProductsController', ['only'=>'show']);
+		
+	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('sort/', 'HomeController@sort')->name('home.sort');
+	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
 	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
@@ -64,7 +67,6 @@ Route::middleware('auth')->group(function()
 
 	Route::patch('chat/enable', 'ChatsController@enable')->name('chat.enable');
 
-	Route::get('search/', 'SearchController@search')->name('products.search');
 	Route::get('suggest/', 'SuggestionController@suggest')->name('products.suggest');
 
 	Route::post('order/{id}', 'CartController@store')->name('order.store');
@@ -76,7 +78,6 @@ Route::middleware('auth')->group(function()
 
 	Route::post('update/{id}', 'CartController@update')->name('order.update');
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
-	Route::delete('order', 'CartController@destroySelected')->name('order.product.del_selected');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 

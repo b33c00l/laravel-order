@@ -7,23 +7,27 @@
         <div class="col-lg-12 col-md-12 text-center">
             <h1>{{ $productSingle->name }}</h1>
         </div>
+        @if($productSingle->preorder == App\Product::ENABLED)
         <div class="col-lg-12 col-md-12 text-center">
             <h4 class="single-pre-order">Pre-Order Now</h4>
         </div>
+        @endif
     </div>
+
     <div class="row">
-        {{-- @admin --}}
+         @admin
         <div class="col-12 d-flex justify-content-center">
             <a href="{{ route('products.edit', $productSingle->id) }}"><button class="btn btn-secondary">Edit</button></a>
             <form action="{{ route('products.destroy', ['id' => $productSingle->id ])}}" method="post">
                 @csrf
+                @method('delete')
                 <div class="form-group">
                     <input type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-secondary">Delete</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>
-        {{-- @endadmin --}}
+         @endadmin
     </div>
     <div class="row slider-mobile-margin">
         <div class="col-lg-5 col-md-12">
