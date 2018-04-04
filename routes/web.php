@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function()
 
 	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('sort/', 'HomeController@sort')->name('home.sort');
+	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
 	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
