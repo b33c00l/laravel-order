@@ -1,4 +1,4 @@
-@extends('layouts.main', ['categories' => $categories])
+@extends('layouts.main', ['categories' => $categories, 'title' => 'Contacts'])
 @section('content')
 <!-- Single page -->
 
