@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function()
 			Route::resource('countries', 'CountriesController');
 			Route::resource('users', 'UsersController');
 			Route::resource('categories', 'CategoriesController');
-			Route::resource('products', 'ProductsController');
+			Route::resource('products', 'ProductsController', ['except'=>'show']);
 			Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 			Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
 			Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
@@ -47,7 +47,9 @@ Route::middleware('auth')->group(function()
 
 		});
 		
-	Route::get('export/{type}', 'OrderExportController@export')->name('export');
+	Route::resource('products', 'ProductsController', ['only'=>'show']);
+		
+	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -76,7 +78,6 @@ Route::middleware('auth')->group(function()
 
 	Route::post('update/{id}', 'CartController@update')->name('order.update');
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
-	Route::delete('order', 'CartController@destroySelected')->name('order.product.del_selected');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 

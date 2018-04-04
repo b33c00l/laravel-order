@@ -418,6 +418,28 @@ $(document).ready(function() {
     });
 });
 
+$('.delete').click(function(){
+    var row = $(this);
+    var url = row.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var pageUrl = row.data('html');
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        data: {
+            _token: token,
+        },
+        datatype: 'json',
+        success: function(data){
+            if (data === 'emptyOrder')
+            {
+                window.location.replace(pageUrl);
+            }
+            row.closest('tr').remove();
+        }
+    });
+});
+
 $(document).ready(function() {
     var input = document.getElementById( 'file-upload' );
     var infoArea = document.getElementById( 'file-upload-filename' );
@@ -434,7 +456,4 @@ $(document).ready(function() {
 
       document.getElementById( 'file-upload-filename' ).innerHTML = fileName;
     }
-
 });
-
-
