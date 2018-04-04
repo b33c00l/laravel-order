@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Create publisher'])
 @section('content')
 <div class="col-10 mt-5">
     <form action="{{ route('publishers.store') }}" method="post">

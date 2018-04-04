@@ -30,13 +30,12 @@ Route::middleware('auth')->group(function()
 			Route::get('products/import', 'ProductsImportController@importForm')->name('products.import.form');
 			Route::get('products/import/log', 'ProductsImportController@showLog')->name('products.import.log');
 			Route::post('products/import/log', 'ProductsImportController@filter')->name('products.import.filter');
-			Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 			Route::resource('publishers', 'PublishersController');
 			Route::resource('platforms', 'PlatformController');
 			Route::resource('countries', 'CountriesController');
 			Route::resource('users', 'UsersController');
 			Route::resource('categories', 'CategoriesController');
-			Route::resource('products', 'ProductsController');
+			Route::resource('products', 'ProductsController', ['except'=>'show']);
 			Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 			Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
 			Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
@@ -46,16 +45,20 @@ Route::middleware('auth')->group(function()
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
 
 		});
+	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 		
-	Route::get('export/{type}', 'OrderExportController@export')->name('export');
+	Route::resource('products', 'ProductsController', ['only'=>'show']);
+		
+	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('sort/', 'HomeController@sort')->name('home.sort');
+	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
-	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
+	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:admin');
 	Route::get('chat/create', 'ChatsController@create')->name('chat.create');
 	Route::post('chat/store', 'ChatsController@store')->name('chat.store');
 	Route::get('chat/user', 'ChatsController@getUserChats')->name('chat.user');

@@ -119,14 +119,12 @@ class ProductsController extends Controller
             {
                 continue;
             }
-
             $category = Category::where('name', $name)->first();
 
             if($category == null)
             {
                 $category = Category::Create(['name' => $name]);
             }
-
             $category_id[] = $category->id;
         }
 
@@ -172,7 +170,7 @@ class ProductsController extends Controller
 
         $this->imageService->updateProductImages($product, $request->only(['image_id', 'image', 'featured']));
 
-        return redirect('/');
+        return redirect()->route('products.show', $id );
 
     }
 

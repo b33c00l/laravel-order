@@ -15082,9 +15082,13 @@ div#radioboxes {
 }
 
 img.gallery {
-  width: 150px;
+  width: auto;
   height: 200px;
-  margin: 10px;
+}
+
+.karuseles-img-wrap {
+  width: 150px;
+  overflow: hidden;
 }
 
 body {

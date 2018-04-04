@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Contacts'])
 @section('content')
 <div class="col-10">
 <div class="row justify-content-center m-5">

@@ -1,4 +1,4 @@
-@extends('layouts.main', ['categories' => $categories])
+@extends('layouts.main', ['categories' => $categories, 'title' => 'Contacts'])
 @section('content')
 <!-- Single page -->
 
@@ -7,23 +7,27 @@
         <div class="col-lg-12 col-md-12 text-center">
             <h1>{{ $productSingle->name }}</h1>
         </div>
+        @if($productSingle->preorder == App\Product::ENABLED)
         <div class="col-lg-12 col-md-12 text-center">
             <h4 class="single-pre-order">Pre-Order Now</h4>
         </div>
+        @endif
     </div>
+
     <div class="row">
-        {{-- @admin --}}
+         @admin
         <div class="col-12 d-flex justify-content-center">
             <a href="{{ route('products.edit', $productSingle->id) }}"><button class="btn btn-secondary">Edit</button></a>
             <form action="{{ route('products.destroy', ['id' => $productSingle->id ])}}" method="post">
                 @csrf
+                @method('delete')
                 <div class="form-group">
                     <input type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-secondary">Delete</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>
-        {{-- @endadmin --}}
+         @endadmin
     </div>
     <div class="row slider-mobile-margin">
         <div class="col-lg-5 col-md-12">
@@ -53,9 +57,15 @@
             </div>
             <div class="row">
                 <div class="col-10 mt-5 pl-5 single-info">
-                    @foreach ($productSingle->categories as $cat)
-                    <p>Category: {{ $cat->name }}</p>
-                    @endforeach
+                    <p>Category:
+                        @for($i=0; count($productSingle->categories) > $i; $i++)
+                            @if(count($productSingle->categories) == $i+1)
+                                {{$productSingle->categories[$i]->name}}.
+                            @else
+                                {{$productSingle->categories[$i]->name}},
+                            @endif
+                        @endfor
+                    </p>
                     <p>EAN: {{ $productSingle->ean }}</p>
                     <p>Platform: {{ $productSingle->platform->name }}</p>
                     @if (isset($productSingle->publisher->name))
