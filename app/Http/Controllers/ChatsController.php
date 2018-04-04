@@ -49,8 +49,7 @@ class ChatsController extends Controller
             $adminEmail = $this->contactService->getEmailForCountry(Auth::user()->country);
             Mail::to($adminEmail)->send(new ChatTopicCreated($chat->id));
         }
-
-        return redirect()->route('chat.show', $chat->id);
+        return redirect()->back();
     }
 
     public function show(ReadChatRequest $request, $id)

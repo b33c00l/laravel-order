@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function()
 
 	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('sort/', 'HomeController@sort')->name('home.sort');
+	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
 	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
@@ -66,7 +67,6 @@ Route::middleware('auth')->group(function()
 
 	Route::patch('chat/enable', 'ChatsController@enable')->name('chat.enable');
 
-	Route::get('search/', 'SearchController@search')->name('products.search');
 	Route::get('suggest/', 'SuggestionController@suggest')->name('products.suggest');
 
 	Route::post('order/{id}', 'CartController@store')->name('order.store');
@@ -78,7 +78,6 @@ Route::middleware('auth')->group(function()
 
 	Route::post('update/{id}', 'CartController@update')->name('order.update');
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
-	Route::delete('order', 'CartController@destroySelected')->name('order.product.del_selected');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 

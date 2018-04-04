@@ -2,9 +2,6 @@
 @section('content')
 @inject('cartService', "App\Services\CartService")
 <div class="col-10 mt-5">
-	<form method="post" action="{{ route('order.product.del_selected') }}">
-		@csrf
-		@method('delete')
 		<!-- Order table -->
 		@if(!empty($products))
 		<div class="row">
@@ -13,7 +10,6 @@
 				<table class="table table-sm">
 					<thead class="thead-light">
 						<tr>
-							<th scope="col">Select:<input type="checkbox" class="selectAll" name="selectAll" value="orders" ></th>
 							<th scope="col">EAN:</th>
 							<th scope="col">Platform:</th>
 							<th scope="col">Name:</th>
@@ -22,12 +18,12 @@
 							<th scope="col">Price:</th>
 							<th scope="col">Price Total:</th>
 							<th scope="col">Quantity</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($products as $product)
 						<tr>
-							<td data-label="Select:" class="align-middle text-right text-lg-center"><input type="checkbox" class="orders" name="checkbox[]" value="{{$product->id}}"></td>
 							<td data-label="EAN:" class="align-middle text-right text-lg-center">{{ $product->product->ean }}</td>
 							<td data-label="Platform:" class="align-middle text-right text-lg-center">{{ $product->product->platform->name }}</td>
 							<td data-label="Name:" class="align-middle text-right text-lg-center">{{ $product->product->name }}</td>
@@ -40,10 +36,13 @@
 								<br>
 								<span id="message{{ $product->id }}" ></span>
 							</td>
+							<td class="align-middle text-right text-lg-center">
+									<button class="btn btn-danger btn-sm delete" data-html="{{ route('order.index') }}" data-url="{{ route('order.product.delete', $product->id) }}">Delete</button>
+							</td>
 						</tr>
 						@endforeach
 						<tr>
-							<td scope="total" colspan="7" class="text-right"><b>Total</b></td>
+							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center totalPrice" rowspan="6" data-label="Total">{{ !empty($products) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
 							<td class="align-middle text-right text-lg-center totalQuantity" data-label="Total quantity">{{ !empty($products) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
 						</tr>
@@ -59,7 +58,6 @@
 					<h3>BACK-ORDER</h3>
 					<thead class="thead-light">
 						<tr>
-							<th>Select:<input type="checkbox" class="selectAll" value="backorders" name="selectAll"></th>
 							<th scope="col">EAN:</th>
 							<th scope="col">Platform:</th>
 							<th scope="col">Name:</th>
@@ -68,12 +66,12 @@
 							<th scope="col">Price:</th>
 							<th scope="col">Price Total:</th>
 							<th scope="col">Quantity</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($backorders as $B_product)
 						<tr>
-							<td data-label="Select:" class="align-middle text-right text-lg-center"><input type="checkbox" class="backorders" name="checkbox[]" value="{{$B_product->id}}"></td>
 							<td data-label="EAN:" class="align-middle text-right text-lg-center">{{ $B_product->product->ean }}</td>
 							<td data-label="Platform:" class="align-middle text-right text-lg-center">{{ $B_product->product->platform->name }}</td>
 							<td data-label="Name:" class="align-middle text-right text-lg-center">{{ $B_product->product->name }}</td>
@@ -86,10 +84,13 @@
 								<br>
 								<span id="message{{ $B_product->id }}" ></span>
 							</td>
+							<td class="align-middle text-right text-lg-center">
+								<button class="btn btn-danger btn-sm delete" data-html="{{ route('order.index') }}" data-url="{{ route('order.product.delete', $B_product->id) }}">Delete</button>
+							</td>
 						</tr>
 						@endforeach
 						<tr>
-							<td scope="total" colspan="7" class="text-right"><b>Total</b></td>
+							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center" id="totalPrice_B" rowspan="6" data-label="Total">{{ !empty($backorders) ? number_format($cartService->getTotalCartPrice($backorders->first()->order), 2, '.', '') : ''}} €</td>
 							<td class="align-middle text-right text-lg-center" id="totalQuantity_B" data-label="Total quantity">{{ !empty($backorders) ? $cartService->getTotalCartQuantity($backorders->first()->order) : '' }}</td>
 						</tr>
@@ -105,7 +106,6 @@
 					<h3>PRE-ORDER</h3>
 					<thead class="thead-light">
 						<tr>
-							<th>Select:<input type="checkbox" class="selectAll" name="selectAll" value="preorders"></th>
 							<th scope="col">EAN:</th>
 							<th scope="col">Platform:</th>
 							<th scope="col">Name:</th>
@@ -114,12 +114,12 @@
 							<th scope="col">Price:</th>
 							<th scope="col">Price Total:</th>
 							<th scope="col">Quantity</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($preorders as $P_product)
 						<tr>
-							<td data-label="Select:" class="align-middle text-right text-lg-center"><input type="checkbox" name="checkbox[]" value="{{$P_product->id}}"></td>
 							<td data-label="EAN:" class="align-middle text-right text-lg-center">{{ $P_product->product->ean }}</td>
 							<td data-label="Platform:" class="align-middle text-right text-lg-center">{{ $P_product->product->platform->name }}</td>
 							<td data-label="Name:" class="align-middle text-right text-lg-center">{{ $P_product->product->name }}</td>
@@ -132,10 +132,13 @@
 								<br>
 								<span id="message{{ $P_product->id }}" ></span>
 							</td>
+							<td class="align-middle text-right text-lg-center">
+								<button class="btn btn-danger btn-sm delete" data-html="{{ route('order.index') }}" data-url="{{ route('order.product.delete', $P_product->id) }}">Delete</button>
+							</td>
 						</tr>
 						@endforeach
 						<tr>
-							<td scope="total" colspan="7" class="text-right"><b>Total</b></td>
+							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center" id="totalPrice_P" rowspan="6" data-label="Total">{{ !empty($preorders) ? number_format($cartService->getTotalCartPrice($preorders->first()->order), 2, '.', '') : ''}} €</td>
 							<td class="align-middle text-right text-lg-center" id="totalQuantity_P" data-label="Total quantity">{{ !empty($preorders) ? $cartService->getTotalCartQuantity($preorders->first()->order) : '' }}</td>
 						</tr>
@@ -156,10 +159,7 @@
 			@endif
 			@if(!empty($product) || !empty($backorder) || !empty($preorder))
 			<div class="row mb-2">
-				<div class="col-6">
-					<button class="btn btn-danger btn-block" type="submit">Delete</button>
-				</div>
-				<div class="col-6">
+				<div class="col-12">
 					<a class="btn btn-dark btn-block" href="{{ route('home') }}">Back to Shop</a>
 				</div>
 			</div>
@@ -168,7 +168,6 @@
 			<a class="btn btn-dark btn-block" href="{{ route('home') }}">Back to Shop</a>
 			@endif
 		</div>
-	</form>
 	<!-- Comments and attachments -->
 	@if(!empty($order) || !empty($backorder) || !empty($preorder))
 	<div class="row">

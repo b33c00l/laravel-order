@@ -39,7 +39,7 @@ class CartService
 
         if (empty($user_order))
         {
-            $this->createOrder($user);
+            $order = $this->createOrder($user);
         }else{
             $order = $user_order;
         }
