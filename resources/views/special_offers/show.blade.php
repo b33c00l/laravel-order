@@ -1,5 +1,4 @@
 @extends('layouts.main')
-
 @section('content')
     <div class="col-10">
         <div class="row">
@@ -15,6 +14,6 @@
                 <h3>Expiration:</h3>
                 <h4>{{$special_offer->expiration_date}}</h4>
             </div>
-    </div>
+        </div>
     </div>
 @endsection

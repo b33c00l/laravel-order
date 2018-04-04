@@ -4,6 +4,7 @@
 <li><a href="{{route('order.orders', 'type=1')}}">Pre-Orders</a></li>
 <li><a href="{{route('order.orders', 'type=2')}}">Back-Orders</a></li>
 </ul>
+@admin
 <li><a href="{{ route('users.index') }}">Users</a></li>
 <ul>
 <li><a href="{{ route('users.create') }}">Add user</a></li>
@@ -37,4 +38,5 @@
 <ul>
 <li><a href="{{ route('special.index') }}">Special offers</a></li>
 </ul>
+@endadmin
 </ul>

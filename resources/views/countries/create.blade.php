@@ -35,8 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group no-gutters">
-                    <label class="col control-label">Pre-order?</label>
+            <div class="form-group no-gutters"
                     <div class="col">
                         <div class="checkbox">
                             <label>
