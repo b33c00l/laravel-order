@@ -189,4 +189,24 @@ class CartController extends Controller
         Mail::to($userEmail)->send(new OrderReceived($order, $backOrder, $preOrder, $orderComment));
         return redirect()->back();
     }
+
+    public function preorders()
+    {
+       $user = Auth::user();
+       if ($user->role === 'admin')
+       {
+           $orders = Order::paginate(20);
+       }else{
+           $orders = $user->orders()->unconfirmedOrder()->PreOrder()->paginate(20);
+       }
+       return view('orders.preorders', ['orders' => $orders]);
+    }
+
+    public function preordercart($id)
+    {
+        $preorder = Order::findOrFail($id);
+        $preorders = $preorder->orderProducts()->get();
+        $chat = $preorder->chat()->first();
+        return view('orders.single_preorder', compact(['preorders', 'preorder', 'chat']));
+    }
 }

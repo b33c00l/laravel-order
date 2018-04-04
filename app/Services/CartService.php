@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Order;
+use App\Product;
 use Auth;
 use Carbon\Carbon;
 use App\OrderProduct;

@@ -45,6 +45,7 @@
 							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center totalPrice" rowspan="6" data-label="Total">{{ !empty($products) ? $cartService->getTotalCartPrice($order) : ''}} €</td>
 							<td class="align-middle text-right text-lg-center totalQuantity" data-label="Total quantity">{{ !empty($products) ? $cartService->getTotalCartQuantity($order) : '' }}</td>
+							<td scope="total"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -93,6 +94,7 @@
 							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center" id="totalPrice_B" rowspan="6" data-label="Total">{{ !empty($backorders) ? number_format($cartService->getTotalCartPrice($backorders->first()->order), 2, '.', '') : ''}} €</td>
 							<td class="align-middle text-right text-lg-center" id="totalQuantity_B" data-label="Total quantity">{{ !empty($backorders) ? $cartService->getTotalCartQuantity($backorders->first()->order) : '' }}</td>
+							<td scope="total"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -141,6 +143,7 @@
 							<td scope="total" colspan="6" class="text-right"><b>Total</b></td>
 							<td class="align-middle text-right text-lg-center" id="totalPrice_P" rowspan="6" data-label="Total">{{ !empty($preorders) ? number_format($cartService->getTotalCartPrice($preorders->first()->order), 2, '.', '') : ''}} €</td>
 							<td class="align-middle text-right text-lg-center" id="totalQuantity_P" data-label="Total quantity">{{ !empty($preorders) ? $cartService->getTotalCartQuantity($preorders->first()->order) : '' }}</td>
+							<td scope="total"></td>
 						</tr>
 					</tbody>
 				</table>
