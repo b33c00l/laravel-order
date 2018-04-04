@@ -1,4 +1,5 @@
 @extends('layouts.main', ['categories' => $categories])
+@inject('exportService', "App\Services\ExportService")
 @section('content')
 <!-- Single page -->
 
@@ -57,9 +58,9 @@
             </div>
             <div class="row">
                 <div class="col-10 mt-5 pl-5 single-info">
-                    @foreach ($productSingle->categories as $cat)
-                    <p>Category: {{ $cat->name }}</p>
-                    @endforeach
+                    <p>Category:
+                        {{ $exportService->getCategories($productSingle) }}
+                    </p>
                     <p>EAN: {{ $productSingle->ean }}</p>
                     <p>Platform: {{ $productSingle->platform->name }}</p>
                     @if (isset($productSingle->publisher->name))
