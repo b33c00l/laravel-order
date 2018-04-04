@@ -33,7 +33,7 @@
 					        aria-haspopup="true" aria-expanded="false">
 						<option value="-1">Type</option>
 						@foreach(['Order'=>App\Order::ORDER, 'Pre-order'=>App\Order::PREORDER, 'Back-order'=>App\Order::BACKORDER] as $key=>$value)
-							<option {{($selectedStatus == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
+							<option {{($selectedType == $value)?'selected="selected"':''}} value="{{$value}}">{{$key}}</option>
 						@endforeach
 					</select>
 				</div>
@@ -89,9 +89,21 @@
             </label>
         </div>
         <div class="btn-group col-10" role="group" aria-label="export_buttons">
-            <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
-            <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
-            <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+	        @if($selectedType == \App\Order::ORDER)
+		        <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
+			@elseif($selectedType == \App\Order::PREORDER)
+		        <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
+			@elseif($selectedType == \App\Order::BACKORDER)
+		        <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+			@else
+		        <a href="{{ route('export', 'order') }}" class="btn btn-danger btn-sm export mr-1">Orders</a>
+		        <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
+		        <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
+			@endif
+
+
+
+
         </div>
     </div>
     <!-- Pagination -->
