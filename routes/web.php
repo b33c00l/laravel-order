@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function()
 	Route::get('orders', 'OrdersController@index')->name('order.orders');
 	Route::get('order/{id}', 'OrdersController@show')->name('order.products');
 	Route::get('order/invoice/{id}', 'OrdersController@download')->name('order.invoice.download');
+	Route::get('cart/preorders', 'CartController@preorders')->name('preorders.index');
+	Route::get('cart/preorder/{id}', 'CartController@preorderCart')->name('cart.preorder');
 
 	Route::post('update/{id}', 'CartController@update')->name('order.update');
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
