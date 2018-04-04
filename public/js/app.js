@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 15);
@@ -10778,7 +10778,7 @@ return $.ui.version = "1.12.1";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.1
+ * @version 1.14.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -43310,10 +43310,33 @@ $('.add-into-cart-single').click(function () {
     });
 });
 
+function showHideOrders(orderName) {
+    var url_delete = document.location.href;
+    urlObject = new URL(url_delete);
+    urlObject.searchParams.delete(orderName);
+
+    var fieldId = "#" + "show_" + orderName + "s";
+    console.log(fieldId);
+
+    if ($(fieldId).is(':checked')) {
+        if (urlObject.href.indexOf('?') > -1) {
+            var url = urlObject.href + "&" + orderName + "=hide";
+        } else {
+            var url = urlObject.href + "?" + orderName + "=hide";
+        }
+    } else {
+        var url = urlObject.href;
+    }
+    document.location = url;
+}
+
 $(document).ready(function () {
     $('#show_preorders').click(function () {
-        $('.preorders').toggle();
-        return;
+        showHideOrders("preorder");
+    });
+
+    $('#show_backorders').click(function () {
+        showHideOrders("backorder");
     });
 });
 
