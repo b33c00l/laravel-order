@@ -167,13 +167,22 @@ class OrdersController extends Controller
         }
 
         switch ($request->get('name')) {
-//            case 'order_id':
-//                $orders = $orders->select('orders.*')->leftJoin('users', 'users.id', '=', 'user_id')
-//                    ->orderBy('users.name', $direction);
-//                break;
             case 'order_id':
                 $orders = $orders->orderBy('id', $direction);
                 break;
+            case 'date':
+                $orders = $orders->orderBy('date', $direction);
+                break;
+            case 'user_id':
+                $orders = $orders->orderBy('user_id', $direction);
+                break;
+            case 'status':
+                $orders = $orders->orderBy('status', $direction);
+                break;
+            case 'type':
+                $orders = $orders->orderBy('type', $direction);
+                break;
+
             default:
                 $orders = $orders->orderBy('id', $direction);
                 break;

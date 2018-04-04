@@ -55,11 +55,52 @@
 								<a href="{{ route('orders.sort', ['name' => 'order_id', 'direction' => 'asc', 'query' => $query ]) }}">
 									Order ID: <i class="fa fa-sort-down"></i>
 								</a>
-							@endif</th>
-						<th scope="col">Date:</th>
-						<th scope="col">User name:</th>
-						<th scope="col">Status:</th>
-						<th scope="col">Type:</th>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'date' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'desc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'date', 'direction' => 'asc', 'query' => $query ]) }}">
+									Date: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'user_id' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'desc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'user_id', 'direction' => 'asc', 'query' => $query ]) }}">
+									User name: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'status' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'desc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'status', 'direction' => 'asc', 'query' => $query ]) }}">
+									Status: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
+						<th scope="col">
+							@if ($sortName == 'type' && $direction == 'asc')
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'desc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-up"></i>
+								</a>
+							@else
+								<a href="{{ route('orders.sort', ['name' => 'type', 'direction' => 'asc', 'query' => $query ]) }}">
+									Type: <i class="fa fa-sort-down"></i>
+								</a>
+							@endif
+						</th>
 						<th scope="col">Invoice:</th>
 					</tr>
 					</thead>
