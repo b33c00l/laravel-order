@@ -23,9 +23,9 @@
                                 {{$specialPrice->amount}}
                             </td>
                             @admin
-                            <td class="align-middle text-right text-lg-center">
-                                <button class="btn btn-danger btn-sm delete">Delete</button>
-                            </td>
+                                <td class="align-middle text-right text-lg-center">
+                                    <button class="btn btn-danger btn-sm delete">Delete</button>
+                                </td>
                             @endadmin
                         </tr>
                     @endforeach

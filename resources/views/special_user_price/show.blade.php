@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-    @admin
     <div class="col-10">
         <div class="row">
             <div class="col-12 text-center mt-5 mb-5">
@@ -25,5 +24,4 @@
             </div>
         </div>
     </div>
-    @endadmin
 @endsection
