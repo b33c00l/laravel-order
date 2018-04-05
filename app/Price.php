@@ -23,7 +23,7 @@ class Price extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     protected static function boot()

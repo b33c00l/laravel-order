@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function()
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
 	Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
+	Route::get('special/user/show/{id}', 'SpecialUserPriceController@showSingle')->name('special.user.single');
 
 
 	Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');
