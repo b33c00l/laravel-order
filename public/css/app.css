@@ -15531,7 +15531,16 @@ table tr {
 }
 
 .title {
-  width: 240px;
+  width: 200px;
+}
+
+.table-sm td,
+.table-sm th {
+  margin: 10px;
+}
+
+.btn-sm {
+  padding: .15rem .2rem;
 }
 
 .platform {
@@ -15539,7 +15548,7 @@ table tr {
 }
 
 .ean {
-  width: 80px;
+  width: 100px;
 }
 
 .release {
@@ -15560,7 +15569,23 @@ table tr {
 
 .packshots {
   display: none;
-  width: 45px;
+  width: 40px;
+}
+
+.packshots img {
+  width: 40px;
+}
+
+.packshot {
+  width: 40px;
+}
+
+.packshotsImgDisplay {
+  display: table-cell;
+}
+
+.packshotsImgDisplayNone {
+  display: none;
 }
 
 table th,
@@ -15578,6 +15603,14 @@ table th {
 @media screen and (max-width: 990px) {
   .packshots {
     width: 100%;
+  }
+
+  .packshots img {
+    width: 150px;
+  }
+
+  .packshotsImgDisplay {
+    display: block;
   }
 
   table {
