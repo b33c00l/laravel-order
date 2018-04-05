@@ -31,88 +31,89 @@
                         <th scope="col" class="packshots"></th>
                         <th scope="col" class="ean">
                             @if ($sortName == 'ean' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'ean', 'direction' => 'desc', 'query' => $query ]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'ean', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     EAN: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'ean', 'direction' => 'asc', 'query' => $query ]) }}">
+                                <a href="{{ route('home.sort',
+                                ['name' => 'ean', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     EAN: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="title">
                             @if ($sortName == 'title' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'title', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'title', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Title: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'title', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'title', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Title: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="platform">
                             @if ($sortName == 'plat' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Pl.: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'plat', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Pl.: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="release">
                             @if ($sortName == 'release' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'release', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'release', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Release: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'release', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'release', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Release: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th style="@if (isset($_GET['preorder']) && $_GET['preorder'] == 'hide') display:none; @endif" scope="col" class="preorders">
                             @if ($sortName == 'deadline' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Deadline: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'deadline', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Deadline: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="publisher">
                             @if ($sortName == 'pub' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'pub', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'pub', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Publisher: <i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'pub', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'pub', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Publisher: <i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="stock">
                             @if ($sortName == 'stock' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'stock', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'stock', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Stock:<i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'stock', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'stock', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Stock:<i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
                         </th>
                         <th scope="col" class="price">
                             @if ($sortName == 'price' && $direction == 'asc')
-                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'desc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'desc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Price:<i class="fa fa-sort-up"></i>
                                 </a>
                             @else
-                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'asc', 'query' => $query]) }}">
+                                <a href="{{ route('home.sort', ['name' => 'price', 'direction' => 'asc', 'query' => $query, 'preorder' => $preorder, 'backorder' => $backorder ]) }}">
                                     Price:<i class="fa fa-sort-down"></i>
                                 </a>
                             @endif
