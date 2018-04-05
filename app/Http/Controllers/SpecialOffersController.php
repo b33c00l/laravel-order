@@ -52,7 +52,7 @@ class SpecialOffersController extends Controller
 
             if($client->user != null)
             {
-                $specialOffer->users()->attach($client->user->id);
+                $special_offer->users()->attach($client->user->id);
             }
         }
 
@@ -127,6 +127,13 @@ class SpecialOffersController extends Controller
     public function show($id)
     {
         $special_offer = SpecialOffer::FindOrFail($id);
-        return view('special_offers.show', compact('special_offer'));
+        $prices = $special_offer->prices()->with('products')->get();
+        $products = [];
+        foreach ($prices as $price)
+        {
+            $products[] = $price->products;
+        }
+
+        return view('special_offers.show', compact('special_offer', 'products'));
     }
 }
