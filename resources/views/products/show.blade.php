@@ -113,7 +113,7 @@
         </div>
         <div class="row">
             <div class="col-12 mt-3">
-                <iframe width="100%" height="315" src="{{ $productSingle->video }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+               {!! $productSingle->youtube_embed !!}
             </div>
         </div>
 
