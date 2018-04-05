@@ -30,7 +30,6 @@ Route::middleware('auth')->group(function()
 			Route::get('products/import', 'ProductsImportController@importForm')->name('products.import.form');
 			Route::get('products/import/log', 'ProductsImportController@showLog')->name('products.import.log');
 			Route::post('products/import/log', 'ProductsImportController@filter')->name('products.import.filter');
-			Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 			Route::resource('publishers', 'PublishersController');
 			Route::resource('platforms', 'PlatformController');
 			Route::resource('countries', 'CountriesController');
@@ -44,8 +43,12 @@ Route::middleware('auth')->group(function()
 			Route::post('special/country', 'SpecialOffersController@getByCountry')->name('special.filter.country');
 			Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
+			Route::get('special/user', 'SpecialUserPriceController@index')->name('special.user.index');
+            Route::post('special/user/store', 'SpecialUserPriceController@store')->name('special.user.store');
+            Route::post('special/user/filter', 'SpecialUserPriceController@filter')->name('special.user.filter');
 
 		});
+	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 		
 	Route::resource('products', 'ProductsController', ['only'=>'show']);
 		
@@ -58,7 +61,7 @@ Route::middleware('auth')->group(function()
 	Route::get('orders/sort/', 'OrdersController@sort')->name('orders.sort');
 
 
-	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:user');
+	Route::get('chat', 'ChatsController@index')->name('chat.index')->middleware('role:admin');
 	Route::get('chat/create', 'ChatsController@create')->name('chat.create');
 	Route::post('chat/store', 'ChatsController@store')->name('chat.store');
 	Route::get('chat/user', 'ChatsController@getUserChats')->name('chat.user');
@@ -80,6 +83,7 @@ Route::middleware('auth')->group(function()
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
+	Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
 
 
 	Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');

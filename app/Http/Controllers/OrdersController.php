@@ -78,8 +78,9 @@ class OrdersController extends Controller
         $order = Order::findOrFail($id);
         $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
+        $user = User::findOrFail($id);
 
-        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat]);
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'user' => $user]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)

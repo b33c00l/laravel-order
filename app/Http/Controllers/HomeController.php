@@ -59,14 +59,6 @@ class HomeController extends Controller
         ]);
     }
 
-    public function paginate($items, $page = null, $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, config('pagination.value')),
-            $items->count(), config('pagination.value'), $page, $options);
-    }
-
     public function sort(Request $request)
     {
         $products = Product::with('platform', 'publisher', 'images');
@@ -140,6 +132,14 @@ class HomeController extends Controller
             'query' => $query
         ]);
     }
+	
+	private function paginate($items, $page = null, $options = [])
+	{
+		$page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+		$items = $items instanceof Collection ? $items : Collection::make($items);
+		return new LengthAwarePaginator($items->forPage($page, config('pagination.value')),
+			$items->count(), config('pagination.value'), $page, $options);
+	}
 
     public function contacts()
     {
