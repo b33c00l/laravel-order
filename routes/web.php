@@ -21,6 +21,9 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::middleware('auth')->group(function()
 {	
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+	Route::get('profile', 'ProfileController@form')->name('profile');
+	Route::post('profile', 'ProfileController@submit');
+	Route::post('profile/password', 'ProfileController@password')->name('profile.password');
 
 	Route::middleware('trackingUser')->group(function () {
 
