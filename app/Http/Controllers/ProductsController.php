@@ -142,10 +142,6 @@ class ProductsController extends Controller
             $platform = Platform::create( ['name' => $platform_name] );
         }
 
-        if ($category == null) {
-            $category = Category::create( ['name' => $category_name] );
-        }
-
         $product->categories()->sync($category_id);
 
         $product->update([

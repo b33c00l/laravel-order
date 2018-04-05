@@ -36,12 +36,11 @@ class HomeController extends Controller
         $preorder = $request->get('preorder');
         $backorder = $request->get('backorder');
 
-        $products = new Product;
+        $products = Product::with('platform','publisher', 'images');
 
         if ($preorder == 'hide') {
-            $products = $products->where('preorder', '!=', '1')->with('platform','publisher', 'images');
+            $products = $products->where('preorder', '!=', '1')->orWhereNull('preorder');
         }
-
         if ($backorder == 'hide') {
             $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
         }
