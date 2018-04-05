@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function()
 			Route::put('order/{id}/action', 'OrdersController@action')->name('order.action');
 			Route::patch('chat/disable', 'ChatsController@disable')->name('chat.disable');
 			Route::post('special/store', 'SpecialOffersController@store')->name('special.store');
-			Route::post('special/filter', 'SpecialOffersController@filter')->name('special.filter');
+			Route::get('special/filter', 'SpecialOffersController@filter')->name('special.filter');
 			Route::post('special/country', 'SpecialOffersController@getByCountry')->name('special.filter.country');
 			Route::post('special/search', 'SpecialOffersController@search')->name('special.search');
 			Route::get('special', 'SpecialOffersController@index')->name('special.index');
@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function()
 	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 		
 	Route::resource('products', 'ProductsController', ['only'=>'show']);
-		
+
 	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');

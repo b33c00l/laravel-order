@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Price extends Model
 {
@@ -24,4 +25,18 @@ class Price extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        $clearCache = function (self $item) {
+            Cache::tags('product:'. $item->products->id)->flush();
+        };
+
+        static::created($clearCache);
+        static::updated($clearCache);
+        static::deleting($clearCache);
+    }
+
 }

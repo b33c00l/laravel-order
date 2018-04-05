@@ -46,9 +46,14 @@ class SpecialOffersController extends Controller
         $filename = $this->imageService->uploadImage($file);
         $special_offer = SpecialOffer::create(['filename' => $filename] + $request->only('expiration_date', 'description'));
 
-        foreach ($clients as $client_id) {
+        foreach ($clients as $client_id) 
+        {
             $client = Client::findOrFail($client_id);
-            $special_offer->users()->attach($client->user->id);
+
+            if($client->user != null)
+            {
+                $special_offer->users()->attach($client->user->id);
+            }
         }
 
         $games = $request->get('games');
@@ -122,6 +127,13 @@ class SpecialOffersController extends Controller
     public function show($id)
     {
         $special_offer = SpecialOffer::FindOrFail($id);
-        return view('special_offers.show', compact('special_offer'));
+        $prices = $special_offer->prices()->with('products')->get();
+        $products = [];
+        foreach ($prices as $price)
+        {
+            $products[] = $price->products;
+        }
+
+        return view('special_offers.show', compact('special_offer', 'products'));
     }
 }

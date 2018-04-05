@@ -32,7 +32,7 @@
 			<div class="karuseles-arrow prev"><i class="fa fa-caret-left"></i>
 			</div>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-sm-8 mt-5">
 			<div class="karusele">
 
 				@foreach ($products_latest as $product_latest)
