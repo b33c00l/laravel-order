@@ -22,8 +22,8 @@
                 'payment_terms' => "",
                 'phone' =>"",
                 ])
-                <div class="col-12 form-group">
-                    <div class="col">
+                <div class="form-group">
+                    <div class="col-12">
                         <button type="submit" class="btn btn-danger btn-block">Create</button>
                     </div>
                 </div>
