@@ -126,7 +126,7 @@
                         {{ $errors->first() }}
                     @endif
                     @foreach($products as $product)
-
+                        @if($product->preorder !== \App\Product::DISABLED)
                         <tr class="table-tr justify-content-center">
                             <td class="align-middle text-center product-image-mobile-center packshots">
                                 <div class="packshot text-center">
@@ -182,6 +182,7 @@
                                 </td>
                                 @endadmin
                         </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>

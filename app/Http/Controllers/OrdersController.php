@@ -76,11 +76,17 @@ class OrdersController extends Controller
     public function show($id)
     {
         $order = Order::findOrFail($id);
+        if ($order->type === Order::PREORDER)
+        {
+            $preorder = true;
+        }else{
+            $preorder = null;
+        }
         $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
-        $user = User::findOrFail($id);
+        $user = $order->user;
 
-        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'user' => $user]);
+        return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'user' => $user, 'preorder' => $preorder]);
     }
 
     public function action(ChangeOrderStatusRequest $request, $id)
