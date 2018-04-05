@@ -9,7 +9,8 @@ class SpecialOffer extends Model
     protected $fillable = [
         'expiration_date',
         'description',
-        'filename'
+        'filename',
+        'name'
     ];
     public $timestamps = false;
 
