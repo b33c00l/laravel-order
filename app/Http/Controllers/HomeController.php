@@ -39,7 +39,7 @@ class HomeController extends Controller
         $products = new Product;
 
         if ($preorder == 'hide') {
-            $products = $products->where('preorder', '=', '0')->with('platform','publisher', 'images');
+            $products = $products->where('preorder', '!=', '1')->with('platform','publisher', 'images');
         }
 
         if ($backorder == 'hide') {

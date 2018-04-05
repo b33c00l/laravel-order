@@ -84,7 +84,7 @@ class OrdersController extends Controller
         }
         $chat = Chat::where('order_id', $id)->first();
         $products = $order->orderProducts;
-        $user = User::findOrFail($order->user->id);
+        $user = $order->user;
 
         return view('orders.single_order', ['products' => $products, 'order' => $order, 'chat' => $chat, 'user' => $user, 'preorder' => $preorder]);
     }
