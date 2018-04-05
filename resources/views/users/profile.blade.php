@@ -2,7 +2,7 @@
 @section('content')
     <div class="col-10">
         <div class="row">
-            <div class="col-12 mt-5 mb-5 text-center">
+            <div class="col-12 mt-5 mb-3 text-center">
                 @if (Session::has('success'))
                     <div class="alert alert-success" role="alert">
                         <strong>Success:</strong> {{Session::get('success')}}
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="col-12 form-group">
-                            <div class="col-12">
+                            <div>
                                 <button type="submit" class="btn btn-danger btn-block" >Update</button>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 mt-5 mb-5 text-center">
+            <div class="col-12 mt-3 mb-3 text-center">
                 <h2>Change password</h2>
             </div>
             <div class="col-12">
@@ -145,8 +145,8 @@
                         </div>
                     </div>
                     <div class="col-12 form-group">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-danger btn-block" >Update</button>
+                        <div>
+                            <button type="submit" class="btn btn-dark btn-block" >Update</button>
                         </div>
                     </div>
                 </form>
