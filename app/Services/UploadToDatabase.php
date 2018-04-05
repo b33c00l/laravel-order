@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Category;
+use App\Order;
 use App\Platform;
 use App\Product;
 use App\Publisher;
@@ -75,7 +76,11 @@ class UploadToDatabase
         } else {
             $product = Product::where('ean', $game[0])->first();
         }
-
+        if ($product->preorder === Product::DISABLED)
+        {
+            $product->update(['preorder' => 0]);
+            preOrderToOrder($product);
+        }
         $product->stock()->create(['amount' => $game[4], 'date' => Carbon::now()]); // Stock
         $product->prices()->create(['amount' => $game[3], 'date' => Carbon::now()]); //Price
         return $product;
@@ -268,6 +273,15 @@ class UploadToDatabase
                 'product_id' => $product->id,
                 'featured' => 1
             ]);
+        }
+    }
+
+    public function preOrderToOrder($product)
+    {
+        $preOrders = Order::UnconfirmedOrder()->Preorder()->get();
+        foreach ($preOrders as $preOrder)
+        {
+            $preOrder->where('product_id')
         }
     }
 }

@@ -27,6 +27,22 @@ class CartController extends Controller
 
     public function index()
     {
+
+
+
+        $preorder = Product::where('ean', 3307215597354)->first();
+
+        $orderProducts = OrderProduct::where('product_id', $preorder->id)->get();
+
+        foreach ($orderProducts as $orderProduct)
+        {
+
+            $order = $orderProduct->order()->UnconfirmedOrder()->preorder()->get();
+        }
+
+
+        dd($order);
+
         $user = Auth::user();
         $order = $user->orders()->InCart()->Order()->first();
         $backorder = $user->orders()->InCart()->BackOrder()->first();
