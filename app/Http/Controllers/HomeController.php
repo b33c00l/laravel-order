@@ -63,6 +63,16 @@ class HomeController extends Controller
         $products = Product::with('platform', 'publisher', 'images');
         $query = $request->get('query');
 
+        $preorder = $request->get('preorder');
+        $backorder = $request->get('backorder');
+
+        if ($preorder == 'hide') {
+            $products = $products->where('preorder', '!=', '1')->orWhereNull('preorder');
+        }
+        if ($backorder == 'hide') {
+            $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
+        }
+
         if ($request->get('direction') == 'asc') {
             $direction = 'asc';
         } else {
@@ -78,13 +88,11 @@ class HomeController extends Controller
             case 'pub':
                 $products = $products->select('products.*')->leftJoin('publishers as pub', 'pub.id', '=', 'publisher_id')
                     ->orderBy('pub.name', $direction);
-
                 break;
             case 'plat':
                 $products = $products->select('products.*')->leftJoin('platforms as plat', 'plat.id', '=', 'platform_id')
                     ->orderBy('plat.name', $direction);
                 break;
-
             case 'title':
                 $products = $products->orderBy('name', $direction);
                 break;
@@ -98,7 +106,6 @@ class HomeController extends Controller
                 $products = $products->orderBy('deadline', $direction);
                 break;
             case 'stock':
-
                 $products = $products->select('products.*',
                     DB::raw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) AS amount'))
                     ->orderBy('amount', $direction);
@@ -124,11 +131,13 @@ class HomeController extends Controller
         $categories = Category::all();
 
         return view('home', [
-            'products' => $products->appends(Input::except('page')),
-            'categories' => $categories,
-            'sortName' => $request->get('name'),
-            'direction' => $direction,
-            'query' => $query
+            'products'      => $products->appends(Input::except('page')),
+            'categories'    => $categories,
+            'sortName'      => $request->get('name'),
+            'direction'     => $direction,
+            'query'         => $query,
+            'preorder'      => $preorder,
+            'backorder'     => $backorder
         ]);
     }
 
