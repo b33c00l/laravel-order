@@ -30,6 +30,6 @@ class ProductService {
     {
         return Product::with('platform')
           ->whereRaw('(SELECT stock.amount FROM stock WHERE products.id = stock.product_id ORDER BY id DESC LIMIT 1) > IFNULL((SELECT stock.amount FROM stock WHERE products.id = stock.product_id ORDER BY id DESC LIMIT 1, 1), 0)')
-          ->get();
+          ->take(12)->get();
     }
 }
