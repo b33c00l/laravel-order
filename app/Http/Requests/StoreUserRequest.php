@@ -32,6 +32,7 @@ class StoreUserRequest extends FormRequest
             'phone' => 'required_if:role,user' ,
             'payment_terms' => 'required_if:role,user' ,
             'country_id' => 'required_if:role,user',
+            'price_coefficient' => 'nullable|numeric|required_if:role,user',
         ];
     }
 }

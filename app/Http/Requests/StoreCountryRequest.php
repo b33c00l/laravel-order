@@ -26,7 +26,7 @@ class StoreCountryRequest extends FormRequest
         return [
             'name' => 'required|unique:countries,name,' . $this->route('country') . ',id|max:255|min:2',
             'email' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|numeric',
         ];
     }
 
