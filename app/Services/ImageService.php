@@ -66,7 +66,7 @@ class ImageService
     {
         $featured = 1;
 
-        $filename = $this->uploadResizedImage($image);
+        $thumb_filename = $this->uploadResizedImage($image);
 
         Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
     }

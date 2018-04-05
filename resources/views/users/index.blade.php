@@ -1,4 +1,4 @@
-@extends('layouts.page')
+@extends('layouts.page', ['title' => 'Users'])
 @section('content')
 <div class="col-10 mt-5">
     @include('layouts.partials.messages')
