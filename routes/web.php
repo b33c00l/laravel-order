@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function()
 	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
 		
 	Route::resource('products', 'ProductsController', ['only'=>'show']);
-		
+
 	Route::get('export/{type}', 'OrdersExportController@export')->name('export');
 
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
