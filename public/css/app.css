@@ -15077,10 +15077,6 @@ div#radioboxes {
   padding: 10px;
 }
 
-.packshot img {
-  width: 100%;
-}
-
 img.gallery {
   width: auto;
   height: 200px;
@@ -15137,8 +15133,8 @@ div#categories {
 }
 
 /*
-    Single product
-    */
+Single product
+*/
 
 .single-price-block input {
   line-height: 30px;
@@ -15251,8 +15247,8 @@ div#categories {
 }
 
 /*
-    CONTACTS
-    */
+CONTACTS
+*/
 
 .contacts li {
   list-style-type: none;
@@ -15262,8 +15258,8 @@ div#categories {
 }
 
 /*
-    USER EDIT
-    */
+USER EDIT
+*/
 
 .user-edit-label {
   padding: 15px;
@@ -15277,8 +15273,8 @@ div#categories {
 }
 
 /*
-    IMPORT PRODUCTS
-    */
+IMPORT PRODUCTS
+*/
 
 .page-item.active .page-link {
   z-index: 1;
@@ -15288,8 +15284,8 @@ div#categories {
 }
 
 /*
-    SPECIAL OFFERS
-    */
+SPECIAL OFFERS
+*/
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   border: solid #ced4da 1px !important;
@@ -15324,12 +15320,16 @@ div#categories {
 }
 
 /*
-    MOBILE
-    */
+MOBILE
+*/
 
 @media only screen and (max-width: 990px) {
   .cart-menu {
     display: none;
+  }
+
+  .packshot img {
+    max-width: 150px;
   }
 
   .single-price-block {
