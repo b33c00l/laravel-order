@@ -8,7 +8,9 @@
             <h2>{{$special_offer->name}}</h2>
         </div>
         @else
+        <div class="col-12 text-center mt-5 mb-5">
             <h2>Special offer</h2>
+        </div>
         @endif
         <div class="mt-3">
             <a><img width="100%" src="{{asset('storage/image/'.$special_offer->filename)}}"/></a>
