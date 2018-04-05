@@ -64,11 +64,15 @@ class ImageService
 
     public function storeProductImages($product, $image)
     {
-        $featured = 1;
-
-        $thumb_filename = $this->uploadResizedImage($image);
-
-        Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+        $featured = 0;
+		for ($i = 0; count($image) > $i; $i++){
+			$thumb_filename = $this->uploadResizedImage($image[$i]);
+			if($i == 0){
+				$featured = 1;
+			}
+			Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+			$featured = 0;
+		}
     }
 
     public function uploadResizedImage($image) {
