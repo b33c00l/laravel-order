@@ -166,7 +166,7 @@ class ProductsController extends Controller
             $product->prices()->create( ['amount' => $request->get('price_amount')] );
         }
 
-        $this->imageService->updateProductImages($product, $request->only(['image_id', 'image', 'featured']));
+        $this->imageService->updateProductImages($product, $request->only(['image_id', 'images', 'featured']));
 
         return redirect()->route('products.show', $id );
 
