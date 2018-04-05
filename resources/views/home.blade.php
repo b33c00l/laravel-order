@@ -129,7 +129,7 @@
                         @if($product->preorder !== \App\Product::DISABLED)
                         <tr class="table-tr justify-content-center">
                             <td class="align-middle text-center product-image-mobile-center packshots">
-                                <div class="packshot">
+                                <div class="packshot text-center">
                                     <a target="_blank" href="{{ $product->featured_image_url }}"><img src="{{ $product->featured_image_url }}"></a>
                                 </div>
                             </td>
