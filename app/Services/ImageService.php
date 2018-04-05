@@ -51,8 +51,23 @@ class ImageService
         }
 
         //adding new images
-        if (array_key_exists('image', $request)) {
-            $filename = $this->uploadResizedImage($request['image']);
+        if (array_key_exists('images', $request)) {
+	
+	        $images = $request['images'];
+	        for ($i = 0; count($images) > $i; $i++){
+		        $thumb_filename = $this->uploadResizedImage($images[$i]);
+		        if($product->images()->exists()) {
+			        $featured = 0;
+		        }elseif($i == 0){
+		        	$featured = 1;
+		        }else{
+		        	$featured = 0;
+		        }
+		        Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+		        $featured = 0;
+	        }
+        	
+            $filename = $this->uploadResizedImage($request['images']);
             if ($product->images()->exists()) {
                 $is_featured = 0;
             } else {
@@ -64,11 +79,15 @@ class ImageService
 
     public function storeProductImages($product, $image)
     {
-        $featured = 1;
-
-        $thumb_filename = $this->uploadResizedImage($image);
-
-        Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+        $featured = 0;
+		for ($i = 0; count($image) > $i; $i++){
+			$thumb_filename = $this->uploadResizedImage($image[$i]);
+			if($i == 0){
+				$featured = 1;
+			}
+			Image::create(['filename' => $thumb_filename, 'featured' => $featured, 'product_id' => $product->id]);
+			$featured = 0;
+		}
     }
 
     public function uploadResizedImage($image) {
