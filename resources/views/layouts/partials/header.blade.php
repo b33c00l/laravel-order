@@ -42,7 +42,7 @@
                         <a class="nav-link btn btn-danger" href="{{route('order.orders')}}">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="#">Profile</a>
+                        <a class="nav-link btn btn-danger" href="{{ route('profile') }}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn {{ ($name == 'pages.contacts' ? 'btn-outline-danger' : 'btn-danger') }}" href="{{ route('pages.contacts') }}">Contact</a>
