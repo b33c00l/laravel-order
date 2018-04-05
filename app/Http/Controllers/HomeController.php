@@ -132,7 +132,7 @@ class HomeController extends Controller
             'query' => $query
         ]);
     }
-	
+
 	private function paginate($items, $page = null, $options = [])
 	{
 		$page = $page ?: (Paginator::resolveCurrentPage() ?: 1);

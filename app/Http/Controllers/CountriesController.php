@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Http\Requests\StoreCountryRequest;
+use App\Product;
 
 
 class CountriesController extends Controller
@@ -65,7 +66,7 @@ class CountriesController extends Controller
     public function destroy($id)
     {
         Country::destroy($id);
-        session() -> flash( 'success', 'Platform deleted successfully' );
+        session() -> flash( 'success', 'Country deleted successfully' );
         return redirect()->route('countries.index');
     }
 }

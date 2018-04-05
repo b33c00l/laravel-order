@@ -16,7 +16,7 @@
                 <label class="col control-label">Country</label>
                 <div class="col inputGroupContainer">
                     <div class="input-group">
-                        <input  name="name" placeholder="Country name" value="{{ $countriesEdit->name }}" class="form-control"  type="text">
+                        <input  name="name" placeholder="Country name" value="{{ old('name' , $countriesEdit->name) }}" class="form-control"  type="text">
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <label class="col control-label">Country representative email</label>
                 <div class="col inputGroupContainer">
                     <div class="input-group">
-                        <input  name="email" placeholder="email" value="{{ $countriesEdit->email }}" class="form-control"  type="email">
+                        <input  name="email" placeholder="email" value="{{ old('email', $countriesEdit->email) }}" class="form-control"  type="email">
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 <label class="col control-label">Country representative phone number</label>
                 <div class="col inputGroupContainer">
                     <div class="input-group">
-                        <input  name="phone" placeholder="Phone number" value="{{ $countriesEdit->phone }}" class="form-control"  type="text">
+                        <input  name="phone" placeholder="Phone number" value="{{ old('phone', $countriesEdit->phone) }}" class="form-control"  type="text">
                     </div>
                 </div>
             </div>

@@ -47,8 +47,8 @@ class ProductsImportController extends Controller
 
     public function showLog()
     {
-        if(!empty(Import::orderBy('id', "desc")->first())) {
-            $import = Import::orderBy('id', "desc")->first();
+        $import = Import::orderBy('id', "desc")->first();
+        if(!empty($import)) {
             $all = $import->items()->paginate(config('pagination.value'));
         } else {
             return redirect()->route('products.import.form');

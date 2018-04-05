@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Country;
+use App\Http\Requests\DisableUserRequest;
 use App\Http\Requests\StorePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -106,22 +107,12 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if (Auth::id() == $id) {
-            session() -> flash( 'warning', 'Action is not allowed' );
+        if ($user->disabled == 1) {
+            $user->update([ 'disabled' => 0 ]);
+            session() -> flash( 'success', 'User enabled successfully' );
         } else {
-            if ($user->disabled == 1)
-            {
-                $user->update([
-                    'disabled' => 0
-                ]);
-                session() -> flash( 'success', 'User enabled successfully' );
-
-            } else {
-                $user->update([
-                    'disabled' => 1
-                ]);
-                session() -> flash( 'success', 'User disabled successfully' );
-            }
+            $user->update([ 'disabled' => 1 ]);
+            session() -> flash( 'success', 'User disabled successfully' );
         }
 
         return redirect()->back();
