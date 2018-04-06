@@ -117,7 +117,7 @@
                                 <label class="col control-label">Images</label>
                                 <div class="col inputGroupContainer">
                                     <div class="input-group">
-                                        <input type="file" class="form-control-file" name="image" id="image">
+                                        <input type="file" class="form-control-file" name="images[]" id="image" multiple>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +201,11 @@
                                                 <a target="_blank" href="{{ $image->url }}"><img style="width: 100%;" src="{{ $image->url }}"></a>
                                             </div>
                                         <input class="form-radio-input" name="featured" type="radio" value="{{ $image->id }}" id="{{ $image->filename }}"
-                                        @if (old('featured', $product->featured_image->id) == $image->id) checked @endif>
+                                        @if (isset($product->featured_image->id) && (old('featured', $product->featured_image->id) == $image->id))
+                                            checked
+                                        @else
+
+                                        @endif>
                                         @endforeach
                                     </div>
                                 </div>
@@ -231,6 +235,10 @@
                         <div class="col-12 form-group">
                             <div class="col">
                                 <button type="submit" class="btn btn-danger btn-block" >Edit</button>
+                            </div>
+                            <br>
+                            <div class="col">
+                                <a role="button" class="btn btn-dark btn-block" href="{{route('products.show', $product->id)}}">Back to product</a>
                             </div>
                         </div>
                     </div>
