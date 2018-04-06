@@ -162,8 +162,8 @@
                     placeholder="Enter message"></textarea>
                     @include('chat.partials.error', ['name' => 'message'])
                 </div>
-            </form>
             <button type="submit" class="btn btn-dark btn-block">Send message</button>
+            </form>
             @endif
             @if ($chat !== null)
             @if (Auth::user()->role == "admin" && $chat->isActive())

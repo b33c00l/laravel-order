@@ -5,7 +5,9 @@
  <div class="top-bar">
     <ul>
         <li><i class="fa fa-angle-right"></i>  <a href="{{ route('logout') }}">Logout</a></li>
-        <li><i class="fa fa-user"></i>  {{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</li>
+        <li><i class="fa fa-user"></i>
+            <a href="{{ route('profile') }}">{{ Auth::user()->name }}</a>
+        </li>
     </ul>
     <ul>
        <li><i class="fa fa-phone"></i>  <a href="tel:{{$phone}}">{{$phone}}</a></li>
@@ -40,7 +42,7 @@
                         <a class="nav-link btn btn-danger" href="{{route('order.orders')}}">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="#">Profile</a>
+                        <a class="nav-link btn btn-danger" href="{{ route('profile') }}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn {{ ($name == 'pages.contacts' ? 'btn-outline-danger' : 'btn-danger') }}" href="{{ route('pages.contacts') }}">Contact</a>
