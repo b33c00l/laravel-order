@@ -40,6 +40,10 @@
                             <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
                                     {{ $product->product->deadline}}
                             </td>
+                                @elseif(empty($product->product->deadline))
+                                <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
+                                    -
+                                </td>
                             @endif
                             <td data-label="Publisher:"
                                 class="align-middle text-right text-lg-center">{{ $product->product->has('publisher') ? $product->product->publisher->name : '-'}}</td>
@@ -80,14 +84,14 @@
                         </tr>
                     @endforeach
                     <tr>
-                        <td class="total text-right text-lg-center" {{ $products->first()->product->deadline != null ? "colspan=7" : "colspan=6"}} scope="Total"><b>Total</b></td>
+                        <td class="total text-right text-lg-center" {{ $products->first()->product->preorder > null ? "colspan=7" : "colspan=6"}} scope="Total"><b>Total</b></td>
                         <td data-label="Total" class="text-right text-lg-center"
                             id="totalPrice">{{!empty($products)?number_format($cartService->getTotalCartPrice($order), 2,'.',''):""}}
                             €
                         </td>
                         <td data-label="Total quantity" class="text-right text-lg-center"
                             id="totalQuantity">{{!empty($products)?$cartService->getTotalCartQuantity($order):""}}</td>
-                        @if(Auth::user()->role === 'admin' or $products->first()->product->deadline != null)
+                        @if(Auth::user()->role == 'admin' or $products->first()->product->preorder > null)
                             <td class="total"></td>
                         @endif
                     </tr>
