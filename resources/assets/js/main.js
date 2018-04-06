@@ -481,3 +481,51 @@ $(document).ready(function() {
       document.getElementById( 'file-upload-filename' ).innerHTML = fileName;
   }
 });
+
+$(".editPrice").click(function()
+    {
+    $(this).parent().prev().css({"display": "block"});
+    $(this).parent().prev().prev().css({"display": "none"});
+    }
+);
+
+$(".updateSpecialPrice").click(function()
+{
+   var button = $(this);
+    var url = button.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var price = button.prev().val();
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            _token: token,
+            price: price,
+        },
+        datatype: 'json',
+        success: function(){
+         button.parent().prev().css({"display": "block"});
+         var result = button.parent().find('input').val();
+         button.parent().prev().html(result);
+         button.parent().css({"display": "none"});
+        }
+    });
+}
+);
+
+$('.deleteSpecialPrice').click(function(){
+    var row = $(this);
+    var url = row.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        data: {
+            _token: token,
+        },
+        datatype: 'json',
+        success: function(){
+            row.closest('tr').remove();
+        }
+    });
+});

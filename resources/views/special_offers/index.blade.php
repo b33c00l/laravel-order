@@ -110,7 +110,6 @@
                                         </label>
                                         <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number" step="any" value={{$product->base_price}}>
                                     </div>
-
                                 @endforeach
                             </div>
                             @if ($errors->has('games'))
@@ -123,7 +122,6 @@
                             <button class="btn btn-dark btn-block mt-5" type="submit" value="submit">Submit</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

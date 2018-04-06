@@ -95,36 +95,21 @@ class SpecialUserPriceController extends Controller
     }
 
 
-    public function delete()
+    public function delete($id)
     {
-
+        Price::destroy($id);
     }
 
     public function edit($id)
     {
-
+        $specialPrices = Price::where('id', $id)->get();
+        $oldPrice = Price::where('id', $id)->first()->amount;
+        return view('special_user_price.edit', compact('specialPrices', 'oldPrice'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+            Price::where('id', $id)->update(['amount' => $request->price]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

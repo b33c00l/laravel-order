@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 15);
@@ -10778,7 +10778,7 @@ return $.ui.version = "1.12.1";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.1
+ * @version 1.14.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -43573,6 +43573,50 @@ $(document).ready(function () {
 
         document.getElementById('file-upload-filename').innerHTML = fileName;
     }
+});
+
+$(".editPrice").click(function () {
+    $(this).parent().prev().css({ "display": "block" });
+    $(this).parent().prev().prev().css({ "display": "none" });
+});
+
+$(".updateSpecialPrice").click(function () {
+    var button = $(this);
+    var url = button.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    var price = button.prev().val();
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            _token: token,
+            price: price
+        },
+        datatype: 'json',
+        success: function success() {
+            button.parent().prev().css({ "display": "block" });
+            var result = button.parent().find('input').val();
+            button.parent().prev().html(result);
+            button.parent().css({ "display": "none" });
+        }
+    });
+});
+
+$('.deleteSpecialPrice').click(function () {
+    var row = $(this);
+    var url = row.data('url');
+    var token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        data: {
+            _token: token
+        },
+        datatype: 'json',
+        success: function success() {
+            row.closest('tr').remove();
+        }
+    });
 });
 
 /***/ }),
