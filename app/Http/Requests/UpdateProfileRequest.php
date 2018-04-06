@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Auth;
 
-class StoreCategoryRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->role == 'user';
     }
 
     /**
@@ -21,9 +22,13 @@ class StoreCategoryRequest extends FormRequest
      *
      * @return array
      */
-	public function rules() {
-		return [
-			'name' => 'required|unique:categories,name' . $this->route('category') . ',id|max:255|min:2'
-		];
-	}
+    public function rules()
+    {
+        return [
+          'name' => 'required',
+          'email' => 'required' ,
+          'contact_person' => 'required' ,
+          'phone' => 'required' ,
+        ];
+    }
 }

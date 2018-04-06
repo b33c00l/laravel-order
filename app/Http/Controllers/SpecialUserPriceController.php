@@ -7,6 +7,7 @@ use App\Platform;
 use App\Price;
 use App\Product;
 use App\Publisher;
+use App\User;
 use Illuminate\Http\Request;
 
 class SpecialUserPriceController extends Controller
@@ -52,16 +53,16 @@ class SpecialUserPriceController extends Controller
 
     public function show()
     {
-        $specialPrices = Price::whereNotNull ('user_id')->get();
-        $client = Client::FindOrFail();
-        dd($client);
-        foreach ($specialPrices as $specialPrice) {
-            $specialUserId = $specialPrice->user_id;
+        $specialUsers = User::whereHas('price')->get();
 
-        }
+        return view('special_user_price.show', compact('specialUsers'));
+    }
 
+    public function showSingle($user_id)
+    {
+        $specialPrices = Price::where('user_id', $user_id)->get();
 
-        return view('special_user_price.show', compact('specialPrices'));
+        return view('special_user_price.single', compact('specialPrices'));
     }
 
     public function filter(Request $request)
@@ -94,12 +95,11 @@ class SpecialUserPriceController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function delete()
+    {
+
+    }
+
     public function edit($id)
     {
 

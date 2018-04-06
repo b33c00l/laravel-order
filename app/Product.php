@@ -16,7 +16,7 @@ class Product extends Model
 
     use SoftDeletes;
 
-    protected $with = ['platform', 'categories', 'publisher', 'prices', 'stock'];
+    protected $with = ['platform', 'categories', 'publisher', 'prices', 'stock', 'images'];
     protected $searchRules = [MySearchRule::class];
     public $timestamps = false;
     protected $fillable = ['name', 'platform_id', 'publisher_id', 'ean', 'description', 'release_date', 'video', 'pegi', 'preorder', 'deadline'];

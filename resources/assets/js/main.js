@@ -172,9 +172,24 @@ $('.add-into-cart').click(function(){
 });
 
 $(document).ready(function() {
+
+
+
+if ($('#show_packshots').is(':checked')) {
+    $('.packshots').addClass( "packshotsImgDisplay" );
+    $('.packshots').removeClass( "packshotsImgDisplayNone" );
+}
+
     $('#show_packshots').click(function () {
-        $('.packshots').toggle();
-        return;
+
+if ($('#show_packshots').is(':checked')) {
+    $('.packshots').addClass( "packshotsImgDisplay" );
+    $('.packshots').removeClass( "packshotsImgDisplayNone" );
+} else {
+    $('.packshots').removeClass( "packshotsImgDisplay" );
+    $('.packshots').addClass( "packshotsImgDisplayNone" );
+}
+
     });
 });
 

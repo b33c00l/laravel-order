@@ -42,7 +42,7 @@
                     'registration_address' => ''
                     ])
                 @endif
-                <div class="col-12 form-group">
+                <div class="form-group">
                     <div class="col-12">
                         <button type="submit" class="btn btn-danger btn-block" >Update</button>
                     </div>

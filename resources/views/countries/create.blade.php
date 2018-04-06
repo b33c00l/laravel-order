@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="form-group no-gutters">
-                <label class="col control-label">Email</label>
+                <label class="col control-label">Country representative email</label>
                 <div class="col inputGroupContainer">
                     <div class="input-group">
                         <input  name="email" placeholder="email" value="{{ old('email') }}" class="form-control"  type="email">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="form-group no-gutters">
-                <label class="col control-label">Phone number</label>
+                <label class="col control-label">Country representative phone number</label>
                 <div class="col inputGroupContainer">
                     <div class="input-group">
                         <input  name="phone" placeholder="Phone number" value="{{ old('phone') }}" class="form-control"  type="text">

@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 15);
@@ -10778,7 +10778,7 @@ return $.ui.version = "1.12.1";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.0
+ * @version 1.14.1
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -43273,9 +43273,21 @@ $('.add-into-cart').click(function () {
 });
 
 $(document).ready(function () {
+
+    if ($('#show_packshots').is(':checked')) {
+        $('.packshots').addClass("packshotsImgDisplay");
+        $('.packshots').removeClass("packshotsImgDisplayNone");
+    }
+
     $('#show_packshots').click(function () {
-        $('.packshots').toggle();
-        return;
+
+        if ($('#show_packshots').is(':checked')) {
+            $('.packshots').addClass("packshotsImgDisplay");
+            $('.packshots').removeClass("packshotsImgDisplayNone");
+        } else {
+            $('.packshots').removeClass("packshotsImgDisplay");
+            $('.packshots').addClass("packshotsImgDisplayNone");
+        }
     });
 });
 
