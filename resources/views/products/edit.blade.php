@@ -201,7 +201,11 @@
                                                 <a target="_blank" href="{{ $image->url }}"><img style="width: 100%;" src="{{ $image->url }}"></a>
                                             </div>
                                         <input class="form-radio-input" name="featured" type="radio" value="{{ $image->id }}" id="{{ $image->filename }}"
-                                        @if (old('featured', $product->featured_image->id) == $image->id) checked @endif>
+                                        @if (isset($product->featured_image->id) && (old('featured', $product->featured_image->id) == $image->id))
+                                            checked
+                                        @else
+
+                                        @endif>
                                         @endforeach
                                     </div>
                                 </div>

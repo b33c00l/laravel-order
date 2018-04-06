@@ -97,7 +97,9 @@ class ProductsController extends Controller
 
     public function edit($id)
     {
+    	
         $product = Product::findOrFail($id);
+      
         $platforms = Platform::all();
         $publishers = Publisher::all();
         $categories = Category::all();
