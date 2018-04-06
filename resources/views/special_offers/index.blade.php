@@ -97,7 +97,36 @@
                             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                         </div>
                     </div>
-
+                    @if ($errors->has('filename'))
+                            <div class="alert alert-danger" role="alert">
+                                <p>{{ $errors->first('filename') }}</p>
+                            </div>
+                    @endif
+                    <div class="col-12 ml-4 mr-4">
+                        <h4 class="mt-4">Products list</h4>
+                        <div class="pt-3 pb-3">
+                            <input class="select-all-products-special-offers" type="checkbox" name="select_all">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Select all
+                            </label>
+                            <div class="row">
+                                @foreach($products as $product)
+                                    <div style="margin-right: auto" class="col-lg-6 col-md-12">
+                                        <input class="form-check-input gamescheckall" name="games[]" type="checkbox"
+                                               value="{{ $product->id }}">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            {{ $product->name }} ({{ $product->platform->name }})
+                                        </label>
+                                        <input name="specialProductPrice[{{$product->id}}]" placeholder="price" style="width: 50px; float: right;" type="number" step="any" value={{$product->base_price}}>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @if ($errors->has('games'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <p>{{ $errors->first('games') }}</p>
+                                    </div>
+                            @endif
+                        </div>
                 </div>
             </div>
             @if ($errors->has('filename'))
@@ -118,6 +147,7 @@
                             </div>
                         </div>
                     </div>
+                </form>
                     <div class="row ml-1">
                             @foreach($products as $product)
                             <div style="margin-right: auto" class="col-lg-6 col-md-12">
