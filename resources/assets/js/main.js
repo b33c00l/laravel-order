@@ -173,7 +173,9 @@ $('.add-into-cart').click(function(){
 
 $(document).ready(function() {
 
-
+if (localStorage.show_packshots == 'checked') {
+    $('#show_packshots').prop('checked', true);
+}
 
 if ($('#show_packshots').is(':checked')) {
     $('.packshots').addClass( "packshotsImgDisplay" );
@@ -185,9 +187,11 @@ if ($('#show_packshots').is(':checked')) {
 if ($('#show_packshots').is(':checked')) {
     $('.packshots').addClass( "packshotsImgDisplay" );
     $('.packshots').removeClass( "packshotsImgDisplayNone" );
+    localStorage.setItem("show_packshots", "checked");
 } else {
     $('.packshots').removeClass( "packshotsImgDisplay" );
     $('.packshots').addClass( "packshotsImgDisplayNone" );
+    localStorage.setItem("show_packshots", "unchecked");
 }
 
     });

@@ -6,13 +6,13 @@
             <div class="col-12 checkboxes">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="show_preorders" @if (isset($preorder) && $preorder == 'hide') checked="checked" @endif>
-                    <label class="form-check-label" for="defaultCheck1">
+                    <label class="form-check-label" for="show_preorders">
                         Hide Pre-orders
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($backorder) && $backorder == 'hide') checked="checked" @endif>
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" type="checkbox" value="" id="show_backorders" @if (isset($backorder) && $backorder == 'hide') checked="checked" @endif">
+                    <label class="form-check-label" for="show_backorders">
                         Hide Back-orders
                     </label>
                 </div>
@@ -137,7 +137,7 @@
                             <td Data-label="EAN:" class="align-middle text-right text-lg-center" >{{$product->ean}}</td>
                             <td Data-label="Title:" class="align-middle text-right text-lg-center"><ins><a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a></ins></td>
                             <td Data-label="Platform:" class="align-middle text-right text-lg-center">{{ $product->platform->name }}</td>
-                            <td Data-label="Release date:" class="align-middle text-right text-lg-center">
+                            <td Data-label="Release date:" class="align-middle text-right text-lg-center release">
                                 @if( $product->release_date != null)
                                 {{ $product->release_date }}
                                 @else
@@ -151,7 +151,7 @@
                                 -
                                 @endif
                             </td>
-                            <td Data-label="Publisher:" class="align-middle text-right text-lg-center">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
+                            <td Data-label="Publisher:" class="align-middle text-right text-lg-center publisher">{{ !empty($product->publisher) ? $product->publisher->name : '' }}</td>
                             <td Data-label="Stock:" class="align-middle text-right text-lg-center">{{$product->stockamount}}</td>
                             <td Data-label="Price:" class="align-middle text-right text-lg-center">{{ number_format($product->priceamount, 2, '.', '')}}</td>
                             <td Data-label="Amount" class="align-middle text-right text-lg-center">
