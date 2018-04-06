@@ -3,7 +3,15 @@
 <!-- Table filters -->
 <div class="col-lg-10 col-md-12">
     <div class="col-12 text-center mt-5 mb-5">
-        <h2>Special offer</h2>
+        @if ($special_offer->name != null)
+        <div class="col-12 text-center mt-5 mb-5">
+            <h2>{{$special_offer->name}}</h2>
+        </div>
+        @else
+        <div class="col-12 text-center mt-5 mb-5">
+            <h2>Special offer</h2>
+        </div>
+        @endif
         <div class="mt-3">
             <a><img width="100%" src="{{asset('storage/image/'.$special_offer->filename)}}"/></a>
         </div>
@@ -20,7 +28,6 @@
         <h4>{{$special_offer->expiration_date}}</h4>
     </div>
     @endif
-    
     <div id="radioboxes" class="row justify-content-around">
         <div class="col-12 checkboxes">
             <div class="form-check">
@@ -138,4 +145,6 @@
             </table>
         </div>
     </div>
+</div>
+</div>
     @endsection

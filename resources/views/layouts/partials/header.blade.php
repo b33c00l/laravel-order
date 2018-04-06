@@ -15,7 +15,7 @@
 </div>
 <!-- Header -->
 <div class="row">
-    <div class="logo">
+    <div class="logo pl-2">
        <a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
    </div>
    <div class="cart-menu-mobile">
