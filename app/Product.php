@@ -32,7 +32,6 @@ class Product extends Model
                 "analyzer" => "simple",
             ],
             'ean' => ['type' => 'keyword'],
-            'release_date' => ['type' => 'date'],
             'platform' => ['type' => 'keyword'],
             'stock' => ['type' => 'integer']
         ]
@@ -61,7 +60,6 @@ class Product extends Model
             'name'      => $this->name,
             'ean'       => $this->ean,
             'platform'  => $this->platform->name,
-            'release_date' => $this->release_date,
             'stock' => $this->getStockAmountAttribute(),
             'suggest' => [
                 'input' => $suggestArray,
@@ -116,7 +114,7 @@ class Product extends Model
             if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
                 $this->video, $match)) {
                 $video_id = $match[1];
-                $result = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $video_id . '"
+                $result = '<iframe width="100%" height="315" src="https://www.youtube.com/embed/' . $video_id . '"
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>';
             } else {
