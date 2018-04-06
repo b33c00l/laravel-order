@@ -17,6 +17,8 @@
 			@include('layouts.partials.sidebar_no_pop')
 		</div>
 		@yield('content')
+	</div>
+	<div class="container">
 		<!-- New arrivals -->
 		<hr>
 		<div class="row justify-content-center">
@@ -24,8 +26,6 @@
 				<h4>New arrivals</h4>
 			</div>
 		</div>
-	</div>
-	<div class="container">
 		<div class="row">
 			<div class="col-sm-2 karuseles-arrow-containeris d-flex justify-content-center">
 				<div class="karuseles-arrow prev"><i class="fa fa-caret-left"></i>
@@ -33,7 +33,6 @@
 			</div>
 			<div class="col-sm-8 mt-3">
 				<div class="karusele">
-
 					@foreach ($products_latest as $product_latest)
 					<div class="karuseles-img">
 						<div class="row d-flex justify-content-center">
@@ -56,7 +55,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-12 mt-5 text-center footer">

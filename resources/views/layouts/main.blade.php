@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
 </head>
 <body>
+<div>
 <div class="container">
 	<!-- Header -->
 @include('layouts.partials.header')
@@ -17,16 +18,15 @@
 		@include('layouts.partials.sidebar')
 	</div>
 @yield('content')
-
 <!-- New arrivals -->
+</div>
+<div class="container">
 	<hr>
 	<div class="row">
 		<div class="col-12 text-center mt-3">
 			<h4>New arrivals</h4>
 		</div>
 	</div>
-</div>
-<div class="container">
 	<div class="row">
 		<div class="col-sm-2 karuseles-arrow-containeris d-flex justify-content-center">
 			<div class="karuseles-arrow prev"><i class="fa fa-caret-left"></i>
@@ -57,7 +57,7 @@
 		</div>
 	</div>
 </div>
-
+</div>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 mt-5 text-center footer">

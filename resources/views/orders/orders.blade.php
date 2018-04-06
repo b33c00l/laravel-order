@@ -150,10 +150,6 @@
 		        <a href="{{ route('export', 'preorder') }}" class="btn btn-danger btn-sm export mr-1">Pre-orders</a>
 		        <a href="{{ route('export', 'backorder') }}" class="btn btn-danger btn-sm export mr-1">Back-orders</a>
 			@endif
-
-
-
-
         </div>
     </div>
     <!-- Pagination -->
