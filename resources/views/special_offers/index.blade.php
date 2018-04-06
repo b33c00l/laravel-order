@@ -74,8 +74,12 @@
                             <input class="form-control" type="number" step="0.01" name="price_coef">
                         </div>
                         <div class="col-12 ">
+                            <label for="exampleFormControlText1"><h4>Special offer name</h4></label>
+                            <input placeholder="Name" type="text" class="form-control" name="name">
+                        </div>
+                        <div class="col-12 ">
                             <label for="exampleFormControlTextarea1"><h4>Description</h4></label>
-                            <textarea class="form-control" name="description" id="exampleFormControlTextarea1"
+                            <textarea placeholder="Description" class="form-control" name="description" id="exampleFormControlTextarea1"
                                       rows="6"></textarea>
                         </div>
                         <div class="col-12 custom-file">

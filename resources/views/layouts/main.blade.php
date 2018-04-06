@@ -21,7 +21,7 @@
 <!-- New arrivals -->
 	<hr>
 	<div class="row">
-		<div class="col-12 text-center">
+		<div class="col-12 text-center mt-3">
 			<h4>New arrivals</h4>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 			<div class="karuseles-arrow prev"><i class="fa fa-caret-left"></i>
 			</div>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-sm-8 mt-3">
 			<div class="karusele">
 
 				@foreach ($products_latest as $product_latest)

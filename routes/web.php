@@ -21,6 +21,9 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::middleware('auth')->group(function()
 {	
 	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+	Route::get('profile', 'ProfileController@form')->name('profile');
+	Route::post('profile', 'ProfileController@submit');
+	Route::post('profile/password', 'ProfileController@password')->name('profile.password');
 
 	Route::middleware('trackingUser')->group(function () {
 
@@ -46,6 +49,8 @@ Route::middleware('auth')->group(function()
 			Route::get('special/user', 'SpecialUserPriceController@index')->name('special.user.index');
             Route::post('special/user/store', 'SpecialUserPriceController@store')->name('special.user.store');
             Route::post('special/user/filter', 'SpecialUserPriceController@filter')->name('special.user.filter');
+            Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
+            Route::get('special/user/show/{id}', 'SpecialUserPriceController@showSingle')->name('special.user.single');
 
 		});
 	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
@@ -83,7 +88,7 @@ Route::middleware('auth')->group(function()
 	Route::delete('order/{id}', 'CartController@destroy')->name('order.product.delete');
 
 	Route::get('special/show/{id}', 'SpecialOffersController@show')->name('special.show');
-	Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
+
 
 
 	Route::get('contacts', 'HomeController@contacts')->name('pages.contacts');
