@@ -80,7 +80,7 @@
 <!-- Search -->
 <div class="row">
     <div class="col-12 d-flex justify-content-center pt-3 pb-3 search-bar-back">
-        <form class="form-inline justify-content-center" action="{{ route('home.sort') }}" method="GET">
+        <form class="form-inline justify-content-center" action="{{ route('home') }}" method="GET">
             @if (isset($query))
             <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
             placeholder="Search" aria-label="Search" value="{{ old('name', $query) }}">

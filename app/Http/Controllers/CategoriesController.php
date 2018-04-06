@@ -52,11 +52,11 @@ class CategoriesController extends Controller {
 		return redirect() -> route( 'categories.index' );
 	}
 
-	    public function show($id)
+	public function show($id)
     {
         $cat = Category::findOrFail($id);
         $products = $cat->products()->paginate(config('pagination.value'));
 
-        return view('home', ['products' => $products, 'sortName' => '', 'query'=>'']);
+        return view('home', ['products' => $products, 'sortName' => '', 'query'=> '', 'preorder' => '', 'backorder' => '']);
     }
 }

@@ -29,40 +29,40 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+//    public function index(Request $request)
+//    {
+//        $categories = Category::all();
+//
+//        $preorder = $request->get('preorder');
+//        $backorder = $request->get('backorder');
+//
+//        $products = Product::with('platform','publisher', 'images');
+//
+//        if ($preorder == 'hide') {
+//            $products = $products->where('preorder', '!=', '1')->orWhereNull('preorder');
+//        }
+//        if ($backorder == 'hide') {
+//            $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
+//        }
+//
+//        $products = $products->paginate(config('pagination.value'));
+//
+//        return view('home', [
+//            'products' => $products,
+//            'categories' => $categories,
+//            'direction' => '',
+//            'sortName' => '',
+//            'query' => '',
+//            'preorder' => $preorder,
+//            'backorder' => $backorder
+//        ]);
+//    }
+
     public function index(Request $request)
-    {
-        $categories = Category::all();
-
-        $preorder = $request->get('preorder');
-        $backorder = $request->get('backorder');
-
-        $products = Product::with('platform','publisher', 'images');
-
-        if ($preorder == 'hide') {
-            $products = $products->where('preorder', '!=', '1')->orWhereNull('preorder');
-        }
-        if ($backorder == 'hide') {
-            $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
-        }
-
-        $products = $products->paginate(config('pagination.value'));
-
-        return view('home', [
-            'products' => $products,
-            'categories' => $categories,
-            'direction' => '',
-            'sortName' => '',
-            'query' => '',
-            'preorder' => $preorder,
-            'backorder' => $backorder
-        ]);
-    }
-
-    public function sort(Request $request)
     {
         $products = Product::with('platform', 'publisher', 'images');
         $query = $request->get('query');
-
+        $category_id = $request->get('cat');
         $preorder = $request->get('preorder');
         $backorder = $request->get('backorder');
 
@@ -73,10 +73,16 @@ class HomeController extends Controller
             $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
         }
 
-        if ($request->get('direction') == 'asc') {
-            $direction = 'asc';
-        } else {
+        if ($request->get('direction') == 'desc') {
             $direction = 'desc';
+        } else {
+            $direction = 'asc';
+        }
+
+        if (strlen($category_id) > 0) {
+            $products->whereHas('categories', function ($query) use ($category_id) {
+                $query->where('id',$category_id);
+            })->get();
         }
 
         if (strlen($query) > 0) {
@@ -128,7 +134,9 @@ class HomeController extends Controller
         if (!($products instanceof LengthAwarePaginator)) {
             $products = $products->paginate(config('pagination.value'));
         }
+
         $categories = Category::all();
+        $category = 1;
 
         return view('home', [
             'products'      => $products->appends(Input::except('page')),
@@ -137,7 +145,8 @@ class HomeController extends Controller
             'direction'     => $direction,
             'query'         => $query,
             'preorder'      => $preorder,
-            'backorder'     => $backorder
+            'backorder'     => $backorder,
+            'category'      => $category,
         ]);
     }
 
