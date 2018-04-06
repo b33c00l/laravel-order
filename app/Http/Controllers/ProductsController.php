@@ -40,8 +40,6 @@ class ProductsController extends Controller
 
     public function store(StoreProductsRequest $request)
     {
-
-        $category = Category::where('name', $request->get('category_name'))->first();
         $platform = Platform::where('name', $request->get('platform_name'))->first();
         $publisher = Publisher::where('name', $request->get('publisher_name'))->first();
 
@@ -77,8 +75,8 @@ class ProductsController extends Controller
         $product->categories()->attach($category_id);
         $product->stock()->create( ['amount' => $request->get('stock_amount')] );
         $product->prices()->create( ['amount' => $request->get('price_amount')] );
-        if ($request->has('image')) {
-            $this->imageService->storeProductImages($product, $request->file('image'));
+        if ($request->has('images')) {
+            $this->imageService->storeProductImages($product, $request->file('images'));
         }
 
         return redirect()->route('home');
@@ -99,7 +97,9 @@ class ProductsController extends Controller
 
     public function edit($id)
     {
+    	
         $product = Product::findOrFail($id);
+      
         $platforms = Platform::all();
         $publishers = Publisher::all();
         $categories = Category::all();
@@ -164,7 +164,7 @@ class ProductsController extends Controller
             $product->prices()->create( ['amount' => $request->get('price_amount')] );
         }
 
-        $this->imageService->updateProductImages($product, $request->only(['image_id', 'image', 'featured']));
+        $this->imageService->updateProductImages($product, $request->only(['image_id', 'images', 'featured']));
 
         return redirect()->route('products.show', $id );
 

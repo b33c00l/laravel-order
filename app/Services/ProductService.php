@@ -28,21 +28,8 @@ class ProductService {
 
     public function getNewArrivals()
     {
-        $products = Product::all();
-        $products_latest = [];
-
-        foreach ($products as $product) {
-            $stock = $product->stock()->orderBy('id', 'desc')->take(2)->get();
-
-            if (count($stock) == 1) {
-                $products_latest[] = $product;
-            }
-            if (count($stock) > 1) {
-                if ($stock[0]->amount > $stock[1]->amount) {
-                    $products_latest[] = $product;
-                }
-            }
-        }
-        return $products_latest;
+        return Product::with('platform')
+          ->whereRaw('(SELECT stock.amount FROM stock WHERE products.id = stock.product_id ORDER BY id DESC LIMIT 1) > IFNULL((SELECT stock.amount FROM stock WHERE products.id = stock.product_id ORDER BY id DESC LIMIT 1, 1), 0)')
+          ->take(12)->get();
     }
 }

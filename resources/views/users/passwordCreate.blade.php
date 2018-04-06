@@ -1,3 +1,5 @@
+@extends('layouts.main', ['title' => 'Create password'])
+@section('content')
 <div class="col-10">
     <div class="row">
         <div class="col-12 text-center mt-5 mb-5">
@@ -26,11 +28,11 @@
                     </div>
                 </div>
                 <div class="col-12 form-group">
-                    <div class="col">
                         <button type="submit" class="btn btn-danger btn-block">Create</button>
-                    </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+</div>
+@endsection

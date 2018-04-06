@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Category;
+use App\OrderProduct;
+use App\Order;
 use App\Platform;
 use App\Product;
 use App\Publisher;
@@ -75,7 +77,11 @@ class UploadToDatabase
         } else {
             $product = Product::where('ean', $game[0])->first();
         }
-
+        if ($product->preorder === Product::DISABLED)
+        {
+            $product->update(['preorder' => 0]);
+            $this->preOrderToOrder($product);
+        }
         $product->stock()->create(['amount' => $game[4], 'date' => Carbon::now()]); // Stock
         $product->prices()->create(['amount' => $game[3], 'date' => Carbon::now()]); //Price
         return $product;
@@ -269,5 +275,43 @@ class UploadToDatabase
                 'featured' => 1
             ]);
         }
+    }
+
+    public function preOrderToOrder($product)
+    {
+        $orderProducts = OrderProduct::where('product_id', $product->id)->get();
+        if ($orderProducts->count() > 0)
+        {
+            foreach ($orderProducts as $orderProduct)
+            {
+                $preorder = $orderProduct->order()->UnconfirmedOrder()->preorder()->first();
+                if (isset($preorder))
+                {
+                    $user = $orderProduct->order->user;
+                    $order = $user->orders()->InCart()->Order()->first();
+                    if (isset($order))
+                    {
+                        $orderProduct->update(['order_id' => $order->id]);
+                    }else{
+                        $order = $this->createOrder($user);
+                        $orderProduct->update(['order_id' => $order->id]);
+                    }
+                    if ($preorder->orderProducts->isEmpty())
+                    {
+                        $preorder->delete();
+                    }
+                }
+            }
+        }
+    }
+
+    public function createOrder($user)
+    {
+        $order = $user->orders()->create([
+            'status' => Order::PENDING,
+            'date' => Carbon::now(),
+            'type' => Order::ORDER
+        ]);
+        return $order;
     }
 }
