@@ -15077,10 +15077,6 @@ div#radioboxes {
   padding: 10px;
 }
 
-.packshot img {
-  width: 100%;
-}
-
 img.gallery {
   width: auto;
   height: 200px;
@@ -15137,8 +15133,8 @@ div#categories {
 }
 
 /*
-    Single product
-    */
+Single product
+*/
 
 .single-price-block input {
   line-height: 30px;
@@ -15251,8 +15247,8 @@ div#categories {
 }
 
 /*
-    CONTACTS
-    */
+CONTACTS
+*/
 
 .contacts li {
   list-style-type: none;
@@ -15262,8 +15258,8 @@ div#categories {
 }
 
 /*
-    USER EDIT
-    */
+USER EDIT
+*/
 
 .user-edit-label {
   padding: 15px;
@@ -15277,8 +15273,8 @@ div#categories {
 }
 
 /*
-    IMPORT PRODUCTS
-    */
+IMPORT PRODUCTS
+*/
 
 .page-item.active .page-link {
   z-index: 1;
@@ -15288,8 +15284,8 @@ div#categories {
 }
 
 /*
-    SPECIAL OFFERS
-    */
+SPECIAL OFFERS
+*/
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   border: solid #ced4da 1px !important;
@@ -15323,13 +15319,30 @@ div#categories {
   margin-right: 10px;
 }
 
+.packshots {
+  display: none;
+  width: 40px;
+}
+
+.packshots img {
+  width: 40px;
+}
+
+.packshot {
+  width: 40px;
+}
+
 /*
-    MOBILE
-    */
+MOBILE
+*/
 
 @media only screen and (max-width: 990px) {
   .cart-menu {
     display: none;
+  }
+
+  .packshot img {
+    max-width: 150px;
   }
 
   .single-price-block {
@@ -15409,6 +15422,17 @@ div#categories {
 
   .release {
     display: block;
+    width: 100%;
+  }
+
+  .publisher {
+    display: block;
+    width: 100%;
+  }
+
+  .table-sm td,
+  .table-sm th {
+    margin: 0px;
   }
 
   .top-bar ul {
@@ -15531,7 +15555,11 @@ table tr {
 }
 
 .title {
-  width: 240px;
+  width: 200px;
+}
+
+.btn-sm {
+  padding: .15rem .2rem;
 }
 
 .platform {
@@ -15539,15 +15567,7 @@ table tr {
 }
 
 .ean {
-  width: 80px;
-}
-
-.release {
-  width: 70px;
-}
-
-.publisher {
-  width: 80px;
+  width: 100px;
 }
 
 .amount {
@@ -15558,9 +15578,16 @@ table tr {
   width: 85px;
 }
 
-.packshots {
+.packshot {
+  width: 100%;
+}
+
+.packshotsImgDisplay {
+  display: table-cell;
+}
+
+.packshotsImgDisplayNone {
   display: none;
-  width: 45px;
 }
 
 table th,
@@ -15578,6 +15605,14 @@ table th {
 @media screen and (max-width: 990px) {
   .packshots {
     width: 100%;
+  }
+
+  .packshots img {
+    width: 150px;
+  }
+
+  .packshotsImgDisplay {
+    display: block;
   }
 
   table {

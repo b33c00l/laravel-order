@@ -5,7 +5,9 @@
  <div class="top-bar">
     <ul>
         <li><i class="fa fa-angle-right"></i>  <a href="{{ route('logout') }}">Logout</a></li>
-        <li><i class="fa fa-user"></i>  {{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</li>
+        <li><i class="fa fa-user"></i>
+            <a href="{{ route('profile') }}">{{ Auth::user()->name }}</a>
+        </li>
     </ul>
     <ul>
        <li><i class="fa fa-phone"></i>  <a href="tel:{{$phone}}">{{$phone}}</a></li>
@@ -15,7 +17,7 @@
 </div>
 <!-- Header -->
 <div class="row">
-    <div class="logo">
+    <div class="logo pl-2">
        <a href="{{ route('home') }}"><img src="{{asset('images/logo2.png')}}"></a>
    </div>
    <div class="cart-menu-mobile">
@@ -40,7 +42,7 @@
                         <a class="nav-link btn btn-danger" href="{{route('order.orders')}}">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="#">Profile</a>
+                        <a class="nav-link btn btn-danger" href="{{ route('profile') }}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn {{ ($name == 'pages.contacts' ? 'btn-outline-danger' : 'btn-danger') }}" href="{{ route('pages.contacts') }}">Contact</a>
@@ -55,7 +57,7 @@
                 <span class="cart-menu-icon">
                     <i class="fa fa-cart-arrow-down"></i>
                 </span>
-                <span class="cart-menu-price totalQuantityTop">Items: {{ $cartService->getUserOrderTotalQuantity()}}</span>
+                <span class="cart-menu-price totalQuantityTop">Items: {{ $cartService->getUserOrderTotalQuantity()}} / </span>
                 <span class="cart-menu-price totalPriceTop">  € {{ number_format($cartService->getUserOrderTotalPrice(), 2, '.', '') }}</span>
     </a>
 </div>
@@ -80,7 +82,7 @@
 <!-- Search -->
 <div class="row">
     <div class="col-12 d-flex justify-content-center pt-3 pb-3 search-bar-back">
-        <form class="form-inline justify-content-center" action="{{ route('home.sort') }}" method="GET">
+        <form class="form-inline justify-content-center" action="{{ route('home') }}" method="GET">
             @if (isset($query))
             <input name="query" id="productsSearch" class="form-control mr-sm-2 search-inputas" type="search"
             placeholder="Search" aria-label="Search" value="{{ old('name', $query) }}">

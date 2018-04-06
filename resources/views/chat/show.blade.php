@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.main', ['title' => 'Show order chat'])
 
 @section('content')
-    <div class="container">
+<div class="col-10 mt-5">
         <div class="row">
             <div class="col-sm-8 mx-auto">
                 <h2>{{ $chat->topic }}</h2>
@@ -32,20 +32,20 @@
                                       placeholder="Enter message"></textarea>
                             @include('chat.partials.error', ['name' => 'message'])
                         </div>
-                        <button type="submit" class="btn btn-primary">Send message</button>
+                        <button type="submit" class="btn btn-dark btn-block">Send message</button>
                     </form>
                 </div>
             </div>
         @endif
 
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-sm-8 mx-auto">
                 @if (Auth::user()->role == "admin" && $chat->isActive())
                     <form method="post" action="{{ route('chat.disable') }}">
                         @csrf
                         {{method_field('PATCH')}}
                         <input type="hidden" name="chat_id" value="{{ $chat->id }}">
-                        <button class="btn btn-danger mt-3" type="submit">Deactivate chat</button>
+                        <button class="btn btn-danger btn-block" type="submit">Deactivate chat</button>
                     </form>
                 @elseif (!$chat->isActive())
                     <h3 class="text-danger">Chat is deactivated!</h3>
@@ -53,10 +53,11 @@
                         @csrf
                         {{method_field('PATCH')}}
                         <input type="hidden" name="chat_id" value="{{ $chat->id }}">
-                        <button class="btn btn-success mt-3" type="submit">Activate chat</button>
+                        <button class="btn btn-success btn-block" type="submit">Activate chat</button>
                     </form>
                 @endif
             </div>
         </div>
     </div>
+</div>
 @endsection

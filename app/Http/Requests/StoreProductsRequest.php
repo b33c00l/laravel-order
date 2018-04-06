@@ -31,7 +31,7 @@ class StoreProductsRequest extends FormRequest
             'stock_amount' => 'required|integer|min:0',
             'price_amount' => ["required", 'numeric', new PositivePrice()],
             'pegi' => 'numeric|nullable',
-            'image' => 'mimes:jpeg,png,jpg,gif|max:2048'
+            'images[]' => 'mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }
 }
