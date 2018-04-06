@@ -25,13 +25,13 @@
                             </td>
                             <td id="update">
                                     <input  name="price"  value="{{ $specialPrice->amount }}" class="form-control"  type="number" step="any">
-                                    <button data-url="{{route ('special.user.update', ['id' => $specialPrice->id])}}" type="submit" class="btn updateSpecialPrice btn-warning">Update</button>
+                                    <button data-url="{{route ('special.user.update', ['id' => $specialPrice->id, 'user_id' => $user_id])}}" type="submit" class="btn updateSpecialPrice btn-warning">Update</button>
                             </td>
                             <td>
                                 <button class="btn btn-warning btn-sm editPrice">Edit price</button>
                             </td>
                             <td>
-                                <button data-url="{{ route('special.user.delete', ['id' => $specialPrice->id])}}" type="submit" class="btn deleteSpecialPrice btn-danger btn-sm">Delete</button>
+                                <button data-url="{{ route('special.user.delete', ['id' => $specialPrice->id, 'user_id' => $user_id])}}" type="submit" class="btn deleteSpecialPrice btn-danger btn-sm">Delete</button>
                             </td>
                         </tr>
 

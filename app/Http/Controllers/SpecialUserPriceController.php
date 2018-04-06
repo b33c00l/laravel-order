@@ -62,7 +62,7 @@ class SpecialUserPriceController extends Controller
     {
         $specialPrices = Price::where('user_id', $user_id)->get();
 
-        return view('special_user_price.single', compact('specialPrices'));
+        return view('special_user_price.single', compact('specialPrices', 'user_id'));
     }
 
     public function filter(Request $request)
@@ -95,21 +95,15 @@ class SpecialUserPriceController extends Controller
     }
 
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        Price::destroy($id);
+        Price::where('id', $id)->where('user_id', $request->user_id)->delete();
     }
-
-    public function edit($id)
-    {
-        $specialPrices = Price::where('id', $id)->get();
-        $oldPrice = Price::where('id', $id)->first()->amount;
-        return view('special_user_price.edit', compact('specialPrices', 'oldPrice'));
-    }
+    
 
     public function update(Request $request, $id)
     {
-            Price::where('id', $id)->update(['amount' => $request->price]);
+            Price::where('id', $id)->where('user_id', $request->user_id)->update(['amount' => $request->price]);
     }
 
 }

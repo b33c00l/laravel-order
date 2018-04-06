@@ -503,7 +503,8 @@ $(".updateSpecialPrice").click(function()
             price: price,
         },
         datatype: 'json',
-        success: function(){
+        success: function(data){
+            console.log(data);
          button.parent().prev().css({"display": "block"});
          var result = button.parent().find('input').val();
          button.parent().prev().html(result);
