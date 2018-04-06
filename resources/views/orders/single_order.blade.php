@@ -36,15 +36,17 @@
                                 class="align-middle text-right text-lg-center">{{$product->product->name}}</td>
                             <td data-label="Release date:"
                                 class="align-middle text-right text-lg-center">{{$product->product->release_date}}</td>
+                            @isset($preorder)
                             @if( $product->product->deadline != null)
                             <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
                                     {{ $product->product->deadline}}
                             </td>
-                                @elseif(empty($product->product->deadline))
+                            @elseif(empty($product->product->deadline))
                                 <td Data-label="Deadline:" class="align-middle text-right text-lg-center">
                                     -
                                 </td>
                             @endif
+                            @endisset
                             <td data-label="Publisher:"
                                 class="align-middle text-right text-lg-center">{{ $product->product->has('publisher') ? $product->product->publisher->name : '-'}}</td>
                             <td data-label="Price:" class="align-middle text-right text-lg-center">
@@ -189,6 +191,5 @@
         </div>
     </div>
     @endif
-</div>
 </div>
 @endsection
