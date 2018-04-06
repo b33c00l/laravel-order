@@ -236,6 +236,10 @@
                             <div class="col">
                                 <button type="submit" class="btn btn-danger btn-block" >Edit</button>
                             </div>
+                            <br>
+                            <div class="col">
+                                <a role="button" class="btn btn-dark btn-block" href="{{route('products.show', $product->id)}}">Back to product</a>
+                            </div>
                         </div>
                     </div>
                 </div>
