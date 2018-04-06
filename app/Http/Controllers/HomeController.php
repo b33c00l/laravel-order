@@ -29,34 +29,6 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-//    public function index(Request $request)
-//    {
-//        $categories = Category::all();
-//
-//        $preorder = $request->get('preorder');
-//        $backorder = $request->get('backorder');
-//
-//        $products = Product::with('platform','publisher', 'images');
-//
-//        if ($preorder == 'hide') {
-//            $products = $products->where('preorder', '!=', '1')->orWhereNull('preorder');
-//        }
-//        if ($backorder == 'hide') {
-//            $products = $products->whereRaw('(SELECT amount FROM stock WHERE product_id = products.id ORDER BY date DESC LIMIT 1) > 0');
-//        }
-//
-//        $products = $products->paginate(config('pagination.value'));
-//
-//        return view('home', [
-//            'products' => $products,
-//            'categories' => $categories,
-//            'direction' => '',
-//            'sortName' => '',
-//            'query' => '',
-//            'preorder' => $preorder,
-//            'backorder' => $backorder
-//        ]);
-//    }
 
     public function index(Request $request)
     {
@@ -123,7 +95,7 @@ class HomeController extends Controller
                 } else {
                     $products = $this->paginate($products->sortByDesc('PriceAmount'));
                 }
-                $products->setPath('/sort');
+                $products->setPath('/');
                 break;
 
             default:
@@ -136,7 +108,7 @@ class HomeController extends Controller
         }
 
         $categories = Category::all();
-        $category = 1;
+        $category = $category_id;
 
         return view('home', [
             'products'      => $products->appends(Input::except('page')),

@@ -28,7 +28,7 @@
         <h4>{{$special_offer->expiration_date}}</h4>
     </div>
     @endif
-    
+
     <div id="radioboxes" class="row justify-content-around">
         <div class="col-12 checkboxes">
             <div class="form-check">
