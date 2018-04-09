@@ -10,6 +10,7 @@
                     <tr>
                         <th>Products</th>
                         <th>Prices</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
@@ -19,15 +20,21 @@
                             <td>
                                 {{$specialPrice->products->name}}
                             </td>
-                            <td>
+                            <td id="edit">
                                 {{$specialPrice->amount}}
                             </td>
-                            @admin
-                                <td class="align-middle text-right text-lg-center">
-                                    <button class="btn btn-danger btn-sm delete">Delete</button>
-                                </td>
-                            @endadmin
+                            <td id="update">
+                                    <input  name="price"  value="{{ $specialPrice->amount }}" class="form-control"  type="number" step="any">
+                                    <button data-url="{{route ('special.user.update', ['id' => $specialPrice->id, 'user_id' => $user_id])}}" type="submit" class="btn updateSpecialPrice btn-warning">Update</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm editPrice">Edit price</button>
+                            </td>
+                            <td>
+                                <button data-url="{{ route('special.user.delete', ['id' => $specialPrice->id, 'user_id' => $user_id])}}" type="submit" class="btn deleteSpecialPrice btn-danger btn-sm">Delete</button>
+                            </td>
                         </tr>
+
                     @endforeach
                     </tbody>
                 </table>

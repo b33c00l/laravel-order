@@ -15715,6 +15715,10 @@ input.input {
   color: green;
 }
 
+#update {
+  display: none;
+}
+
 .select2-container {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;

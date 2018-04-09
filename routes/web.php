@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function()
             Route::post('special/user/filter', 'SpecialUserPriceController@filter')->name('special.user.filter');
             Route::get('special/user/show/', 'SpecialUserPriceController@show')->name('special.user.show');
             Route::get('special/user/show/{id}', 'SpecialUserPriceController@showSingle')->name('special.user.single');
+            Route::post('special/user/show/update/{id}', 'SpecialUserPriceController@update')->name('special.user.update');
+            Route::delete('special/user/show/delete/{id}', 'SpecialUserPriceController@delete')->name('special.user.delete');
 
 		});
 	Route::get('cat/{id}', 'CategoriesController@show')->name('products.cat');
