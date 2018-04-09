@@ -99,7 +99,7 @@ class SpecialUserPriceController extends Controller
     {
         Price::where('id', $id)->where('user_id', $request->user_id)->delete();
     }
-    
+
 
     public function update(Request $request, $id)
     {
